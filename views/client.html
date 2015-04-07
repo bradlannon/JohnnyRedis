@@ -1,0 +1,20 @@
+<!doctype html><html lang=en><head><title>The HTML5 Herald</title><meta name=description content="The HTML5 Herald"><meta name=author content=SitePoint><link rel=stylesheet href="css/styles.css?v=1.0"><!--[if lt IE 9]>
+ <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+ <![endif]--></head><body><h1>Welcome to my site</h1>My photoresistor value is<div id=photoValue>0</div><script src=https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js></script><script src=/socket.io/socket.io.js></script><script>
+io = io.connect()
+// Emit ready event.
+io.emit('ready')
+// Listen for the talk event.
+io.on('talk', function(data) {
+
+$('#photoValue').html(data.message);
+})
+
+
+
+window.setInterval(function(){
+  io.emit('ask')
+}, 5000);
+
+
+</script></body></html>
