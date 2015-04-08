@@ -79,4 +79,4 @@
         window.setInterval(function(){
         //    console.log('talking every 5000 ms as getValues')
             io.emit('getValues');
-        }, 5000);
+        }, 1000);

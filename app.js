@@ -1,38 +1,42 @@
 express = require('express.io');
 app = express().http().io();
-var jf = require('jsonfile');
-var util = require('util');
-var fs = require('fs');
+var util = require('util'),
+    redis = require('redis'),
+    fs = require('fs'),
+    myCredentials = require("./credentials.js");
+    myRGB = '#00FFDD',
+    myLed = 1,
+    myLcd=1,
+    myMotion = 0,
+    myPot = 0,
+    myPhoto = 0,
+    myServo = 1,
+    myPiezo = 0,
+    myPush = 0,
+    myPing = 0,
+    myUpdatedTime = '12:00:00',
+    myRGBOld = '#FF0000',
+    myLedOld = 0,
+    myServoOld = 0,
+    myPiezoOld = 0,
+    myLcdOld = 10;
 var obj;
-var file = '../read.json';
-var myLed = 0, myPot = 0, myPhoto = 0,myVals=0,myUpdatedTime='12:00:00';
-var redis = require('redis');
 
-clientPub = redis.createClient(9599, "greeneye.redistogo.com"),
-clientSub = redis.createClient(9599, "greeneye.redistogo.com");
 
-clientPub.auth("e63c9194c1a677e782cd17c88cf30d5f", function() {
+clientPub = redis.createClient(myCredentials.myPort, myCredentials.myDB),
+clientPub.auth(myCredentials.myAuth, function() {
   console.log("Connected to Redis Pub Successfully!");
 });
 
-clientSub.auth("e63c9194c1a677e782cd17c88cf30d5f", function() {
+clientSub = redis.createClient(myCredentials.myPort, myCredentials.myDB);
+clientSub.auth(myCredentials.myAuth, function() {
   console.log("Connected to Redis Sub Successfully!");
 });
-
-//client.publish("potValue", 4);
-//client.publish("servoValue", 2);
-//client.publish("pushValue", 1);
-//client.publish("motionValue", 1);
-//client.publish("pingValue", 1);
-//client.publish("rgbValues", '#00FFDD');
-//client.publish("piezoValue", 1);
-//client.publish("ledValue", 1);
-//client.publish("lcdValue", 10);
 
 clientSub.subscribe("motionValue");
 clientSub.subscribe("pushValue");
 clientSub.subscribe("toggleValue");
-clientSub.subscribe("photoValue"); 
+clientSub.subscribe("photoValue");
 clientSub.subscribe("potValue");
 
 clientSub.on("message", function (channel, message) {
@@ -54,41 +58,89 @@ clientSub.on("message", function (channel, message) {
         }
     });
 
-//clientPub.publish("ledValue", 1);
+function writeToRedis() {
+    if (myRGBOld != myRGB) {
+        clientPub.publish("myRGB", myRGB);
+        console.log("written to redis ledValues:" + myRGB);
+    }
 
+    if (myLedOld != myLed) {
+        clientPub.publish("myLed:", myLed);
+        console.log("written to redis ledValue:" + myLed);
+    }
+
+    if (myServoOld != myServo) {
+        clientPub.publish("myServo", myServo);
+        console.log("written to redis servoValue:" + myServo);
+    }
+
+    if (myPiezoOld != myPiezo) {
+        clientPub.publish("myPiezo", myPiezo);
+        console.log("written to redis piezoValue:" + myPiezo);
+    }
+
+    if (myLcdOld != myLcd) {
+        clientPub.publish("myLcd", myLcd);
+        console.log("written to redis Lcd:" + myLcd);
+    }
+
+    myRGBOld = myRGB;
+    myLedOld = myLed;
+    myServoOld = myServo;
+    myPiezoOld = myPiezo;
+    myLcdOld = myLcd;
+}
+
+app.io.route('changeMotor', function(req) {
+  myServo = req.data.myVal;
+  req.io.broadcast('displayNewMotor',myServo);
+});
+
+app.io.route('changeLEDValues', function(req) {
+  myRGB = req.data.myVal;
+  req.io.broadcast('displayNewLED',req.data.myVal);
+});
+
+app.io.route('playSong', function(req) {
+  myPiezo = 1;
+});
+
+app.io.route('changeLEDStatus', function(req) {
+  myLed = req.data.myVal;
+  req.io.broadcast('displayNewLEDStatus',myLed);
+});
+
+app.io.route('getInitialValues', function(req) {  //this function only runs once
+  req.io.emit('displayInitialValues', {
+    photo: myPhoto,
+    pot: myPot,
+    ping: myPing,
+    servo: myServo,
+    push: myPush,
+    ledvalues: myRGB,
+    ledvalue: myLed,
+    motion: myMotion
+  });
+});
+
+app.io.route('getValues', function(req) {
+  req.io.emit('displayReadOnlyData', {
+    photo: myPhoto,
+    pot: myPot,
+    ping: myPing,
+    push: myPush,
+    motion: myMotion
+  });
+});
 
 setInterval(function(){
-  /* fs.readFile(file, 'utf8', function (err, data) {
-    if (err) throw err;
-    obj = JSON.parse(data);
-    myLed = obj.led;
-    myPot = obj.pot;
-    myPhoto = obj.photo;
-    myUpdatedTime = obj.updated;
-    myVals = obj;
-   // console.log(obj)
-   });  */
-}, 5000);
+     writeToRedis();
+}, 1000);
 
-app.io.route('ready', function(req) {
-  req.io.emit('talk', {
-    message: myPhoto
-  });
-});
-
-app.io.route('talking', function(req) {
-  //console.log('should be talking');
-  req.io.emit('displayVal', {
-    message: myUpdatedTime
-  });
-});
-// Send the client html.
 app.get('/', function(req, res) {
-res.sendfile(__dirname + '/views/index.html');
+  res.sendfile(__dirname + '/views/index.html');
 });
-
-
-
 
 app.use(express.static(process.cwd() + '/Public'));
+console.log("connected");
 app.listen(8081);
