@@ -1,11 +1,10 @@
 var gulp = require('gulp'),
-    nodemon = require('gulp-nodemon'),
-    jshint = require('gulp-jshint'),
+    nodemon = require('gulp-nodemon'),       
+    jshint = require('gulp-jshint'),          
     imagemin = require('gulp-imagemin'),
-    concat = require('gulp-concat'),
-    stripDebug = require('gulp-strip-debug'),
-    minifyHTML = require('gulp-minify-html'),
-    uglify = require('gulp-uglify'),
+    stripDebug = require('gulp-strip-debug'),  
+    minifyHTML = require('gulp-minify-html'),     
+    uglify = require('gulp-uglify'),          
     path = require('path'),
     autoprefix = require('gulp-autoprefixer'),
     minifyCSS = require('gulp-minify-css');
@@ -24,9 +23,6 @@ gulp.task('developHome', function () {
       console.log('restarted Home Server!')
     })
 })
-
-
-
 
 gulp.task('develop', function () {
   nodemon({ script: 'online.js', ext: 'html js', ignore: ['ignoredOnline.js'] })
@@ -85,7 +81,7 @@ gulp.task('styles', function() {
 });
 
 // default gulp task
-gulp.task('default', ['checkapp','jshint','lanteka','minify-html','develop'], function() {
+gulp.task('online', ['checkapp','jshint','lanteka','minify-html','develop'], function() {
   // watch for file changes
   gulp.watch('./src/html/*.html', ['minify-html','develop']);
   gulp.watch('./src/js/*.js',['jshint','lanteka','develop']);

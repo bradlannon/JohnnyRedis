@@ -35,7 +35,7 @@ var five = require('johnny-five'),
     myRGB = '#00FFDD',
     myPiezo = 0,
     myLed = 1,
-    myCredentials = require("./credentials.js");
+    myCredentials = require("./credential.js");
 
 var board = new five.Board({ port: "COM8" });
 var boardLCD = new five.Board({ port: "COM5" });

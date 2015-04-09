@@ -10,3 +10,17 @@ There are essentially 2 node.js servers:
 
 Redis is the middle man between the two node.js servers for communication because it has the power to connect two node.js servers together using publish and subscribe.  Once you, for example, turn on an LED from the webpage, socket.io will send a realtime message to online.js which will in turn send the value to Redis.  Because the home.js server is listing to that Redis server, it will hear that a value has changed and then update it on the arduino.  I configured it this way so that the web is not connected directly to the arduino in my house. That could be dangerous!
 
+To start install node package manager (npm).
+
+run npm install in command line
+
+You may have to install some global node modules using -g.
+
+
+
+To run online server:
+gulp online
+
+To run home server:
+gulp home
+
