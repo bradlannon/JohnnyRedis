@@ -37,9 +37,8 @@ var five = require('johnny-five'),
     myLed = 1,
     myCredentials = require("./credentials.js");
 
-var board = new five.Board({ port: "COM8" });
 var boardLCD = new five.Board({ port: "COM5" });
-
+var boardMEGA = new five.Board({ port: "COM8" });
 
 clientSub = redis.createClient(myCredentials.myPort, myCredentials.myDB);
 clientSub.auth(myCredentials.myAuth);
@@ -72,41 +71,28 @@ clientSub.on("message", function (channel, message) {
     });
 
 boardLCD.on("ready", function() {
-    console.log("connected to Arduino (LCD) on COM8")
+    console.log("connected to Arduino (LCD) on COM5")
 });
 
-board.on("ready", function() {
-    var ledMotion = new five.Led(pinLedM),
-        motion = new five.IR.Motion(pinMotion),
-        button = new five.Button(pinButton),
-        piezo = new five.Piezo(pinPiezo);
-
-    var potentiometer = new five.Sensor({
-        pin: pinPotentiometer,
-        freq: 250
-    });
-
-    var photoresistor = new five.Sensor({
-        pin: pinPhotoresistor,
-        freq: 250
-    });
-
-    var led = new five.Led.RGB({
+boardMEGA.on("ready", function() {
+    
+   var led = new five.Led.RGB({
     pins: {
       red: pinR,
       green: pinG,
       blue: pinB
-    }
+    }, board: boardMEGA
   });
 
-     // ping = new five.Ping(12);
+  var ledMotion = new five.Led({ pin: pinLedM, board: boardMEGA }),
+      button = new five.Button({ pin: pinButton, board: boardMEGA }),
+      piezo = new five.Piezo({ pin: pinPiezo, board:boardMEGA }),
+      potentiometer = new five.Sensor({ pin: pinPotentiometer,freq: 250, board: boardMEGA });
+      photoresistor = new five.Sensor({pin: pinPhotoresistor,freq: 250, board: boardMEGA });
+      servo = new five.Servo({pin: pinServo1, type: "standard", board: boardMEGA });
 
-    var servo = new five.Servo({
-        pin: pinServo1,
-        type: "continuous"
-    });
 
-    board.repl.inject({
+    boardMEGA.repl.inject({
       pot: photoresistor,
       button: button,
       piezo: piezo,
@@ -117,25 +103,7 @@ board.on("ready", function() {
 
 
     ledMotion.on();
-
-    motion.on("calibrated", function() {
-    });
-
-    motion.on("motionstart", function() {
-      ledMotion.off();
-      ledMotion.on();
-      myMotion = 1;
-      clientPub.publish('motionValue', '1' ); 
-    });
-
-    motion.on("motionend", function() {
-      ledMotion.off();
-      ledMotion.on();
-      myMotion = 0;
-      clientPub.publish('motionValue', '2' ); 
-    });
-
-    button.on("down", function() {
+button.on("down", function() {
       myPush = 2;
       clientPub.publish('pushValue', '2' ); 
       if (toggleManual == 1) {
@@ -195,11 +163,11 @@ board.on("ready", function() {
 
                 }
               if (myServo == 0) {
-                    servo.ccw(1);
+                 //   servo.ccw(1);
               } else if (myServo == 1) {
-                    servo.cw(0);
+                 //   servo.cw(0);
               } else if (myServo == 2) {
-                    servo.cw(1);
+                 //   servo.cw(1);
               }
             }
             if (myPush == 1 && myLed == 1) {
@@ -219,6 +187,8 @@ board.on("ready", function() {
             }
             previousPushValue = myPush;
       }, 1000);
+
+
     });
 
 boardLCD.on("ready", function() {

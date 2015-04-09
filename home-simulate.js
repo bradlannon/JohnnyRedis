@@ -12,8 +12,17 @@ var myIncrement = 0,
 
 clientPub = redis.createClient(myCredentials.myPort, myCredentials.myDB),
 clientPub.auth(myCredentials.myAuth, function() {
-  console.log("Connected to Redis Successfully!");
+  console.log("Connected to Redis Pub Successfully!");
 });
+
+// clientSub = redis.createClient(myCredentials.myPort, myCredentials.myDB),
+// clientSub.auth(myCredentials.myAuth, function() {
+//   console.log("Connected to Redis Sub Successfully!");
+// });
+
+// clientSub.get("toggleValue", function (err, reply) {
+//         console.log("toggle: " + reply); // Will print `OK`
+//     });
 
 setInterval(function(){
     myIncrement++;
