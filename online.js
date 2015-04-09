@@ -1,3 +1,10 @@
+//  Online webserver   
+//  
+//   ...hosted at localhost:8081 currently
+//
+//
+
+
 express = require('express.io');
 app = express().http().io();
 var redis = require('redis'),

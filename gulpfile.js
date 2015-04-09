@@ -10,12 +10,29 @@ var gulp = require('gulp'),
     autoprefix = require('gulp-autoprefixer'),
     minifyCSS = require('gulp-minify-css');
 
+gulp.task('home',  ['lintHome', 'developHome']);
+
+gulp.task('lintHome', function () {
+  gulp.src('home.js')
+    .pipe(jshint())
+})
+
+gulp.task('developHome', function () {
+  nodemon({ script: 'home.js', ext: 'html js', ignore: ['ignoredHome.js'] })
+    .on('change', ['lintHome'])
+    .on('restart', function () {
+      console.log('restarted Home Server!')
+    })
+})
+
+
+
 
 gulp.task('develop', function () {
-  nodemon({ script: 'online.js', ext: 'html js', ignore: ['ignored.js'] })
+  nodemon({ script: 'online.js', ext: 'html js', ignore: ['ignoredOnline.js'] })
     //.on('change', ['jshint','minify-html'])
     .on('restart', function () {
-      console.log('restarted!');
+      console.log('restarted Web Server!');
     })
 })
 
