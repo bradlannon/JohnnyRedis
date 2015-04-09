@@ -8,7 +8,7 @@
 express = require('express.io');
 app = express().http().io();
 var redis = require('redis'),
-    myCredentials = require("./credential.js");
+    myCredentials = require("./credentials.js");
     myLed = 0,
     myLedOld = 0,
     myLcd=10,
