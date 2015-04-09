@@ -12,7 +12,7 @@ var gulp = require('gulp'),
 
 
 gulp.task('develop', function () {
-  nodemon({ script: 'app.js', ext: 'html js', ignore: ['ignored.js'] })
+  nodemon({ script: 'online.js', ext: 'html js', ignore: ['ignored.js'] })
     //.on('change', ['jshint','minify-html'])
     .on('restart', function () {
       console.log('restarted!');
@@ -30,11 +30,6 @@ gulp.task('jshint', function() {
     .pipe(jshint())
     .pipe(jshint.reporter('default'));
 });
-
-
-// minify new or changed HTML pages
-
-
 
 gulp.task('minify-html', function() {
   var opts = {
@@ -56,8 +51,6 @@ gulp.task('scripts', function() {
     .pipe(uglify())
     .pipe(gulp.dest('./Public/js/'));
 });
-
-
 
 // JS concat, strip debugging and minify
 gulp.task('lanteka', function() {

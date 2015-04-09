@@ -8,9 +8,10 @@
             $('#potValue').html('Potentiometer: ' + data.pot);
             $('#pushValue').html('Push Button: ' + data.push);
             $('#pingValue').html('Ping Sensor: N/A');// + data.ping);
-            $("#ledValues").val(data.ledvalues);  // led color if on
+            $("#rgbValue").val(data.ledvalues);  // led color if on
             $("#ledValue").val(data.ledvalue);  //led button on or off
             $("#servoValue").val(data.servo);
+            $("#lcdValue").val(data.lcd);
 
             if (data.ledvalue==1) {
                 $("#ledValue").attr('checked', true);
@@ -25,7 +26,7 @@
             $('#photoValue').html('Photoresistor: ' + data.photo);
             $('#potValue').html('Potentiometer: ' + data.pot);
             $('#pushValue').html('Push Button: ' + data.push);
-            $('#pingValue').html('Ping Sensor: N/A');// + data.ping);
+            $('#pingValue').html('Ping Sensor: ' + data.ping);
         });
 
         io.on('displayNewLEDStatus', function(myVal) {
@@ -38,11 +39,15 @@
         })
 
         io.on('displayNewLED', function(myVal) {
-            $("#ledValues").val(myVal);
+            $("#rgbValue").val(myVal);
         })
 
         io.on('displayNewMotor', function(myVal) {
             $("#servoValue").val(myVal);
+        })
+
+        io.on('displayLcd', function(myVal) {
+            $("#lcdValue").val(myVal);
         })
 
 // javascript events to send to socketio
@@ -58,13 +63,25 @@
             }
         });
 
+        $("#lcdValue").keyup(function(event){
+            if(event.keyCode == 13){
+                data = {myVal:  $(this).val()}
+                io.emit('changeLcd', data);
+            }
+        });
+
+        $("#lcdValue").focusout(function(event){
+            data = {myVal:  $(this).val()}
+            console.log("lcd is " + data.myVal);
+            io.emit('changeLcd', data);
+        });
 
         $("#servoValue").change(function() {
             data = {myVal:  $(this).val()}
             io.emit('changeMotor', data);
         });
 
-        $("#ledValues").change(function() {
+        $("#rgbValue").change(function() {
             data = {myVal:  $(this).val()}
             io.emit('changeLEDValues', data);
         });
@@ -74,7 +91,6 @@
             //$("input:radio").attr("checked", false);
               io.emit('playSong');
         });
-//
 
         window.setInterval(function(){
         //    console.log('talking every 5000 ms as getValues')
