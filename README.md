@@ -12,7 +12,7 @@ Redis is the middle man between the two node.js servers for communication becaus
 
 
 
-## To start, first install the node package manager (npm).
+#### To start, first install the node package manager (npm).
 
 
 ##### In terminal or command line run: 
@@ -31,14 +31,12 @@ Redis is the middle man between the two node.js servers for communication becaus
 [Visit redistogo](http://redistogo.com/)  for a free account and don't forget to add the database information in credential.js. **
 
 
-###### ARDUINO PINS:
+##### ARDUINO PINS:
 
-* pinPhotoresistor (A0)  works
-* pinButton (50) works
-* pinR (2) works but add lower resistor
-* pinG (3) works
-* pinB (4) works               
-* pinPiezo (7) works but crackily
-* pinLedEyeL (23) works                      
-* pinLedEyeR (22) works
-* pinLedWeb (51) works
+* nPhotoresistor (A0) works
+* RGB (2,3,4) works but add lower resistor on red             
+* Piezo (7) works but crackily
+* LED1 (23) works                      
+* LED2 (22) works
+* LED3 (24) works
+* Button (25) works

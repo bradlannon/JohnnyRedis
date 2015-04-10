@@ -1,6 +1,6 @@
-//  ARDUINO PIN LAYOUT  
+//  NODE.JS HOME SERVER 
 //  
-//      ADD HERE
+//   
 //
 //
 
@@ -15,7 +15,7 @@ var five = require('johnny-five'),
     pinLCD7 = 10,
     pinPhotoresistor = "A0",        // works
     pinPotentiometer = "A5", 
-    pinButton = 50,                 // works
+    pinButton =26,                 // works
     pinR = 2,                       // works but add lower resistor
     pinG = 3,                       // works
     pinB = 4,                       // works
@@ -23,9 +23,9 @@ var five = require('johnny-five'),
     pinMotion = 13,                  
     pinPiezo = 7,                   // works but crackily
     pinServo1 = 9,
-    pinLedEyeL = 23,                    // works                        
-    pinLedEyeR = 22,                    // works 
-    pinLedWeb = 51,                     // works 
+    pinLedEyeL = 23,                // works                        
+    pinLedEyeR = 22,                // works 
+    pinLedWeb = 24,                 // works 
     toggleWeb = true,
     myPot = 0,
     myPhoto = 0,
@@ -183,7 +183,7 @@ boardMEGA.on("ready", function() {
       }
    
       //servo.sweep();
-      
+
     // if (myPush == 1 && myLed == 1) {
     //   if (myPushOld > myPush) {
     //       led.stop();
