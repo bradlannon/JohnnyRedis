@@ -27,4 +27,18 @@ Redis is the middle man between the two node.js servers for communication becaus
 ##### To run home server:
 * gulp home
 
-**You also have to have a redis account.** [Visit redistogo](http://redistogo.com/) ** for a free account.  Don't forget to dd your database information in credential.js. **
+**You also have to have a redis account.** 
+[Visit redistogo](http://redistogo.com/)  for a free account and don't forget to add the database information in credential.js. **
+
+
+###### ARDUINO PINS:
+
+* pinPhotoresistor (A0)  works
+* pinButton (50) works
+* pinR (2) works but add lower resistor
+* pinG (3) works
+* pinB (4) works               
+* pinPiezo (7) works but crackily
+* pinLedEyeL (23) works                      
+* pinLedEyeR (22) works
+* pinLedWeb (51) works

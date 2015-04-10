@@ -13,17 +13,20 @@ var five = require('johnny-five'),
     pinLCD5 = 6,
     pinLCD6 = 7,
     pinLCD7 = 10,
-    pinPhotoresistor = "A0",
-    pinButton = 50,
-    pinR = 2,
-    pinG = 3,
-    pinB = 11,
-    pinPotentiometer = "A1",
+    pinPhotoresistor = "A0",        // works
+    pinPotentiometer = "A5", 
+    pinButton = 50,                 // works
+    pinR = 2,                       // works but add lower resistor
+    pinG = 3,                       // works
+    pinB = 4,                       // works
+    pinPing=25,
     pinMotion = 13,                  
-    pinPiezo = 18,
-    pinServo1 = 20,
-    pinLedM = 53,                
-    toggleManual = 1,
+    pinPiezo = 7,                   // works but crackily
+    pinServo1 = 9,
+    pinLedEyeL = 23,                    // works                        
+    pinLedEyeR = 22,                    // works 
+    pinLedWeb = 51,                     // works 
+    toggleWeb = true,
     myPot = 0,
     myPhoto = 0,
     myPotOld = 0,
@@ -37,7 +40,7 @@ var five = require('johnny-five'),
     myMotionOld = 0,
     myLcd = 4,
     myRGB = '#00FFDD',
-    myPiezo = 0,
+    myPiezo = 1,
     myLed = 1,
     myCredentials = require("./credentials.js"),
     boardLCD = new five.Board({ port: "COM5" }),
@@ -84,45 +87,61 @@ boardMEGA.on("ready", function() {
     }, board: boardMEGA
   });
 
-  var ledMotion = new five.Led({ pin: pinLedM, board: boardMEGA }),
+  var ledEyeL = new five.Led({ pin: pinLedEyeL, board: boardMEGA }),
+    ledWebActivated = new five.Led({ pin: pinLedWeb, board: boardMEGA }),
+    ledEyeR = new five.Led({ pin: pinLedEyeR, board: boardMEGA }),
     button = new five.Button({ pin: pinButton, board: boardMEGA }),
     piezo = new five.Piezo({ pin: pinPiezo, board:boardMEGA }),
     potentiometer = new five.Sensor({ pin: pinPotentiometer,freq: 250, board: boardMEGA });
     photoresistor = new five.Sensor({pin: pinPhotoresistor,freq: 250, board: boardMEGA });
     servo = new five.Servo({pin: pinServo1, type: "standard", board: boardMEGA });
+   // var ping = new five.Ping({ pin: pinPing, board: boardMEGA });
 
   boardMEGA.repl.inject({
     pot: photoresistor,
     button: button,
     piezo: piezo,
     led: led,
-    ledMotion: ledMotion,
+    ledEyeR: ledEyeR,
+    ledEyeL: ledEyeL,
+  //  ping:ping,
+    ledWebActivated:ledWebActivated,
     pot: potentiometer
   });
 
-  ledMotion.on();
+  ledEyeR.on();
+  ledEyeL.on();
+  ledWebActivated.on();
 
   button.on("down", function() {
-    myPush = 2;
-    clientPub.publish('pushValue', '2' ); 
-    if (toggleManual == 1) {
-        toggleManual = 2;
-        clientPub.publish('toggleValue', '2' ); 
-      }
-      else {
-        toggleManual = 1;
-        clientPub.publish('toggleValue', '1' ); 
-      }
+    myPush = 1;
+    clientPub.publish('pushValue', '1' ); 
   });
 
+
+ // ping.on("change", function(err, value) {
+ //   console.log("Object is " + this.in + "inches away");
+ // });
+
   button.on("hold", function() {
-     myPush = 3;
-     clientPub.publish('toggleValue', '3' ); 
+     myPush = 2;
+     if (toggleWeb == false) {
+        toggleWeb = true;
+        clientPub.publish('toggleWeb', 'true' ); 
+        console.log("WEB ACTIVATED");
+        ledWebActivated.on();
+      }
+      else {
+        toggleWeb = false;
+        clientPub.publish('toggleWeb', 'false' ); 
+        console.log("WEB CONTROLS DISABLED");
+        ledWebActivated.off();
+      }
   });
 
   button.on("up", function() {
-    myPush = 1;
-    clientPub.publish('pushValue', '1' ); 
+    myPush = 0;
+    clientPub.publish('pushValue', '0' ); 
   });
 
   potentiometer.on("data", function() {
@@ -133,51 +152,55 @@ boardMEGA.on("ready", function() {
     myPhoto = this.value;
   });
 
+  function playSong() {
+        piezo.play({
+          song: "A B C D E F G G G G",
+          beats: 1 / 4,
+          tempo: 140
+        });
+  } 
 
   setInterval(function(){
     if (myLed == 1) {
         led.on();
         led.color(myRGB);
-         // led.blink(1000);
     } else {
         led.off();
     }
 
-    if (toggleManual == 1) {
+    // WEB ACTIVATED //
+    if ( toggleWeb == true) {
       if (myPiezo == 1) {
         myPiezo = 0;
-        piezo.play({
-        song: "A B C D E F G G G G - G F E D C B A A A - A B C D E F G G G G - G F E D C B A A A",
-        beats: 1 / 4,
-        tempo: 100
-      });
-    }
-        
-    if (myServo == 0) {
-         // servo.ccw(1);
+        playSong();
+      }
+      if (myServo == 0) {
+           // servo.ccw(1);
       } else if (myServo == 1) {
-         // servo.cw(0);
+           // servo.cw(0);
       } else if (myServo == 2) {
-         // servo.cw(1);
+           // servo.cw(1);
       }
-    }
-    if (myPush == 1 && myLed == 1) {
-      if (myPushOld > myPush) {
-          led.stop();
-        }
-        //  led.on();
-      } else if (myPush == 2 && myLed == 1) {
-          if (myPushOld > myPush) {
-            led.stop();
-            led.on();
-          }
+   
+      //servo.sweep();
+      
+    // if (myPush == 1 && myLed == 1) {
+    //   if (myPushOld > myPush) {
+    //       led.stop();
+    //     }
+    //     //  led.on();
+    //   } else if (myPush == 2 && myLed == 1) {
+    //       if (myPushOld > myPush) {
+    //         led.stop();
+    //         led.on();
+    //       }
             
-          led.strobe(50);
-      } else if (myPush == 3 & myLed == 1) {
-          led.strobe(50);
-      }
-          
-      myPushOld = myPush;
+    //       led.strobe(50);
+    //   } else if (myPush == 3 & myLed == 1) {
+    //       led.strobe(50);
+    //   }
+    }
+    myPushOld = myPush;
   }, 1000);
 
         
@@ -193,7 +216,7 @@ boardMEGA.on("ready", function() {
       clientPub.publish('photoValue', myPhoto ); 
     }
     myPhoto=myPhotoOld;
-  }, 60000);  // change to something logical
+  }, 10000);  // change to something logical
 
 });
 
