@@ -1,7 +1,7 @@
 # JohnnyRedis
 ### (Johnny-Five library + Redis)
 
-My website (bradlannon.ca) is a combination of web technologies Node.js, Redis, HTML, and Bootstrap.  I'ved used the popular Johnny-Five (arduino-node.js library) and sync'ed it up with my Arduino MEGA. My Arduino has several digital and analog sensors/motors that you can control through the website.  There is a Redis database that allows me to publish and subscribe change events from my arduino or webpage.   Because I used socket.io realtime event library, you will notice that if you update it on one browser, it will update on all browsers, across the internet.
+My website (bradlannon.ca) is a combination of web technologies Node.js, Redis, HTML, and Bootstrap.  I'ved used the popular Johnny-Five (arduino-node.js library) and sync'ed it up with my 3 Arduinos which has several digital and analog sensors/motors that you can control through the website.  There is a Redis database that allows me to publish and subscribe change events from my arduino or webpage.   Because I used socket.io realtime event library, you will notice that if you update it on one browser, it will update on all browsers, across the internet.
 
 There are essentially 2 node.js servers:
 * 1)  Home Server (home.js) - connected to my Arduino at my house with several sensors attached.
@@ -31,12 +31,17 @@ Redis is the middle man between the two node.js servers for communication becaus
 [Visit redistogo](http://redistogo.com/)  for a free account and don't forget to add the database information in credential.js. **
 
 
-##### ARDUINO PINS:
-
-* nPhotoresistor (A0) works
+##### ARDUINO MEGA PINS:
+* Photoresistor (A0) works
 * RGB (2,3,4) works but add lower resistor on red             
 * Piezo (7) works but crackily
 * LED1 (23) works                      
 * LED2 (22) works
 * LED3 (24) works
 * Button (25) works
+
+##### ARDUINO LEO PINS:
+* LCD Screen
+
+##### ARDUINO Dec. PINS:
+* RGB (9,10,11) works but add lower resistor on red 

@@ -45,6 +45,7 @@ var five = require('johnny-five'),
     myCredentials = require("./credentials.js"),
     boardLCD = new five.Board({ port: "COM5" }),
     boardMEGA = new five.Board({ port: "COM8" });
+    boardTMP = new five.Board({ port: "COM9" });
 
 clientSub = redis.createClient(myCredentials.myPort, myCredentials.myDB);
 clientSub.auth(myCredentials.myAuth);
@@ -389,4 +390,19 @@ boardLCD.on("ready", function() {
       p.cursor(1, 0).print("    :euro:      :euro:");
     }
   }, 1000);
+});
+
+
+
+boardTMP.on("ready", function() {
+  console.log("connected to Arduino TMP on COM9");
+  var ledTest = new five.Led.RGB({
+    pins: {
+      red: 9,
+      green: 10,
+      blue: 11
+    }, board: boardTMP
+  });
+        ledTest.on();
+        ledTest.color(myRGB);
 });
