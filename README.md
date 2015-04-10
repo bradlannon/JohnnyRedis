@@ -1,5 +1,5 @@
 # JohnnyRedis
- (Johnny-Five library + Redis)
+### (Johnny-Five library + Redis)
 
 My website (bradlannon.ca) is a combination of web technologies Node.js, Redis, HTML, and Bootstrap.  I'ved used the popular Johnny-Five (arduino-node.js library) and sync'ed it up with my Arduino MEGA. My Arduino has several digital and analog sensors/motors that you can control through the website.  There is a Redis database that allows me to publish and subscribe change events from my arduino or webpage.   Because I used socket.io realtime event library, you will notice that if you update it on one browser, it will update on all browsers, across the internet.
 
@@ -12,18 +12,19 @@ Redis is the middle man between the two node.js servers for communication becaus
 
 
 
-To start, first install the node package manager (npm).
+## To start, first install the node package manager (npm).
 
 
-In terminal or command line run: 
-*npm install
+##### In terminal or command line run: 
+* npm install
 
-You may have to install some global node modules using:
-*npm install (module name) -g.
+##### You may have to install some global node modules using:
+* npm install (module name) -g.
 
-To run online server:
-*gulp online
+##### To run online server:
+* gulp online
 
-To run home server:
-*gulp home
+##### To run home server:
+* gulp home
 
+**You also have to have a redis account.** [Visit redistogo](http://redistogo.com/) ** for a free account.  Don't forget to dd your database information in credential.js. **
