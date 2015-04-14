@@ -1,5 +1,5 @@
-//  Online webserver   
-//  
+//  Online webserver
+//
 //   ...hosted at localhost:8081 currently
 //
 //
@@ -7,7 +7,8 @@
 express = require('express.io');
 app = express().http().io();
 var redis = require('redis'),
-    myCredentials = require("./credentials.js");
+    myCredentials = require("./credentials.js"),
+    requestIp = require('request-ip'),
     myLed = 0,
     myLedOld = 0,
     myLcd=10,
@@ -25,7 +26,11 @@ var redis = require('redis'),
     myPot = 0,
     myPing = 0;
 
-
+var ipMiddleware = function(req,res,next) {
+    var clientIp = requestIp.getClientIp(req);
+    next();
+    console.log("New awesome client connected: " + clientIp)
+};
 // Client that listens to Redis and sends to website
 
 clientSub = redis.createClient(myCredentials.myPort, myCredentials.myDB);
