@@ -96,3 +96,56 @@ window.setInterval(function(){
 //    console.log('talking every 5000 ms as getValues')
     io.emit('getValues');
 }, 1000);
+
+
+
+
+
+$('#robotValue').change(
+    function(){
+    if (this.checked) {
+        console.log("writable by human");
+        enableButtons();
+    }
+});
+
+$("#interName").keyup(function(event){
+    if(event.keyCode == 13){
+        data = {myVal:  $(this).val()};
+        if (data.length > 2) {
+        enableButtons();
+            console.log("writable by human");
+        }
+    }
+});
+
+$("#inteName").focusout(function(event){
+    data = {myVal:  $(this).val()};
+    if (data.length > 2) {
+        enableButtons();
+        console.log("writable by human");
+    }
+});
+
+function enableButtons() {
+    console.log("enableButtons");
+    $('#rgbValue').prop('disabled', false);
+    $('#servoValue').prop('disabled', false);
+    $('#ledValue').prop('disabled', false);
+    $('#lcdValue').prop('disabled', false);
+    $('#piezoValue').prop('disabled', false);
+    $('#inteName').hide("slow");
+    $('#robotValue').hide("slow");
+
+};
+
+function disableButtons() {
+    console.log("disable buttons");
+    $('#rgbValue').prop('disabled', true);
+    $('#servoValue').prop('disabled', true);
+    $('#ledValue').prop('disabled', true);
+    $('#lcdValue').prop('disabled', true);
+    $('#piezoValue').prop('disabled', true);
+};
+
+window.onload = disableButtons;

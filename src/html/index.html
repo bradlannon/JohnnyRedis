@@ -192,43 +192,46 @@
                     <hr class="star-light">
                 </div>
             </div>
+
             <div class="row">
-                <div class="col-lg-4"><h3>Readable Values</h3>
+                <div class="col-lg-4 text-center">
+                    <h4>Readable Values</h4>
                     <div id='photoValue' class="inlineValue">Photoresistor: loading...</div><br>
                     <div id='potValue' class="inlineValue">Potentiometer: leading...</div><br>
                     <div id='pingValue' class="inlineValue">Ping Sensor: loading...</div><br>
                     <div id='pushValue' class="inlineValue">Push Button: loading...</div><br><br>
-
                 </div>
-                <div class="col-lg-4"><img src="img/arduino.png" data-1x="img/arduino.png" data-2x="img/arduino.png" class="hisrc img-responsive" /></div>
-                <div class="col-lg-4">
-                    <h3>Writable Values</h3>
-                    <label>Servo Motor Speed  <input type="range" id="servoValue" name="points" min="0" max="10"> </label><br>
-                    <label>LED Color Picker  <input type="color" id="rgbValue" name="favcolor"> </label><br>
-                    <label>Turn ON / Off LED  <input type="checkbox" id="ledValue" name="ledstatus"> </label><br>
-                    <label>LCD <input type="text" id="lcdValue" name="lcdstatus" class="form-control"> </label><br>
-                    <button class="btn btn-info btn-mini" id="piezoValue"><i class="icon-white icon-music"></i> Play Piezoelectric (at my house)</button>
 
+                <div class="col-lg-4">
+                    <img src="img/arduino.png" data-1x="img/arduino.png" data-2x="img/arduino.png" class="hisrc img-responsive center-block" />
+                </div>
+
+                <div class="col-lg-4 text-center">
+                    <h4>Writable Values</h4>
+
+                    <div id="writableValues">
+                        <input type="text" id="interName" name="interName" class="form-control" placeholder="Please enter your first and last name"><br>
+                        <label>I am not a robot <input type="checkbox" id="robotValue" name="robotstatus"> </label><br>
                     </div>
+                    <label>Servo Motor Speed  <input type="range" id="servoValue" name="points" disabled="disabled" min="0" max="10"> </label><br>
+                    <label>LED Color Picker  <input type="color" id="rgbValue" name="favcolor" disabled="disabled"> </label><br>
+                    <label>Turn ON / Off LED  <input type="checkbox" id="ledValue" name="ledstatus" disabled="disabled"> </label><br>
+                    <label>LCD <input type="text" id="lcdValue" name="lcdstatus" class="form-control" disabled="disabled"> </label><br>
+                    <button class="btn btn-info btn-mini" id="piezoValue"><i class="icon-white icon-music" disabled="disabled"></i> Play Piezoelectric (at my house)</button>
+                </div>
+
             </div>
             <div class="row">
-                <div class="col-lg-4"></div>
-                <div class="col-lg-4"></div>
-                <div class="col-lg-4">
+                <div class="col-lg-12 text-center"><br><br>
+                    <canvas id="myCanvas" width="300" height="300" style="border:1px solid #000000; background-color #000022"></canvas>
+                </div>
             </div>
-                <div class="row">
-                    <div class="col-lg-4 center-text"></div>
-                    <div class="col-lg-4 center-text"><br><br>
-                        <canvas id="myCanvas" width="200" height="100" style="border:1px solid #000000;"></canvas>
-                    </div>
-                    <div class="col-lg-4 center-text"></div>
-                </div>
-                <div class="row">
+        </div>
 
-                    <div class="col-lg-12 center-text"><br><br>
-                        <p>Currently I am teaching myself electronic engineering as I am a DIY-kind of guy at heart.  I love envisioning a product (such as my automatic cat toy) and scouring the web to figure out how it’s done.  Although I have had no formal training in electrical engineering, I can ‘get by’  with the open-source build Arduino prototyping development board. If you have never heard of Arduino, watch this documentary. It has changed my life and may just give you the same inspiration!</p>
-                    </div>
+                <div class="col-lg-12 text-center"><br><br>
+                    <p>Currently I am teaching myself electronic engineering as I am a DIY-kind of guy at heart.  I love envisioning a product (such as my automatic cat toy) and scouring the web to figure out how it’s done.  Although I have had no formal training in electrical engineering, I can ‘get by’  with the open-source build Arduino prototyping development board. If you have never heard of Arduino, watch this documentary. It has changed my life and may just give you the same inspiration!</p>
                 </div>
+
         </div>
     </section>
 
