@@ -29,7 +29,7 @@ var redis = require('redis'),
 var ipMiddleware = function(req,res,next) {
     var clientIp = requestIp.getClientIp(req);
     next();
-    console.log("New awesome client connected: " + clientIp)
+    console.log("New awesome client connected: " + clientIp);
 };
 // Client that listens to Redis and sends to website
 
@@ -65,7 +65,7 @@ clientSub.on("message", function (channel, message) {
 
 // Client that publishes from website to Redis
 
-clientPub = redis.createClient(myCredentials.myPort, myCredentials.myDB),
+clientPub = redis.createClient(myCredentials.myPort, myCredentials.myDB);
 clientPub.auth(myCredentials.myAuth);
 
 function writeToRedis() {

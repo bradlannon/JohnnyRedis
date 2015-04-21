@@ -61,12 +61,12 @@ hr.star-light:after {
 }
 
 hr.star-blue {
-    border-color: blue;
+    border-color: @brand-dblue;
 }
 
 hr.star-blue:after {
-    background-color: blue;
-    color: light-blue;
+    background-color: @brand-lblue;
+    color: @brand-dblue;
 }
 
 hr.star-primary {
@@ -223,11 +223,11 @@ section.contact {
 	}
 }
 
-#portfolio {
-    .portfolio-item {
+#tools {
+    .tools-item {
         margin: 0 0 15px;
         right: 0;
-        .portfolio-link {
+        .tools-link {
             display: block;
             position: relative;
             max-width: 400px;
@@ -270,8 +270,8 @@ section.contact {
 }
 
 @media(min-width:767px) {
-    #portfolio {
-        .portfolio-item {
+    #tools {
+        .tools-item {
             margin: 0 0 30px;
         }
     }
@@ -405,7 +405,7 @@ footer {
     }
 }
 
-.portfolio-modal {
+.tools-modal {
 	.modal-content {
 	    border-radius: 0;
 	    background-clip: border-box;
