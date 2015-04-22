@@ -8,7 +8,7 @@ io.on('displayInitialValues', function(data) {
     $('#potValue').html('Potentiometer: ' + data.pot);
     $('#pushValue').html('Push Button: ' + data.push);
     $('#pingValue').html('Ping Sensor: ' + data.ping);
-    $("#rgbValue").val(data.rgb);  
+   // $("#rgbValue").val(data.rgb);  
     $("#servoValue").val(data.servo);                              // good
     $("#textValue").val(data.mytext);
     $("#faceValue").val(data.face);
@@ -36,10 +36,10 @@ io.on('displayNewLED', function(myVal) {
     }
 });
 
-io.on('displayNewRGB', function(myVal) {
-    console.log('displayNewRGB: ' + myVal)
-    $("#rgbValue").val(myVal);                                  // good
-});
+// io.on('displayNewRGB', function(myVal) {
+//     console.log('displayNewRGB: ' + myVal);
+//     $("#rgbValue").val(myVal);                                  // good
+// });
 
 io.on('displayNewFace', function(myVal) {                       // good
     $("#faceValue").val(myVal);
@@ -89,10 +89,10 @@ $("#servoValue").change(function() {
     io.emit('servoValueChange', data);
 });
 
-$("#rgbValue").change(function() {
-    data = {myVal:  $(this).val()};                   // good
-    io.emit('rgbValueChange', data);
-});
+// $("#rgbValue").change(function() {
+//     data = {myVal:  $(this).val()};                   // good
+//     io.emit('rgbValueChange', data);
+// });
 
 $("#piezoValue").click(function() {
     //$('#result').empty();
@@ -145,7 +145,7 @@ function myNameValueChange() {
 }
 
 function enableButtons() {
-    $('#rgbValue').prop('disabled', false);
+  //  $('#rgbValue').prop('disabled', false);
     $('#servoValue').prop('disabled', false);
     $('#ledValue').prop('disabled', false);
     $('#textValue').prop('disabled', false);
@@ -161,7 +161,7 @@ function enableButtons() {
 }
 
 function disableButtons() {
-    $('#rgbValue').prop('disabled', true);
+   // $('#rgbValue').prop('disabled', true);
     $('#servoValue').prop('disabled', true);
     $('#ledValue').prop('disabled', true);
     $('#textValue').prop('disabled', true);

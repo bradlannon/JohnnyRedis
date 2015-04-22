@@ -31,16 +31,17 @@ gulp.task('home', function () {
   nodemon({ script: 'home.js',
             ext: 'html js',
             ignore: ['node_modules/**'] })
-  .on('change', ['lintHome'])
+
   .on('restart', function () {
       console.log('restarted Home Server!')
   })
 })
 
+
 gulp.task('online', function () {
   nodemon({ script: 'online.js',
             ext: 'html js less',
-            ignore: ['node_modules/**', 'Public/**'],
+            ignore: ['node_modules/**'],
             tasks: ['onlinejs','lantekajs','minify-html','less']
          })
   .on('restart', function () {

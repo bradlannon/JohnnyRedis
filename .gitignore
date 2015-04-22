@@ -1,5 +1,5 @@
-node_modules/
+node_modules
 credentials.js
 lantekaNodeKP.pem
-Public/
+Public
 npm-debug.log

@@ -24,8 +24,8 @@ var redis = require('redis'),
     myNameOld = "brad",
     myPiezo = 0,
     myPiezoOld = 0,
-    myRGBOld = '#FF0000',
-    myRGB = '#FF0000',
+    // myRGBOld = '#FF0000',
+    // myRGB = '#FF0000',
     myPush = 0,
     myPhoto = 0,
     myPot = 0,
@@ -68,10 +68,10 @@ clientSub.on("message", function (channel, message) {
 });
 
 function writeToRedis() {
-    if (myRGBOld != myRGB) {
-        clientPub.publish("rgbValue", myRGB);
-        console.log("written to redis rgbValue:" + myRGB);
-    }
+    // if (myRGBOld != myRGB) {
+    //     clientPub.publish("rgbValue", myRGB);
+    //     console.log("written to redis rgbValue:" + myRGB);
+    // }
 
     if (myLedOld != myLed) {
         clientPub.publish("ledValue", myLed);
@@ -104,7 +104,7 @@ function writeToRedis() {
     }
     myNameOld = myName;
     myFaceOld = myFace;
-    myRGBOld = myRGB;
+    // myRGBOld = myRGB;
     myLedOld = myLed;
     myServoOld = myServo;
     myPiezoOld = myPiezo;
@@ -125,10 +125,10 @@ app.io.route('textValueChange', function(req) {
     clientPub.publish("textValue", myText);          
 });
 
-app.io.route('rgbValueChange', function(req) {
-    myRGB = req.data.myVal;                                         // good
-    req.io.broadcast('displayNewRGB',req.data.myVal);
-});
+// app.io.route('rgbValueChange', function(req) {
+//     myRGB = req.data.myVal;                                         // good
+//     req.io.broadcast('displayNewRGB',myRGB);
+// });
 
 app.io.route('piezoValueChange', function(req) {
     myPiezo = 1;                                                   // good
@@ -136,23 +136,22 @@ app.io.route('piezoValueChange', function(req) {
 
 app.io.route('getName', function(req) {
     myName = req.data.myVal;
-    ipaddress = "ip"
-    clientPub.publish("nameValue", myName + "-ip:" + ipaddress);
+    clientPub.publish("nameValue", myName);
 });
 
-app.io.route('faceValueChanged', function(req) {
+app.io.route('faceValueChange', function(req) {
     myFace = req.data.myVal;
     req.io.broadcast('displayNewFace',myFace);                   // good
     clientPub.publish("faceValue", myFace);
 });
 
-app.io.route('nameValueChanged', function(req) {
+app.io.route('nameValueChange', function(req) {
     myName = req.data.myVal;
 });
 
 app.io.route('ledValueChange', function(req) {
     myLed = req.data.myVal;                                          //   good
-    req.io.broadcast('displayNewLEDStatus',myLed);
+    req.io.broadcast('displayNewLED',myLed);
 });
 
 app.io.route('getInitialValues', function(req) {  
@@ -162,7 +161,7 @@ app.io.route('getInitialValues', function(req) {
         ping: myPing,
         servo: myServo,
         push: myPush,                                        // good
-        rgb: myRGB,
+        // rgb: myRGB,
         led: myLed,
         motion: myMotion,
         face: myFace,
