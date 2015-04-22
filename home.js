@@ -57,7 +57,8 @@ clientSub.subscribe("ledValue");
 clientSub.subscribe("servoValue");
 clientSub.subscribe("piezoValue");
 clientSub.subscribe("faceValue");
-clientSub.subscribe("lcdValue");
+clientSub.subscribe("textValue");
+clientSub.subscribe("nameValue");
 
 clientSub.on("message", function (channel, message) {
      if (channel == 'rgbValue') {
@@ -71,14 +72,17 @@ clientSub.on("message", function (channel, message) {
           myServo = message;
       } else if (channel == 'faceValue') {
           console.log("Received faceValue:" + message);
-          myPiezo = message;
+          myFace = message;
       } else if (channel == 'piezoValue') {
           console.log("Received piezoValue:" + message);
           myPiezo = message;
-      } else if (channel == 'lcdValue') {
-          console.log("Received lcdValue:" + message);
-          myLcd = message;
-      }
+      } else if (channel == 'textValue') {
+          console.log("Received textValue:" + message);
+          myText = message;
+      } else if (channel == 'nameValue') {
+          console.log("Received nameValue:" + message);
+          myName = message;
+      } 
 });
 
 

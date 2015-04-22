@@ -8,7 +8,6 @@ express = require('express.io');
 app = express().http().io();
 var redis = require('redis'),
     myCredentials = require("./credentials.js"),
-    requestIp = require('request-ip'),
     myLed = 0,
     myLedOld = 0,
     myLcd=10,
@@ -17,9 +16,12 @@ var redis = require('redis'),
     myMotionOld = 0,
     myServo = 1,
     myServoOld = 1,
-    myText = "brad",
+    myText = "text",
+    myTextOld = "text",
     myFace = 10,
+    myFaceOld = 10,
     myName = "brad",
+    myNameOld = "brad",
     myPiezo = 0,
     myPiezoOld = 0,
     myRGBOld = '#FF0000',
@@ -29,12 +31,6 @@ var redis = require('redis'),
     myPot = 0,
     myPing = 0;
 
-// var ipMiddleware = function(req,res,next) {
-//     var clientIp = requestIp.getClientIp(req);
-//     next();
-//     console.log("New awesome client connected: " + clientIp);
-// };
-// Client that listens to Redis and sends to website
 clientPub = redis.createClient(myCredentials.myPort, myCredentials.myDB);
 clientPub.auth(myCredentials.myAuth);
 clientSub = redis.createClient(myCredentials.myPort, myCredentials.myDB);
@@ -47,6 +43,7 @@ clientSub.subscribe("pushValue");
 clientSub.subscribe("toggleValue");
 clientSub.subscribe("photoValue");
 clientSub.subscribe("potValue");
+clientSub.subscribe("pingValue");
 
 clientSub.on("message", function (channel, message) {
    if (channel == 'motionValue') {
@@ -61,6 +58,9 @@ clientSub.on("message", function (channel, message) {
     } else if (channel == 'photoValue') {
         myPhoto = message;
         console.log("photoValue received " + message);
+} else if (channel == 'pingValue') {
+        myPing = message;
+        console.log("pingValue received " + message);
     } else if (channel == 'potValue') {
         myPot = message;
         console.log("potValue received " + message);
@@ -69,99 +69,114 @@ clientSub.on("message", function (channel, message) {
 
 function writeToRedis() {
     if (myRGBOld != myRGB) {
-        clientPub.publish("myRGB", myRGB);
-        console.log("written to redis ledValues:" + myRGB);
+        clientPub.publish("rgbValue", myRGB);
+        console.log("written to redis rgbValue:" + myRGB);
     }
 
     if (myLedOld != myLed) {
-        clientPub.publish("myLed:", myLed);
+        clientPub.publish("ledValue", myLed);
         console.log("written to redis ledValue:" + myLed);
     }
 
     if (myServoOld != myServo) {
-        clientPub.publish("myServo", myServo);
+        clientPub.publish("servoValue", myServo);
         console.log("written to redis servoValue:" + myServo);
     }
 
     if (myPiezoOld != myPiezo) {
-        clientPub.publish("myPiezo", myPiezo);
+        clientPub.publish("piezoValue", myPiezo);
         console.log("written to redis piezoValue:" + myPiezo);
     }
 
-    if (myLcdOld != myLcd) {
-        clientPub.publish("myLcd", myLcd);
-        console.log("written to redis Lcd:" + myLcd);
+    if (myTextOld != myText) {
+        clientPub.publish("textValue", myText);
+        console.log("written to redis textValue:" + myText);
     }
 
+    if (myFaceOld != myFace) {
+        clientPub.publish("faceValue", myFace);
+        console.log("written to redis faceValue:" + myFace);
+    }
+
+    if (myNameOld != myName) {
+        clientPub.publish("nameValue", myName);
+        console.log("written to redis nameValue:" + myName);
+    }
+    myNameOld = myName;
+    myFaceOld = myFace;
     myRGBOld = myRGB;
     myLedOld = myLed;
     myServoOld = myServo;
     myPiezoOld = myPiezo;
-    myLcdOld = myLcd;
+    myTextOld = myText;
 }
 
 
 // Socket.io  sending and receiving from website
 
-app.io.route('changeMotor', function(req) {
+app.io.route('servoValueChange', function(req) {
     myServo = req.data.myVal;
-    req.io.broadcast('displayNewMotor',myServo);
+    req.io.broadcast('displayNewMotor',myServo);                   // good
 });
 
-app.io.route('changeLcdText', function(req) {
-    myLcd = req.data.myVal;
-    req.io.broadcast('displayLcdText',myLcd);
-    clientPub.publish("textValue", myText);
-    console.log("changed lcd:" + myLcd);
+app.io.route('textValueChange', function(req) {
+    myText = req.data.myVal;
+    req.io.broadcast('displayNewText',myText);                      // good
+    clientPub.publish("textValue", myText);          
 });
 
-app.io.route('changeLEDValues', function(req) {
-    myRGB = req.data.myVal;
-    req.io.broadcast('displayNewLED',req.data.myVal);
+app.io.route('rgbValueChange', function(req) {
+    myRGB = req.data.myVal;                                         // good
+    req.io.broadcast('displayNewRGB',req.data.myVal);
 });
 
-app.io.route('playSong', function(req) {
-    myPiezo = 1;
+app.io.route('piezoValueChange', function(req) {
+    myPiezo = 1;                                                   // good
 });
 
 app.io.route('getName', function(req) {
     myName = req.data.myVal;
-    console.log(myName);
-    clientPub.publish("nameValue", myName + "-ip");
+    ipaddress = "ip"
+    clientPub.publish("nameValue", myName + "-ip:" + ipaddress);
 });
 
-app.io.route('changeFace', function(req) {
+app.io.route('faceValueChanged', function(req) {
     myFace = req.data.myVal;
+    req.io.broadcast('displayNewFace',myFace);                   // good
     clientPub.publish("faceValue", myFace);
 });
 
-app.io.route('changeLEDStatus', function(req) {
-    myLed = req.data.myVal;
+app.io.route('nameValueChanged', function(req) {
+    myName = req.data.myVal;
+});
+
+app.io.route('ledValueChange', function(req) {
+    myLed = req.data.myVal;                                          //   good
     req.io.broadcast('displayNewLEDStatus',myLed);
 });
 
-app.io.route('getInitialValues', function(req) {  //this function only runs once
+app.io.route('getInitialValues', function(req) {  
     req.io.emit('displayInitialValues', {
         photo: myPhoto,
         pot: myPot,
         ping: myPing,
         servo: myServo,
-        push: myPush,
-        ledvalues: myRGB,
-        ledvalue: myLed,
+        push: myPush,                                        // good
+        rgb: myRGB,
+        led: myLed,
         motion: myMotion,
-        lcd: myLcd
+        face: myFace,
+        mytext: myText
     });
 });
 
-app.io.route('getValues', function(req) {
-    req.io.emit('displayReadOnlyData', {
+app.io.route('getReadOnlyValues', function(req) {
+    req.io.emit('displayReadOnlyValues', {
         photo: myPhoto,
-        pot: myPot,
+        pot: myPot,                                         // good
         ping: myPing,
         push: myPush,
         motion: myMotion,
-        lcd: myLcd
     });
 });
 
@@ -174,5 +189,5 @@ app.get('/', function(req, res) {
 });
 
 app.use(express.static(process.cwd() + '/Public'));
-console.log("Visit to localhost:8081 in your browser");
+    console.log("Visit to localhost:8081 in your browser");
 app.listen(8081);

@@ -40,7 +40,7 @@ gulp.task('home', function () {
 gulp.task('online', function () {
   nodemon({ script: 'online.js',
             ext: 'html js less',
-            ignore: ['node_modules/**'],
+            ignore: ['node_modules/**', 'Public/**'],
             tasks: ['onlinejs','lantekajs','minify-html','less']
          })
   .on('restart', function () {

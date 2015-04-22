@@ -2,3 +2,4 @@ node_modules/
 credentials.js
 lantekaNodeKP.pem
 Public/
+npm-debug.log
