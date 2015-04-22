@@ -17,6 +17,9 @@ var redis = require('redis'),
     myMotionOld = 0,
     myServo = 1,
     myServoOld = 1,
+    myText = "brad",
+    myFace = 10,
+    myName = "brad",
     myPiezo = 0,
     myPiezoOld = 0,
     myRGBOld = '#FF0000',
@@ -26,13 +29,14 @@ var redis = require('redis'),
     myPot = 0,
     myPing = 0;
 
-var ipMiddleware = function(req,res,next) {
-    var clientIp = requestIp.getClientIp(req);
-    next();
-    console.log("New awesome client connected: " + clientIp);
-};
+// var ipMiddleware = function(req,res,next) {
+//     var clientIp = requestIp.getClientIp(req);
+//     next();
+//     console.log("New awesome client connected: " + clientIp);
+// };
 // Client that listens to Redis and sends to website
-
+clientPub = redis.createClient(myCredentials.myPort, myCredentials.myDB);
+clientPub.auth(myCredentials.myAuth);
 clientSub = redis.createClient(myCredentials.myPort, myCredentials.myDB);
 clientSub.auth(myCredentials.myAuth, function() {
   console.log("Connected successfully to Redis");
@@ -62,11 +66,6 @@ clientSub.on("message", function (channel, message) {
         console.log("potValue received " + message);
     }
 });
-
-// Client that publishes from website to Redis
-
-clientPub = redis.createClient(myCredentials.myPort, myCredentials.myDB);
-clientPub.auth(myCredentials.myAuth);
 
 function writeToRedis() {
     if (myRGBOld != myRGB) {
@@ -109,10 +108,11 @@ app.io.route('changeMotor', function(req) {
     req.io.broadcast('displayNewMotor',myServo);
 });
 
-app.io.route('changeLcd', function(req) {
+app.io.route('changeLcdText', function(req) {
     myLcd = req.data.myVal;
-    req.io.broadcast('displayLcd',myLcd);
-    console.log("changed lcd");
+    req.io.broadcast('displayLcdText',myLcd);
+    clientPub.publish("textValue", myText);
+    console.log("changed lcd:" + myLcd);
 });
 
 app.io.route('changeLEDValues', function(req) {
@@ -122,6 +122,17 @@ app.io.route('changeLEDValues', function(req) {
 
 app.io.route('playSong', function(req) {
     myPiezo = 1;
+});
+
+app.io.route('getName', function(req) {
+    myName = req.data.myVal;
+    console.log(myName);
+    clientPub.publish("nameValue", myName + "-ip");
+});
+
+app.io.route('changeFace', function(req) {
+    myFace = req.data.myVal;
+    clientPub.publish("faceValue", myFace);
 });
 
 app.io.route('changeLEDStatus', function(req) {

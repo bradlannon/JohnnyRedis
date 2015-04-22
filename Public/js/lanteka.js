@@ -46,8 +46,8 @@ io.on('displayNewMotor', function(myVal) {
     $("#servoValue").val(myVal);
 });
 
-io.on('displayLcd', function(myVal) {
-    $("#lcdValue").val(myVal);
+io.on('displayLcdText', function(myVal) {
+    $("#lcdText").val(myVal);
 });
 
 // javascript events to send to socketio
@@ -63,17 +63,22 @@ $('#ledValue').change(
     }
 });
 
-$("#lcdValue").keyup(function(event){
+$("#lcdText").keyup(function(event){
     if(event.keyCode == 13){
         data = {myVal:  $(this).val()};
-        io.emit('changeLcd', data);
+        io.emit('changeLcdText', data);
     }
 });
 
-$("#lcdValue").focusout(function(event){
+$("#lcdText").focusout(function(event){
     data = {myVal:  $(this).val()};
     console.log("lcd is " + data.myVal);
-    io.emit('changeLcd', data);
+    io.emit('changeLcdText', data);
+});
+
+$("#lcdFace").change(function() {
+    data = {myVal:  $(this).val()};
+    io.emit('changeFace', data);
 });
 
 $("#servoValue").change(function() {
@@ -98,54 +103,75 @@ window.setInterval(function(){
 }, 1000);
 
 
-
-
-
-$('#robotValue').change(
+$('#webcamValue').change(
     function(){
-    if (this.checked) {
-        console.log("writable by human");
-        enableButtons();
+        if (this.checked) {
+           $('#myCanvas').show();
+
+        } else {
+        $('#myCanvas').hide();
     }
 });
 
-$("#interName").keyup(function(event){
-    if(event.keyCode == 13){
-        data = {myVal:  $(this).val()};
-        if (data.length > 2) {
-        enableButtons();
-            console.log("writable by human");
+
+$('#robotValue').change(function(){
+    if (this.checked) {
+        var nameVal = $('#nameValue').val();
+        if (nameVal.length >= 5) {
+            enableButtons();
+            console.log("ok to hide now");
         }
     }
 });
 
-$("#inteName").focusout(function(event){
-    data = {myVal:  $(this).val()};
-    if (data.length > 2) {
+$("#nameValue").keyup(function(event){
+    var robotValue = 0;
+    robValue = $('#robotValue').val();
+    console.log("keyup");
+    if(event.keyCode == 13){
+        console.log("keycode 13   enter?");
+        if ($("#nameValue").val().length >= 5 & robValue == 1) {
+            enableButtons();
+            console.log("ok to hide now");
+        }
+    }
+});
+
+$("#nameValue").focusout(function(event){
+    console.log("focus out");
+    var robValue = 0;
+    robotValue = $('#robotValue').val();
+    if ($("#nameValue").val().length >= 5 & robValue == 1) {
         enableButtons();
-        console.log("writable by human");
+        console.log("ok to hide now");
     }
 });
 
 function enableButtons() {
-    console.log("enableButtons");
     $('#rgbValue').prop('disabled', false);
     $('#servoValue').prop('disabled', false);
     $('#ledValue').prop('disabled', false);
-    $('#lcdValue').prop('disabled', false);
+    $('#textValue').prop('disabled', false);
     $('#piezoValue').prop('disabled', false);
-    $('#inteName').hide("slow");
-    $('#robotValue').hide("slow");
+    $('#webcamValue').prop('disabled', false);
+    $('#isHuman').removeClass('blur');
+    $('#confirmHuman').hide("slow");
+    $('#nameValue').hide("slow");
 
-};
+    data = {myVal:  $('#nameValue').val()};
+    io.emit('getName', data);
+
+}
 
 function disableButtons() {
-    console.log("disable buttons");
     $('#rgbValue').prop('disabled', true);
     $('#servoValue').prop('disabled', true);
     $('#ledValue').prop('disabled', true);
-    $('#lcdValue').prop('disabled', true);
+    $('#textValue').prop('disabled', true);
+    $('#faceValue').prop('disabled', true);
+    $('#webcamValue').prop('disabled', true);
     $('#piezoValue').prop('disabled', true);
-};
+    $('#myCanvas').hide("slow");
+}
 
 window.onload = disableButtons;

@@ -1,6 +1,6 @@
-//  NODE.JS HOME SERVER 
-//  
-//   
+//  NODE.JS HOME SERVER
+//
+//
 //
 //
 
@@ -14,18 +14,18 @@ var five = require('johnny-five'),
     pinLCD6 = 7,
     pinLCD7 = 10,
     pinPhotoresistor = "A0",        // works
-    pinPotentiometer = "A5", 
+    pinPotentiometer = "A5",
     pinButton =26,                 // works
     pinR = 2,                       // works but add lower resistor
     pinG = 3,                       // works
     pinB = 4,                       // works
     pinPing=25,
-    pinMotion = 13,                  
+    pinMotion = 13,
     pinPiezo = 7,                   // works but crackily
     pinServo1 = 9,
-    pinLedEyeL = 23,                // works                        
-    pinLedEyeR = 22,                // works 
-    pinLedWeb = 24,                 // works 
+    pinLedEyeL = 23,                // works
+    pinLedEyeR = 22,                // works
+    pinLedWeb = 24,                 // works
     toggleWeb = true,
     myPot = 0,
     myPhoto = 0,
@@ -56,6 +56,7 @@ clientSub.subscribe("rgbValue");
 clientSub.subscribe("ledValue");
 clientSub.subscribe("servoValue");
 clientSub.subscribe("piezoValue");
+clientSub.subscribe("faceValue");
 clientSub.subscribe("lcdValue");
 
 clientSub.on("message", function (channel, message) {
@@ -68,13 +69,16 @@ clientSub.on("message", function (channel, message) {
       } else if (channel == 'servoValue') {
           console.log("Received servoValue:" + message);
           myServo = message;
+      } else if (channel == 'faceValue') {
+          console.log("Received faceValue:" + message);
+          myPiezo = message;
       } else if (channel == 'piezoValue') {
           console.log("Received piezoValue:" + message);
           myPiezo = message;
       } else if (channel == 'lcdValue') {
           console.log("Received lcdValue:" + message);
           myLcd = message;
-      } 
+      }
 });
 
 
@@ -116,7 +120,7 @@ boardMEGA.on("ready", function() {
 
   button.on("down", function() {
     myPush = 1;
-    clientPub.publish('pushValue', '1' ); 
+    clientPub.publish('pushValue', '1' );
   });
 
 
@@ -128,13 +132,13 @@ boardMEGA.on("ready", function() {
      myPush = 2;
      if (toggleWeb == false) {
         toggleWeb = true;
-        clientPub.publish('toggleWeb', 'true' ); 
+        clientPub.publish('toggleWeb', 'true' );
         console.log("WEB ACTIVATED");
         ledWebActivated.on();
       }
       else {
         toggleWeb = false;
-        clientPub.publish('toggleWeb', 'false' ); 
+        clientPub.publish('toggleWeb', 'false' );
         console.log("WEB CONTROLS DISABLED");
         ledWebActivated.off();
       }
@@ -142,7 +146,7 @@ boardMEGA.on("ready", function() {
 
   button.on("up", function() {
     myPush = 0;
-    clientPub.publish('pushValue', '0' ); 
+    clientPub.publish('pushValue', '0' );
   });
 
   potentiometer.on("data", function() {
@@ -159,7 +163,7 @@ boardMEGA.on("ready", function() {
           beats: 1 / 4,
           tempo: 140
         });
-  } 
+  }
 
   setInterval(function(){
     if (myLed == 1) {
@@ -182,7 +186,7 @@ boardMEGA.on("ready", function() {
       } else if (myServo == 2) {
            // servo.cw(1);
       }
-   
+
       //servo.sweep();
 
     // if (myPush == 1 && myLed == 1) {
@@ -195,7 +199,7 @@ boardMEGA.on("ready", function() {
     //         led.stop();
     //         led.on();
     //       }
-            
+
     //       led.strobe(50);
     //   } else if (myPush == 3 & myLed == 1) {
     //       led.strobe(50);
@@ -204,17 +208,17 @@ boardMEGA.on("ready", function() {
     myPushOld = myPush;
   }, 1000);
 
-        
+
   setInterval(function(){
     if (myPot!=myPotOld) {
       console.log("myPot changed " + myPot);
-      clientPub.publish('potValue', myPot ); 
+      clientPub.publish('potValue', myPot );
     }
     myPot=myPotOld;
 
     if (myPhoto!=myPhotoOld) {
       console.log("myPhoto changed " + myPhoto);
-      clientPub.publish('photoValue', myPhoto ); 
+      clientPub.publish('photoValue', myPhoto );
     }
     myPhoto=myPhotoOld;
   }, 10000);  // change to something logical
