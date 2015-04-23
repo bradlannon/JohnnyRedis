@@ -3,7 +3,7 @@
 //   
 //
 //
-
+//var memwatch = require('memwatch');
 var five = require('johnny-five'),
     redis = require('redis'),
     pinLCD1 = 8,
@@ -38,14 +38,17 @@ var five = require('johnny-five'),
     myMotion = 0,
     myPingOld = 0,
     myMotionOld = 0,
-    myLcd = 4,
+    myFace = 4,
     myRGB = '#00FFDD',
     myPiezo = 1,
     myLed = 1,
+    myText = '',
     myCredentials = require("./credentials.js"),
-    boardLCD = new five.Board({ port: "COM5" }),
-    boardMEGA = new five.Board({ port: "COM8" });
+    boardLCD = new five.Board({ port: "COM11" }),
+    boardMEGA = new five.Board({ port: "COM12" });
     boardTMP = new five.Board({ port: "COM9" });
+
+//memwatch.on('leak', function(info) { console.log("leaks: "+ info) });
 
 clientSub = redis.createClient(myCredentials.myPort, myCredentials.myDB);
 clientSub.auth(myCredentials.myAuth);
@@ -56,7 +59,9 @@ clientSub.subscribe("rgbValue");
 clientSub.subscribe("ledValue");
 clientSub.subscribe("servoValue");
 clientSub.subscribe("piezoValue");
-clientSub.subscribe("lcdValue");
+clientSub.subscribe("faceValue");
+clientSub.subscribe("textValue");
+clientSub.subscribe("nameValue");
 
 clientSub.on("message", function (channel, message) {
      if (channel == 'rgbValue') {
@@ -71,9 +76,15 @@ clientSub.on("message", function (channel, message) {
       } else if (channel == 'piezoValue') {
           console.log("Received piezoValue:" + message);
           myPiezo = message;
-      } else if (channel == 'lcdValue') {
-          console.log("Received lcdValue:" + message);
-          myLcd = message;
+      } else if (channel == 'faceValue') {
+          console.log("Received faceValue:" + message);
+          myFace = message;
+      } else if (channel == 'textValue') {
+          console.log("Received textValue:" + message);
+          myText = message;
+      } else if (channel == 'nameValue') {
+          console.log("Received nameValue:" + message);
+          myName = message;
       } 
 });
 
@@ -155,9 +166,9 @@ boardMEGA.on("ready", function() {
 
   function playSong() {
         piezo.play({
-          song: "A B C D E F G G G G",
+          song: "A B C D E F G G G G - G F E D C B A A A - A B C D E F G G G G - G F E D C B A A A",
           beats: 1 / 4,
-          tempo: 140
+          tempo: 100
         });
   } 
 
@@ -205,20 +216,27 @@ boardMEGA.on("ready", function() {
   }, 1000);
 
         
-  setInterval(function(){
+try {
+     setInterval(function(){
     if (myPot!=myPotOld) {
-      console.log("myPot changed " + myPot);
+    //  console.log("myPot changed " + myPot);
       clientPub.publish('potValue', myPot ); 
     }
     myPot=myPotOld;
 
     if (myPhoto!=myPhotoOld) {
-      console.log("myPhoto changed " + myPhoto);
+   //   console.log("myPhoto changed " + myPhoto);
       clientPub.publish('photoValue', myPhoto ); 
     }
     myPhoto=myPhotoOld;
   }, 10000);  // change to something logical
+} catch(e) {
+    getDateTime();
+    console.error(e);
+}
 
+      
+ 
 });
 
 
@@ -230,166 +248,136 @@ boardLCD.on("ready", function() {
     pins: [pinLCD1, pinLCD2, pinLCD3, pinLCD4, pinLCD5, pinLCD6],
     backlight: pinLCD7,
   });
+  try {
+    setInterval(function(){
+      if (myFace==0) {
+        p.useChar("circle");
+        p.cursor(0, 0).print("   --      --");
+        p.cursor(1, 0).print("    :circle:      :circle:");
+      } else if (myFace==1) {
+        p.cursor(0, 0).print("   --      --");
+        p.cursor(1, 0).print("    -      -");
+      } else if (myFace==2) {
+        p.useChar("x");
+        p.cursor(0, 0).print("   --      --");
+        p.cursor(1, 0).print("    :x:      :x:");
+      } else if (myFace==3) {
+        p.useChar("sound");
+        p.cursor(0, 0).print("   --      --");
+        p.cursor(1, 0).print("    :sound:      :sound:");
+      } else if (myFace==4) {
+        p.useChar("heart");
+        p.cursor(0, 0).print("   --      --");
+        p.cursor(1, 0).print("    :heart:      :heart:");
+      } else if (myFace==5) {
+        p.useChar("cdot");
+        p.cursor(0, 0).print("   --      --");
+        p.cursor(1, 0).print("    :cdot:      :cdot:");
+      } else if (myFace==6) {
+        p.useChar("ball");
+        p.cursor(0, 0).print("   --      --");
+        p.cursor(1, 0).print("    :ball:      :ball:");
+      } else if (myFace==7) {
+        p.useChar("cent");
+        p.cursor(0, 0).print("   --      --");
+        p.cursor(1, 0).print("    :cent:      :cent:");
+      } else if (myFace==8) {
+        p.useChar("donut");
+        p.cursor(0, 0).print("   --      --");
+        p.cursor(1, 0).print("    :donut:      :donut:");
+      } else if (myFace==9) {
+        p.useChar("euro");
+        p.cursor(0, 0).print("   --      --");
+        p.cursor(1, 0).print("    :euro:      :euro:");
+      } else if (myFace==10) {
+        p.useChar("circle");
+        p.cursor(0, 0).print("   /        \\");
+        p.cursor(1, 0).print("    :circle:      :circle:");
+      } else if (myFace==11) {
+        p.cursor(0, 0).print("   /        \\");
+        p.cursor(1, 0).print("    -      -");
+      } else if (myFace==12) {
+        p.useChar("x");
+        p.cursor(0, 0).print("   /        \\");
+        p.cursor(1, 0).print("    :x:      :x:");
+      } else if (myFace==13) {
+        p.useChar("sound");
+        p.cursor(0, 0).print("   /        \\");
+        p.cursor(1, 0).print("    :sound:      :sound:");
+      } else if (myFace==14) {
+        p.useChar("heart");
+        p.cursor(0, 0).print("   /        \\");
+        p.cursor(1, 0).print("    :heart:      :heart:");
+      } else if (myFace==15) {
+        p.useChar("cdot");
+        p.cursor(0, 0).print("   /        \\");
+        p.cursor(1, 0).print("    :cdot:      :cdot:");
+      } else if (myFace==16) {
+        p.useChar("ball");
+        p.cursor(0, 0).print("   /        \\");
+        p.cursor(1, 0).print("    :ball:      :ball:");
+      } else if (myFace==17) {
+        p.useChar("cent");
+        p.cursor(0, 0).print("   /        \\");
+        p.cursor(1, 0).print("    :cent:      :cent:");
+      } else if (myFace==18) {
+        p.useChar("donut");
+        p.cursor(0, 0).print("   /        \\");
+        p.cursor(1, 0).print("    :donut:      :donut:");
+      } else if (myFace==19) {
+        p.useChar("euro");
+        p.cursor(0, 0).print("   --      --");
+        p.cursor(1, 0).print("    :euro:      :euro:");
+      } else if (myFace==20) {
+        p.useChar("circle");
+        p.cursor(0, 0).print("    \\      / ");
+        p.cursor(1, 0).print("    :circle:      :circle:");
+      } else if (myFace==21) {
+        p.cursor(0, 0).print("    \\      / ");
+        p.cursor(1, 0).print("    -      -");
+      } else if (myFace==22) {
+        p.useChar("x");
+        p.cursor(0, 0).print("    \\      / ");
+        p.cursor(1, 0).print("    :x:      :x:");
+      } else if (myFace==23) {
+        p.useChar("sound");
+        p.cursor(0, 0).print("    \\      / ");
+        p.cursor(1, 0).print("    :sound:      :sound:");
+      } else if (myFace==24) {
+        p.useChar("heart");
+        p.cursor(0, 0).print("    \\      / ");
+        p.cursor(1, 0).print("    :heart:      :heart:");
+      } else if (myFace==25) {
+        p.useChar("cdot");
+        p.cursor(0, 0).print("    \\      / ");
+        p.cursor(1, 0).print("    :cdot:      :cdot:");
+      } else if (myFace==26) {
+        p.useChar("ball");
+        p.cursor(0, 0).print("    \\      / ");
+        p.cursor(1, 0).print("    :ball:      :ball:");
+      } else if (myFace==27) {
+        p.useChar("cent");
+        p.cursor(0, 0).print("    \\      / ");
+        p.cursor(1, 0).print("    :cent:      :cent:");
+      } else if (myFace==28) {
+        p.useChar("donut");
+        p.cursor(0, 0).print("    \\      / ");
+        p.cursor(1, 0).print("    :donut:      :donut:");
+      } else if (myFace==29) {
+        p.useChar("euro");
+        p.cursor(0, 0).print("    \\      / ");
+        p.cursor(1, 0).print("    :euro:      :euro:");
+      } else if (myFace==30) {
+        p.useChar("circle");
+        p.cursor(0, 0).print("   --      --");
+        p.cursor(1, 0).print("    :circle:      :circle:");
+     }
+    }, 1000);
+  } catch(e) {
+      getDateTime();
+      console.error(e);
+  }
 
-  setInterval(function(){
-    if (myLcd==0) {
-      p.useChar("circle");
-      p.cursor(0, 0).print("   --      --");
-      p.cursor(1, 0).print("    :circle:      :circle:");
-    } else if (myLcd==1) {
-      p.cursor(0, 0).print("   --      --");
-      p.cursor(1, 0).print("    -      -");
-    } else if (myLcd==2) {
-      p.useChar("x");
-      p.cursor(0, 0).print("   --      --");
-      p.cursor(1, 0).print("    :x:      :x:");
-    } else if (myLcd==3) {
-      p.useChar("sound");
-      p.cursor(0, 0).print("   --      --");
-      p.cursor(1, 0).print("    :sound:      :sound:");
-    } else if (myLcd==4) {
-      p.useChar("heart");
-      p.cursor(0, 0).print("   --      --");
-      p.cursor(1, 0).print("    :heart:      :heart:");
-    } else if (myLcd==5) {
-      p.useChar("cdot");
-      p.cursor(0, 0).print("   --      --");
-      p.cursor(1, 0).print("    :cdot:      :cdot:");
-    } else if (myLcd==6) {
-      p.useChar("ball");
-      p.cursor(0, 0).print("   --      --");
-      p.cursor(1, 0).print("    :ball:      :ball:");
-    } else if (myLcd==7) {
-      p.useChar("cent");
-      p.cursor(0, 0).print("   --      --");
-      p.cursor(1, 0).print("    :cent:      :cent:");
-    } else if (myLcd==8) {
-      p.useChar("donut");
-      p.cursor(0, 0).print("   --      --");
-      p.cursor(1, 0).print("    :donut:      :donut:");
-    } else if (myLcd==9) {
-      p.useChar("euro");
-      p.cursor(0, 0).print("   --      --");
-      p.cursor(1, 0).print("    :euro:      :euro:");
-    } else if (myLcd==10) {
-      p.useChar("circle");
-      p.cursor(0, 0).print("   /        \\");
-      p.cursor(1, 0).print("    :circle:      :circle:");
-    } else if (myLcd==11) {
-      p.cursor(0, 0).print("   /        \\");
-      p.cursor(1, 0).print("    -      -");
-    } else if (myLcd==12) {
-      p.useChar("x");
-      p.cursor(0, 0).print("   /        \\");
-      p.cursor(1, 0).print("    :x:      :x:");
-    } else if (myLcd==13) {
-      p.useChar("sound");
-      p.cursor(0, 0).print("   /        \\");
-      p.cursor(1, 0).print("    :sound:      :sound:");
-    } else if (myLcd==14) {
-      p.useChar("heart");
-      p.cursor(0, 0).print("   /        \\");
-      p.cursor(1, 0).print("    :heart:      :heart:");
-    } else if (myLcd==15) {
-      p.useChar("cdot");
-      p.cursor(0, 0).print("   /        \\");
-      p.cursor(1, 0).print("    :cdot:      :cdot:");
-    } else if (myLcd==16) {
-      p.useChar("ball");
-      p.cursor(0, 0).print("   /        \\");
-      p.cursor(1, 0).print("    :ball:      :ball:");
-    } else if (myLcd==17) {
-      p.useChar("cent");
-      p.cursor(0, 0).print("   /        \\");
-      p.cursor(1, 0).print("    :cent:      :cent:");
-    } else if (myLcd==18) {
-      p.useChar("donut");
-      p.cursor(0, 0).print("   /        \\");
-      p.cursor(1, 0).print("    :donut:      :donut:");
-    } else if (myLcd==19) {
-      p.useChar("euro");
-      p.cursor(0, 0).print("   --      --");
-      p.cursor(1, 0).print("    :euro:      :euro:");
-    } else if (myLcd==20) {
-      p.useChar("circle");
-      p.cursor(0, 0).print("    \\      / ");
-      p.cursor(1, 0).print("    :circle:      :circle:");
-    } else if (myLcd==21) {
-      p.cursor(0, 0).print("    \\      / ");
-      p.cursor(1, 0).print("    -      -");
-    } else if (myLcd==22) {
-      p.useChar("x");
-      p.cursor(0, 0).print("    \\      / ");
-      p.cursor(1, 0).print("    :x:      :x:");
-    } else if (myLcd==23) {
-      p.useChar("sound");
-      p.cursor(0, 0).print("    \\      / ");
-      p.cursor(1, 0).print("    :sound:      :sound:");
-    } else if (myLcd==24) {
-      p.useChar("heart");
-      p.cursor(0, 0).print("    \\      / ");
-      p.cursor(1, 0).print("    :heart:      :heart:");
-    } else if (myLcd==25) {
-      p.useChar("cdot");
-      p.cursor(0, 0).print("    \\      / ");
-      p.cursor(1, 0).print("    :cdot:      :cdot:");
-    } else if (myLcd==26) {
-      p.useChar("ball");
-      p.cursor(0, 0).print("    \\      / ");
-      p.cursor(1, 0).print("    :ball:      :ball:");
-    } else if (myLcd==27) {
-      p.useChar("cent");
-      p.cursor(0, 0).print("    \\      / ");
-      p.cursor(1, 0).print("    :cent:      :cent:");
-    } else if (myLcd==28) {
-      p.useChar("donut");
-      p.cursor(0, 0).print("    \\      / ");
-      p.cursor(1, 0).print("    :donut:      :donut:");
-    } else if (myLcd==29) {
-      p.useChar("euro");
-      p.cursor(0, 0).print("    \\      / ");
-      p.cursor(1, 0).print("    :euro:      :euro:");
-    } else if (myLcd==30) {
-      p.useChar("circle");
-      p.cursor(0, 0).print("   --      --");
-      p.cursor(1, 0).print("    :circle:      :circle:");
-    } else if (myLcd==31) {
-      p.cursor(0, 0).print("   --      --");
-      p.cursor(1, 0).print("    -      -");
-    } else if (myLcd==32) {
-      p.useChar("x");
-      p.cursor(0, 0).print("   --      --");
-      p.cursor(1, 0).print("    :x:      :x:");
-    } else if (myLcd=33) {
-      p.useChar("sound");
-      p.cursor(0, 0).print("   --      --");
-      p.cursor(1, 0).print("    :sound:      :sound:");
-    } else if (myLcd==34) {
-      p.useChar("heart");
-      p.cursor(0, 0).print("   --      --");
-      p.cursor(1, 0).print("    :heart:      :heart:");
-    } else if (myLcd==35) {
-      p.useChar("cdot");
-      p.cursor(0, 0).print("   --      --");
-      p.cursor(1, 0).print("    :cdot:      :cdot:");
-    } else if (myLcd==36) {
-      p.useChar("ball");
-      p.cursor(0, 0).print("   --      --");
-      p.cursor(1, 0).print("    :ball:      :ball:");
-    } else if (myLcd==37) {
-      p.useChar("cent");
-      p.cursor(0, 0).print("   --      --");
-      p.cursor(1, 0).print("    :cent:      :cent:");
-    } else if (myLcd==38) {
-      p.useChar("donut");
-      p.cursor(0, 0).print("   --      --");
-      p.cursor(1, 0).print("    :donut:      :donut:");
-    } else if (myLcd==39) {
-      p.useChar("euro");
-      p.cursor(0, 0).print("   --      --");
-      p.cursor(1, 0).print("    :euro:      :euro:");
-    }
-  }, 1000);
 });
 
 
@@ -406,3 +394,29 @@ boardTMP.on("ready", function() {
         ledTest.on();
         ledTest.color(myRGB);
 });
+
+
+function getDateTime() {
+
+    var date = new Date();
+
+    var hour = date.getHours();
+    hour = (hour < 10 ? "0" : "") + hour;
+
+    var min  = date.getMinutes();
+    min = (min < 10 ? "0" : "") + min;
+
+    var sec  = date.getSeconds();
+    sec = (sec < 10 ? "0" : "") + sec;
+
+    var year = date.getFullYear();
+
+    var month = date.getMonth() + 1;
+    month = (month < 10 ? "0" : "") + month;
+
+    var day  = date.getDate();
+    day = (day < 10 ? "0" : "") + day;
+
+    return year + ":" + month + ":" + day + ":" + hour + ":" + min + ":" + sec;
+
+}
