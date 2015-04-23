@@ -1,0 +1,51 @@
+ID Selectors
+------------
+photoValue
+potValue
+pingValue
+pushValue
+
+servoValue
+rgbValue
+ledValue
+textValue
+piezoValue
+faceValue
+
+webcamValue
+nameValue
+robotValue
+
+
+
+
+Redis data
+------------
+motionValue
+pushValue
+toggleValue
+photoValue
+potValue
+--------
+rgbValue
+ledValue
+servoValue
+piezoValue
+textValue
+faceValue
+nameValue
+
+toggleWeb
+
+
+
+
+
+
+
+git add *
+git commit -m "Commit message"
+git push origin master
+git status
+
+git checkout "filename"
