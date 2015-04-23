@@ -90,7 +90,6 @@
         </div>
     </header>
 
-
     <section class="about" id="about">
         <div class="container">
             <div class="row">
@@ -101,14 +100,15 @@
             </div>
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <p>As an experienced and versatile IT Specialist for the last 6 years working at Darose Control Systems Ltd, I’ve acquired a wealth of technical skills within the IT sector, with extensive technical support, network administration, software development and database management. During this time I have worked with several multi-million dollar corporate clients around the world, including those in the Dairy and Seafood industry.  I also have experience working with Windows, MacOSx and many Linux distros. </p>
-                    <p>In my spare time, when I'm not enjoying the outdoors, you can usually find me doing many of my favorite hobbies. These include tinkering with electronics,developing websites, and learning new things. I really enjoy developing software and lately I've really taken a liking to node.js and what is has to offer in the web world.   My weapons of choice are Photoshop and Inkscape for creating layouts, then Sublime Text to produce clean semantic HTML, CSS, and Javascript.  In the past I’ve also used Flash for animations and sometimes for full Flash sites. My CMS of choice is WordPress (php) although before I learned about node, I did enjoy creating websites using the Django Framework (Python).</p>
+                    <p>As an experienced and versatile IT Specialist for the last 6 years working at Darose Control Systems Ltd, I’ve acquired a wealth of technical skills within the IT sector, with extensive technical support, network administration, software development and database management. During this time I have worked with several multi-million dollar corporate clients around the world, including those in the Dairy, Seafood, and lumber industry. </p>
+                    <p>In my spare time, when I'm not enjoying the outdoors, you can usually find me doing many of my favorite hobbies. These include tinkering with electronics, developing websites, and playing music. I really enjoy developing software and in the past year I've really taken a liking to node.js and what is has to offer in the software development world.   My weapons of choice are Photoshop and Inkscape for drawing layouts, then Sublime Text to produce clean semantic HTML, CSS, and Javascript.  Generally I prefer the development side of things, however I do like to experiment with new and exciting web layouts. In the past I’ve also used Flash for animations and sometimes for full Flash sites. My CMS of choice is WordPress (coded in php) although before I learned about Node.js (and Express.js), I did enjoy creating websites using the Django Framework (Python). This really helped me get a grasp on the Model-View-Controller software architectural pattern that's similarly used in many different frameworks like Express.js.</p>
+                    <p>This website was created with most of my interests in mind. For starters, the site has a clean layout and will adapt to different screen sizes whether it be a phone, tablet or desktop.  Next is the web server that I have written in Node.js.  It is realtime meaning that if, for example, you click the color picker below, and choose a new color, everyone else who is currently viewing the page (across the world) will see the color immediately change as well.  The reason why I did this was I wanted it to be the interface (controller) for an Arduino microcontroller that I have set up at my home in Halifax, Nova Scotia.  An arduino (pictured below) is an electronic development board that you can plug sensors and motors into and control them through code.  </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Portfolio Grid Section -->
+    <!-- Tools Grid Section -->
 
     <section id="tools">
         <div class="container">
@@ -210,7 +210,7 @@
                     <h4>Writable Values</h4>
 
                     <div id="confirmHuman">
-                        <input type="text" id="nameValue" name="nameValue" class="form-control" placeholder="Please enter your first and last name" size="35"><br>
+                        <input type="text" id="nameValue" name="nameValue" class="form-control" placeholder="Please enter your first and last name to control the arduino." size="35"><br>
                         <label>I am not a robot <input type="checkbox" id="robotValue" name="robotstatus"> </label><p>
                     </div>
                     <div id="isHuman" class="blur">
@@ -226,7 +226,10 @@
                           <option>10</option><option>11</option><option>12</option>
                           <option>13</option><option>14</option><option>15</option>
                           <option>16</option><option>17</option><option>18</option>
-                          <option>19</option><option>20</option></select>
+                          <option>19</option><option>20</option><option>31</option>
+                          <option>32</option><option>33</option><option>34</option>
+                          <option>35</option><option>36</option><option>37</option>
+                          <option>38</option><option>39</option></select>
                         </label>
                         <br><label>Turn ON Webcam  <input type="checkbox" id="webcamValue"> </label><br>
                         </div>
@@ -242,7 +245,8 @@
             </div>
 
                 <div class="col-lg-12 text-center"><br><br>
-                    <p>Currently I am teaching myself electronic engineering as I am a DIY-kind of guy at heart.  I love envisioning a product (such as my automatic cat toy) and scouring the web to figure out how it’s done.  Although I have had no formal training in electrical engineering, I can ‘get by’  with the open-source build Arduino prototyping development board. If you have never heard of Arduino, watch this documentary. It has changed my life and may just give you the same inspiration!</p>
+                    <p>Please enter your first and last name above if you wish to control the Arduino I have connected in my home.  You will also have to click the checkbox to verify you are not a bot.  Once you do this, you will have access to my LCD display, Motors, multiple RGB LEDs, and even my webcam.    </p>
+                    <p>If you do not wish to gain access to my Arduino, then you can still just view live (read-only) data coming from the Arduino. However, if you are viewing this site on your mobile device and are not connected to a local area network,  it is very possible that you could incure data charges from your service provider as information on this site is constantly being updated and downloaded to your phone (no different then Facebook really).  Thanks and enjoy! </p>
                 </div>
 
     </section>
@@ -293,7 +297,7 @@
                         <div id="success"></div>
                         <div class="row">
                             <div class="form-group col-xs-12">
-                                <button type="submit" class="btn btn-success btn-lg">Send</button>
+                                <button type="submit" class="btn btn-success btn-lg" id="sendEmail">Send</button>
                             </div>
                         </div>
                     </form>

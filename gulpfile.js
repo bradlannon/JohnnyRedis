@@ -50,20 +50,20 @@ gulp.task('online', function () {
 })
 
 gulp.task('debugonline', function() {
-  // gulp.src([])
-  //   .pipe(nodeInspector({
-  //     debugPort: 8082,
-  //     webHost: '0.0.0.0',
-  //     webPort: 8081,
-  //     saveLiveEdit: false,
-  //     preload: true,
-  //     inject: true,
-  //     hidden: [],
-  //     stackTraceLimit: 50,
-  //     sslKey: '',
-  //     sslCert: ''
-  //   }));
-  //
+  gulp.src([])
+    .pipe(nodeInspector({
+      debugPort: 8082,
+      webHost: '0.0.0.0',
+      webPort: 8081,
+      saveLiveEdit: false,
+      preload: true,
+      inject: true,
+      hidden: [],
+      stackTraceLimit: 50,
+      sslKey: '',
+      sslCert: ''
+    }));
+
   gulp.src([])
     .pipe(nodeInspector());
 });

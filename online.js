@@ -8,6 +8,7 @@ express = require('express.io');
 app = express().http().io();
 var redis = require('redis'),
     myCredentials = require("./credentials.js"),
+    nodemailer = require('nodemailer'),
     myLed = 0,
     myLedOld = 0,
     myLcd=10,
@@ -24,12 +25,16 @@ var redis = require('redis'),
     myNameOld = "brad",
     myPiezo = 0,
     myPiezoOld = 0,
-    // myRGBOld = '#FF0000',
-    // myRGB = '#FF0000',
+    myRGBOld = '#FF0000',
+    myRGB = '#FF0000',
     myPush = 0,
     myPhoto = 0,
     myPot = 0,
-    myPing = 0;
+    myPing = 0,
+    senderName = '',
+    senderEmail = '',
+    senderPhone = '',
+    senderMessage = '';
 
 clientPub = redis.createClient(myCredentials.myPort, myCredentials.myDB);
 clientPub.auth(myCredentials.myAuth);
@@ -48,30 +53,30 @@ clientSub.subscribe("pingValue");
 clientSub.on("message", function (channel, message) {
    if (channel == 'motionValue') {
         myMotion = message;
-        console.log("motionValue received " + message);
+      //  console.log("motionValue received " + message);
     } else if (channel == 'pushValue') {
         myPush = message;
-        console.log("pushValue received " + message);
+      //  console.log("pushValue received " + message);
     } else if (channel == 'toggleValue') {
         myToggle = message;
-        console.log("toggleValue received " + message);
+      //  console.log("toggleValue received " + message);
     } else if (channel == 'photoValue') {
         myPhoto = message;
-        console.log("photoValue received " + message);
+      //  console.log("photoValue received " + message);
 } else if (channel == 'pingValue') {
         myPing = message;
-        console.log("pingValue received " + message);
+     //   console.log("pingValue received " + message);
     } else if (channel == 'potValue') {
         myPot = message;
-        console.log("potValue received " + message);
+     //   console.log("potValue received " + message);
     }
 });
 
 function writeToRedis() {
-    // if (myRGBOld != myRGB) {
-    //     clientPub.publish("rgbValue", myRGB);
-    //     console.log("written to redis rgbValue:" + myRGB);
-    // }
+     if (myRGBOld != myRGB) {
+         clientPub.publish("rgbValue", myRGB);
+         console.log("written to redis rgbValue:" + myRGB);
+     }
 
     if (myLedOld != myLed) {
         clientPub.publish("ledValue", myLed);
@@ -104,13 +109,12 @@ function writeToRedis() {
     }
     myNameOld = myName;
     myFaceOld = myFace;
-    // myRGBOld = myRGB;
+    myRGBOld = myRGB;
     myLedOld = myLed;
     myServoOld = myServo;
     myPiezoOld = myPiezo;
     myTextOld = myText;
 }
-
 
 // Socket.io  sending and receiving from website
 
@@ -122,13 +126,15 @@ app.io.route('servoValueChange', function(req) {
 app.io.route('textValueChange', function(req) {
     myText = req.data.myVal;
     req.io.broadcast('displayNewText',myText);                      // good
-    clientPub.publish("textValue", myText);          
+    clientPub.publish("textValue", myText);
 });
 
-// app.io.route('rgbValueChange', function(req) {
-//     myRGB = req.data.myVal;                                         // good
-//     req.io.broadcast('displayNewRGB',myRGB);
-// });
+ app.io.route('rgbValueChange', function(req) {
+     myRGB = req.data.myVal;
+     console.log("rgbValueChange is " + myRGB);
+     clientPub.publish("rgbValue", myRGB);                                       // good
+     req.io.broadcast('displayNewRGB',myRGB);
+ });
 
 app.io.route('piezoValueChange', function(req) {
     myPiezo = 1;                                                   // good
@@ -154,14 +160,14 @@ app.io.route('ledValueChange', function(req) {
     req.io.broadcast('displayNewLED',myLed);
 });
 
-app.io.route('getInitialValues', function(req) {  
+app.io.route('getInitialValues', function(req) {
     req.io.emit('displayInitialValues', {
         photo: myPhoto,
         pot: myPot,
         ping: myPing,
         servo: myServo,
         push: myPush,                                        // good
-        // rgb: myRGB,
+        rgb: myRGB,
         led: myLed,
         motion: myMotion,
         face: myFace,
@@ -190,3 +196,39 @@ app.get('/', function(req, res) {
 app.use(express.static(process.cwd() + '/Public'));
     console.log("Visit to localhost:8081 in your browser");
 app.listen(8081);
+
+// create reusable transporter object using SMTP transport
+var transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: myCredentials.myGmail,
+        pass: myCredentials.myPass
+    }
+});
+
+app.io.route('getName', function(req) {
+    senderName = req.data.senderName;
+    senderEmail = req.data.senderEmail;
+    senderPhone = req.data.senderPhone;
+    senderMessage = req.data.senderMessage;
+    sendMail();
+});
+
+var mailOptions = { // setup e-mail data with unicode symbols
+    from: senderName + '✔ <' + senderEmail + '>',
+    to: myCredentials.myEmail,
+    subject: 'Email from Website ✔',
+    text: senderMessage,
+    html: senderMessage
+};
+
+// send mail with defined transport object
+var sendMail = function() {
+    transporter.sendMail(mailOptions, function(error, info){
+        if(error){
+            console.log(error);
+        }else{
+            console.log('Message sent: ' + info.response);
+        }
+    });
+};
