@@ -116,7 +116,7 @@ gulp.task('minify-html', function() {
         console.log("minify-html");
 });
 
-gulp.task('less', ['less:freelancer', 'less:mixins','less:variables']);
+gulp.task('less', ['less:freelancer', 'less:mixins','less:variables', 'less:animations']);
 
 gulp.task('less:freelancer', function() {
   return gulp.src('./src/less/freelancer.less')
@@ -133,6 +133,13 @@ gulp.task('less:variables', function() {
     .pipe(less({ paths: [path.join(__dirname, 'less', 'includes')] }))
     .pipe(gulp.dest('./Public/css'));
 });
+
+gulp.task('less:animations', function() {
+  return gulp.src('./src/less/animations.less')
+    .pipe(less({ paths: [path.join(__dirname, 'less', 'includes')] }))
+    .pipe(gulp.dest('./Public/css'));
+});
+
 
 
 // JS concat, strip debugging and minify
