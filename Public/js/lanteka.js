@@ -1,3 +1,5 @@
+
+
 var data = {
     title: 'Welcome to the Node',
   title2: 'still works',
@@ -244,10 +246,23 @@ function disableButtons() {
     $('#webcamValue').prop('disabled', true);
     $('#piezoValue').prop('disabled', true);
     $('#myCanvas').hide("slow");
+    $('#robotValue').prop('disabled', true);
+    $('#name').prop('disabled', true);
+    $('#email').prop('disabled', true);
+    $('#phone').prop('disabled', true);
+    $('#nameValue').prop('disabled', true);
+    $('#message').prop('disabled', true);
+    setTimeout(function() {
+        $('#robotValue').prop('disabled', false);
+        $('#nameValue').prop('disabled', false);
+        $('#name').prop('disabled', false);
+        $('#email').prop('disabled', false);
+        $('#phone').prop('disabled', false);
+        $('#message').prop('disabled', false);
+    }, 5000);
 }
 
 window.onload = disableButtons;
-
 
   var $elems = $('.animateblock');
   var winheight = $(window).height();
