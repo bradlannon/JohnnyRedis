@@ -93,7 +93,7 @@ clientSub.on("message", function (channel, message) {
 
 
 boardMEGA.on("ready", function() {
-  console.log("connected to Arduino MEGA on COM8");
+  console.log("connected to Arduino MEGA on COM12");
   var led = new five.Led.RGB({
     pins: {
       red: pinR,
@@ -243,7 +243,7 @@ try {
 
 
 boardLCD.on("ready", function() {
-  console.log("connected to Arduino (LCD) on COM5");
+  console.log("connected to Arduino (LCD) on COM11");
 
   var p = new five.LCD({
     pins: [pinLCD1, pinLCD2, pinLCD3, pinLCD4, pinLCD5, pinLCD6],
