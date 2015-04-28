@@ -51,24 +51,24 @@ clientSub.subscribe("potValue");
 clientSub.subscribe("pingValue");
 
 clientSub.on("message", function (channel, message) {
-   if (channel == 'motionValue') {
+    if (channel == 'motionValue') {
         myMotion = message;
-      //  console.log("motionValue received " + message);
+        app.io.broadcast('displayMotionValue',myMotion);
     } else if (channel == 'pushValue') {
         myPush = message;
-      //  console.log("pushValue received " + message);
+        app.io.broadcast('displayPushValue',myPush);
     } else if (channel == 'toggleValue') {
         myToggle = message;
-      //  console.log("toggleValue received " + message);
+        app.io.broadcast('displayToggleValue',myPush);
     } else if (channel == 'photoValue') {
         myPhoto = message;
-      //  console.log("photoValue received " + message);
-} else if (channel == 'pingValue') {
+        app.io.broadcast('displayPhotoValue',myPhoto);
+    } else if (channel == 'pingValue') {
         myPing = message;
-     //   console.log("pingValue received " + message);
+       app.io.broadcast('displayPingValue',myPing);
     } else if (channel == 'potValue') {
         myPot = message;
-     //   console.log("potValue received " + message);
+        app.io.broadcast('displayPotValue',myPot);
     }
 });
 
@@ -117,6 +117,21 @@ function writeToRedis() {
 }
 
 // Socket.io  sending and receiving from website
+app.io.route('getInitialValues', function(req) {
+    req.io.emit('displayInitialValues', {
+        photo: myPhoto,
+        pot: myPot,
+        ping: myPing,
+        servo: myServo,
+        push: myPush,                                        // good
+        rgb: myRGB,
+        led: myLed,
+        motion: myMotion,
+        face: myFace,
+        mytext: myText
+    });
+});
+
 
 app.io.route('servoValueChange', function(req) {
     myServo = req.data.myVal;
@@ -160,20 +175,7 @@ app.io.route('ledValueChange', function(req) {
     req.io.broadcast('displayNewLED',myLed);
 });
 
-app.io.route('getInitialValues', function(req) {
-    req.io.emit('displayInitialValues', {
-        photo: myPhoto,
-        pot: myPot,
-        ping: myPing,
-        servo: myServo,
-        push: myPush,                                        // good
-        rgb: myRGB,
-        led: myLed,
-        motion: myMotion,
-        face: myFace,
-        mytext: myText
-    });
-});
+
 
 app.io.route('getReadOnlyValues', function(req) {
     req.io.emit('displayReadOnlyValues', {
@@ -206,12 +208,12 @@ var transporter = nodemailer.createTransport({
     }
 });
 
-app.io.route('getName', function(req) {
+app.io.route('sendEmail', function(req) {
     senderName = req.data.senderName;
     senderEmail = req.data.senderEmail;
     senderPhone = req.data.senderPhone;
     senderMessage = req.data.senderMessage;
-    sendMail();
+   // sendMail();
 });
 
 var mailOptions = { // setup e-mail data with unicode symbols
@@ -223,12 +225,12 @@ var mailOptions = { // setup e-mail data with unicode symbols
 };
 
 // send mail with defined transport object
-var sendMail = function() {
-    transporter.sendMail(mailOptions, function(error, info){
-        if(error){
-            console.log(error);
-        }else{
-            console.log('Message sent: ' + info.response);
-        }
-    });
-};
+function sendMail() {
+     transporter.sendMail(mailOptions, function(error, info){
+         if(error){
+             console.log(error);
+         }else{
+             console.log('Message sent: ' + info.response);
+         }
+     });
+}
