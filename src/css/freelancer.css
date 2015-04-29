@@ -85,8 +85,8 @@ hr.star-primary:after {
   width: 300px;
   height: 300px;
 }
-#nameValue {
-  width: 60%;
+#myWritable2 select {
+  width: 300px;
 }
 header {
   text-align: center;

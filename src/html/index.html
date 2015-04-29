@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,10 +9,6 @@
     <meta name="author" content="">
 
     <title>Brad Lannon - Designer & Developer</title>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/rivets/0.8.1/rivets.bundled.min.js"></script>
-
-    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 
     <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -185,7 +180,7 @@
         </div>
     </section>
 
-    <div class="animateblock">
+
     <!-- Arduino  Section -->
     <section class="success" id="arduino">
         <div class="container">
@@ -217,10 +212,13 @@
                 <div class="col-lg-4 text-center" id="myWritable">
                     <h4>Writable Values</h4>
 
-                    <div id="confirmHuman center-block">
-                        <input type="text" id="nameValue" name="nameValue" class="form-control" placeholder="Please enter your first and last name to control the arduino." size="35"><br><input type="checkbox" id="dontcheck1" class="hideme"><input type="checkbox" id="dontcheck2" class="hideme">
+                    <div id="confirmHuman" class="center-block">
+                        <label><input type="text" id="nameValue" class="form-control" placeholder="Please enter your name to take control!" size="35"></label><br>
+                        <input type="checkbox" id="dontcheck1" class="hideme">
+                        <input type="checkbox" id="dontcheck2" class="hideme">
                         <label>I am not a robot <input type="checkbox" id="robotValue" name="robotstatus"> </label>
-                        <input type="checkbox" id="dontcheck3" class="hideme"><input type="checkbox" id="dontcheck4" class="hideme">
+                        <input type="checkbox" id="dontcheck3" class="hideme">
+                        <input type="checkbox" id="dontcheck4" class="hideme">
                     </div>
                     <div id="isHuman" class="blur">
                         <label>Servo Motor Speed  <input type="range" id="servoValue" name="points" min="0" max="10"> </label><br>
@@ -244,13 +242,29 @@
                     </div>
                 </div>
 
+                <div class="col-lg-12 text-center"><br>
 
-                <div class="col-lg-12 text-center"><br><br>
-                    <p>Please enter your first and last name above if you wish to control the Arduino I have connected in my home.  You will also have to click the checkbox to verify you are not a bot.  Once you do this, you will have access to my LCD display, Motors, multiple RGB LEDs, and even my webcam.    </p>
-                    <p>If you do not wish to gain access to my Arduino, then you can still just view live (read-only) data coming from the Arduino. However, if you are viewing this site on your mobile device and are not connected to a local area network,  it is very possible that you could incure data charges from your service provider as information on this site is constantly being updated and downloaded to your phone (no different then Facebook really).  Thanks and enjoy! </p>
+
+        <div id="myWritable2">
+            <select rv-value="truck.job_id">
+                <option rv-each-job="jobs" rv-value="job.id">{ job.job_number }</option>
+            </select>
+            <br/>
+            <select id="chosen-version" rv-value="truck.job_id | chosen '#chosen-version'">
+                <option rv-each-job="jobs" rv-value="job.id">{ job.job_number }</option>
+            </select>
+            <p>
+                { truck.job_id } <br>
+                { truck.job_number }
+            </p>
+        </div>
+
+                    <br>
+                    <p class="animateblock">Please enter your first and last name above if you wish to control the Arduino I have connected in my home.  You will also have to click the checkbox to verify you are not a bot.  Once you do this, you will have access to my LCD display, Motors, multiple RGB LEDs, and even my webcam.    </p>
+                    <p class="animateblock">If you do not wish to gain access to my Arduino, then you can still just view live (read-only) data coming from the Arduino. However, if you are viewing this site on your mobile device and are not connected to a local area network,  it is very possible that you could incure data charges from your service provider as information on this site is constantly being updated and downloaded to your phone (no different then Facebook really).  Thanks and enjoy! </p>
                 </div>
     </section>
-    <div>
+
 
     <!-- Contact Section -->
     <section id="contact" class="contact">
@@ -318,19 +332,16 @@
 
                         <ul class="list-inline">
                             <li>
-                                <a href="#" class="btn-social btn-outline"><i class="fa fa-fw fa-facebook"></i></a>
-                            </li>
-                            <li>
-                                <a href="#" class="btn-social btn-outline"><i class="fa fa-fw fa-google-plus"></i></a>
+                                <a href="https://www.facebook.com/brad.lannon" class="btn-social btn-outline"><i class="fa fa-fw fa-facebook"></i></a>
                             </li>
                             <li >
-                                <a href="#" class="btn-social btn-outline"><i class="fa fa-fw fa-twitter"></i></a>
+                                <a href="https://twitter.com/bradlannon" class="btn-social btn-outline"><i class="fa fa-fw fa-twitter"></i></a>
                             </li>
                             <li>
-                                <a href="#" class="btn-social btn-outline"><i class="fa fa-fw fa-linkedin"></i></a>
+                                <a href="https://ca.linkedin.com/pub/brad-lannon/51/52a/975" class="btn-social btn-outline"><i class="fa fa-fw fa-linkedin"></i></a>
                             </li>
                             <li>
-                                <a href="#" class="btn-social btn-outline"><i class="fa fa-fw fa-dribbble"></i></a>
+                                <a href="https://github.com/bradlannon" class="btn-social btn-outline"><i class="fa fa-fw fa-git"></i></a>
                             </li>
                         </ul>
                     </div>
@@ -608,7 +619,7 @@
 <script src="/js/jquery.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="/js/bootstrap.min.js"></script>
-
+    <script src="/js/rivets.bundled.min.js"></script>
     <!-- Plugin JavaScript -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
     <script src="/js/classie.js"></script>
@@ -619,10 +630,7 @@
     <script src="/js/contact_me.js"></script>
 
     <!-- Custom Theme JavaScript -->
-    <script src="/js/freelancer.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-
-    <script src="https://rawgithub.com/nsisodiya/watchjs-adapter-for-rivetsjs/master/watchjs-adapter-for-rivetsjs.js"></script>
     <script src="/js/lanteka.js"></script>
     </body>
 

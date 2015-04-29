@@ -23,16 +23,18 @@ var gulp = require('gulp'),
     nodeInspector = require('gulp-node-inspector');
 
 // default gulp task
-gulp.task('default', ['onlinejs','lantekajs','minify-html', 'less', 'styles'], function() {
-    gulp.watch('./src/less/*.less', ['less', 'styles']);   // watching for file changes
-    gulp.watch('./src/html/*.html', ['minify-html','develop']);   // watching for file changes
-    gulp.watch('./src/js/*.js',['jshint','lantekajs','develop']);   // watching for file changes
+gulp.task('default', ['jshint','ugly-lanteka','minify-html', 'less'], function() {
+    gulp.watch('./src/less/*.less', ['less']);   // watching for file changes
+    gulp.watch('./src/html/*.html', ['minify-html']);   // watching for file changes
+    gulp.watch('./src/js/*.js',['jshint','ugly-lanteka']);   // watching for file changes
 });
 
 gulp.task('home', function () {
     nodemon({ script: 'home.js',
             ext: 'html js',
-            ignore: ['node_modules/**'] })
+            ignore: ['node_modules/**'],
+            tasks: ['lint']
+             })
     .on('restart', function () {
       console.log('restarted Home Server!');
     })
@@ -46,10 +48,11 @@ gulp.task('online', function () {
     nodemon({ script: 'online.js',
             ext: 'html js less',
             ignore: ['node_modules/**', 'Public'],
-            tasks: ['onlinejs','lantekajs','minify-html','less', 'styles']
+            tasks: ['jshint','ugly-lanteka','minify-html','less']
      })
 })
 
+// not working used yet
 gulp.task('debugonline', function() {
     gulp.src([])
       .pipe(nodeInspector({
@@ -89,21 +92,19 @@ gulp.task('debughome', function() {
 ///     ACTUAL GULP MODULES - ONLINE JOBS       ///
 ///////////////////////////////////////////////////
 
-gulp.task('onlinejs', function() {
+gulp.task('jshint', function() {
     gulp.src('./online.js')
       .pipe(jshint())
       .pipe(jshint.reporter('default'));
-       gulp.src('./src/js/lanteka.js')
+    gulp.src('./src/js/lanteka.js')
       .pipe(jshint())
       .pipe(jshint.reporter('default'));
 });
-//     .pipe(stripDebug())
-//     .pipe(uglify())
 
-gulp.task('lantekajs', function() {
+gulp.task('ugly-lanteka', function() {
     gulp.src(['./src/js/lanteka.js'])
       .pipe(gulp.dest('./Public/js/'));
-});
+}); //     .pipe(stripDebug())
 
 gulp.task('minify-html', function() {
     var opts = {
@@ -113,10 +114,9 @@ gulp.task('minify-html', function() {
     return gulp.src('./src/html/*.html')
       .pipe(minifyHTML(opts))
       .pipe(gulp.dest('./views/'));
-          console.log("minify-html");
 });
 
-gulp.task('less', ['less:freelancer', 'less:mixins','less:variables', 'less:animations']);
+gulp.task('less', ['less:freelancer', 'less:mixins','less:variables', 'less:animations','styles']);
 
 gulp.task('less:freelancer', function() {
     return gulp.src('./src/less/freelancer.less')
@@ -142,10 +142,17 @@ gulp.task('less:animations', function() {
       .pipe(gulp.dest('./src/css'));
 });
 
+gulp.task('bootstrap', function() {
+    gulp.src(['./src/css/bootstrap.min.css'])
+      .pipe(concatCss("bootstrap.min.css"))
+      .pipe(gulp.dest('./Public/css')); //
+});
+
 gulp.task('styles', function() {
     gulp.src(['./src/css/*.css'])
       .pipe(minifyCss({compatibility: 'ie8'}))
-      .pipe(gulp.dest('./Public/css/')); //
+      .pipe(concatCss("styles.css"))
+      .pipe(gulp.dest('./Public/css')); //
 });
 
 gulp.task('images', function(){

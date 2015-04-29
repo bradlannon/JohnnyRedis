@@ -1,44 +1,85 @@
+/*!
+ * Start Bootstrap - Freelancer Bootstrap Theme (http://startbootstrap.com)
+ * Code licensed under the Apache License v2.0.
+ * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ */
 
+// jQuery for page scrolling feature - requires jQuery Easing plugin
+$(function() {
+    $('body').on('click', '.page-scroll a', function(event) {
+        var $anchor = $(this);
+        $('html, body').stop().animate({
+            scrollTop: $($anchor.attr('href')).offset().top
+        }, 1500, 'easeInOutExpo');
+        event.preventDefault();
+    });
+});
 
-var data = {
-    title: 'Welcome to the Node',
-  title2: 'still works',
-    products: [
-      {
-        title: 'lollipop',
-        price: 0.5
-      },
-      {
-        title: 'teakettle',
-        price: 14.95
-      },
-      {
-        title: 'magic stick',
-        price: 89.12546
-      },
-      {
-        title: 'low rider',
-        price: 22450
-      },
-      {
-        title: 'champagne',
-        price: 45
-      }
-    ]};
-///////////////////////
+// Floating label headings for the contact form
+$(function() {
+    $("body").on("input propertychange", ".floating-label-form-group", function(e) {
+        $(this).toggleClass("floating-label-form-group-with-value", !! $(e.target).val());
+    }).on("focus", ".floating-label-form-group", function() {
+        $(this).addClass("floating-label-form-group-with-focus");
+    }).on("blur", ".floating-label-form-group", function() {
+        $(this).removeClass("floating-label-form-group-with-focus");
+    });
+});
 
-io = io.connect();
-io.emit('getInitialValues');
+// Highlight the top nav as scrolling occurs
+$('body').scrollspy({
+    target: '.navbar-fixed-top'
+});
 
+// Closes the Responsive Menu on Menu Item Click
+$('.navbar-collapse ul li a').click(function() {
+    $('.navbar-toggle:visible').click();
+});
+
+// rivvets.js initialization code
+rivets.configure({
+  prefix: 'rv',
+  preloadData: true,
+  rootInterface: '.',
+  templateDelimiters: ['{', '}'],
+  handler: function(target, event, binding) {
+    this.call(target, event, binding.view.models);
+  }
+});
+
+// rivets.js testing binding code
+$(document).ready(function(){
+    rivets.formatters.chosen = function(value,selector) {
+        $(selector).val(value).trigger('liszt:updated');
+        console.log($(selector));
+        // console.log('gets called the amount of times the object is in the dom');
+        return value;
+    };
+    window.view = rivets.bind($('#myWritable2'),{
+        truck:{id:1,job_id:3},
+        jobs:[
+            {id:1,job_number:'thing1'},
+            {id:2,job_number:'thing2'},
+            {id:3,job_number:'thing3'},
+            {id:4,job_number:'thing4'},
+        ]
+    });
+
+    //$('#chosen-version').chosen();
+});
+
+// rivets.js actual code
 var myReadable = {photoValue:0,potValue:0,pushValue:0, motionValue:0, pingValue:0};
 rivets.bind($('#myReadable'), {myReadable: myReadable});
 
 var myWritable = {photoValue:0,potValue:0,pushValue:0, pingValue:0};
-rivets.bind($('#myWritable'), {myReadable: myReadable});
+rivets.bind($('#myWritable'), {myWritable: myWritable});
 var user = {name:'brad'};
 
 //receiving the socket connections
-//
+io = io.connect();
+io.emit('getInitialValues');
+
 io.on('displayInitialValues', function(data) {
     myReadable.photoValue = data.photo;
     myReadable.potValue = data.pot;
@@ -89,10 +130,6 @@ io.on('displayToggleValue', function(data) {
 
 
 // old socket connections
-//
-//
-
-
 
 io.on('displayNewLED', function(myVal) {
     if (myVal==1) {
@@ -119,7 +156,7 @@ io.on('displayNewText', function(myVal) {
     $("#textValue").val(myVal);
 });
 
-//////////////// javascript events to send to socketio /////////////////////
+// jquery events to socket.io server
 
 $('#ledValue').change(function(){
     if (this.checked) {
@@ -198,9 +235,8 @@ $("#nameValue").focusout(function(event){
    myNameValueChange();
 });
 
-  // setup node-inspect for fuck sakes!!!!
-    //then research the camera
 
+// functions for enabling, hiding, locking
 function myNameValueChange() {
     var robValue = $('#robotValue').attr('checked');
     var nameLength = $("#nameValue").val().length;
@@ -233,8 +269,6 @@ function enableButtons() {
     $('#isHuman').removeClass('blur');
     $('#confirmHuman').hide("slow");
     $('#nameValue').hide("slow");
-    data = {myVal:  $('#nameValue').val()};
-    io.emit('getName', data);
 }
 
 function disableButtons() {
@@ -272,18 +306,12 @@ window.onload = disableButtons;
     animate_elems();
   });
 
-
 function animate_elems() {
-    wintop = $(window).scrollTop(); // calculate distance from top of window
-
-    // loop through each item to check when it animates
+    wintop = $(window).scrollTop();
     $elems.each(function(){
       $elm = $(this);
-
       if($elm.hasClass('animated')) { return true; } // if already animated skip to the next item
-
       topcoords = $elm.offset().top; // element's distance from top of page in pixels
-
       if(wintop > (topcoords - (winheight * 0.75 ))) {
         // animate when top of the window is 3/4 above the element
         //
@@ -291,47 +319,10 @@ function animate_elems() {
         $elm.addClass('animated');
       }
     });
-  } // end animate_elems()
+  }
 
-
-
-
-
-            // this thing is js driven on slid.es so I didn't bother switching out for css animations
-
-
- /* Every time the window is scrolled ... */
-    // $(window).scroll( function(){
-
-    //     /* Check the location of each desired element */
-    //     $('.hideme').each( function(i){
-
-    //         var bottom_of_object = $(this).offset().top + $(this).outerHeight();
-    //         var top_of_object = $(this).offset().top;
-    //         var bottom_of_window = $(window).scrollTop() + $(window).height();
-    //         var top_of_window = $(window).scrollTop();
-
-    //         console.log("bottom of object is: " + bottom_of_object + "\n top of object is: " + top_of_object + "\n bottom of window:" + bottom_of_window + "\n top of window:" + top_of_window + "\n ");
-    //         /* If the object is completely visible in the window, fade it it */
-    //         if( bottom_of_window > bottom_of_object ){
-
-    //             $(this).animate({'opacity':'1'},500);
-
-    //         }
-
-    //         if( top_of_window < top_of_object ){
-
-    //             $(this).animate({'opacity':'1'},500);
-
-    //         }
-
-
-    //     });
-
-    // });
-
-    // this thing is js driven on slid.es so I didn't bother switching out for css animations
-            var duration = 7000, steps = 3, step = 1;
-            setInterval( function() {
-                document.querySelector( '.animation' ).setAttribute( 'data-animation-step', step = ++step > steps ? 1 : step );
-            }, duration / steps );
+// animates the responsive image when you click on  Responsive image link
+var duration = 7000, steps = 3, step = 1;
+setInterval( function() {
+    document.querySelector( '.animation' ).setAttribute( 'data-animation-step', step = ++step > steps ? 1 : step );
+}, duration / steps );
