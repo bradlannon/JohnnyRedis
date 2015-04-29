@@ -62,6 +62,7 @@ clientSub.on("message", function (channel, message) {
         app.io.broadcast('displayToggleValue',myPush);
     } else if (channel == 'photoValue') {
         myPhoto = message;
+        console.log("photo is " + myPhoto);
         app.io.broadcast('displayPhotoValue',myPhoto);
     } else if (channel == 'pingValue') {
         myPing = message;

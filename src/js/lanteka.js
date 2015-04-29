@@ -1,8 +1,6 @@
-/*!
- * Start Bootstrap - Freelancer Bootstrap Theme (http://startbootstrap.com)
- * Code licensed under the Apache License v2.0.
- * For details, see http://www.apache.org/licenses/LICENSE-2.0.
- */
+//  when do you need $(document).ready(function(){
+
+
 
 // jQuery for page scrolling feature - requires jQuery Easing plugin
 $(function() {
@@ -36,6 +34,18 @@ $('.navbar-collapse ul li a').click(function() {
     $('.navbar-toggle:visible').click();
 });
 
+//  Global variables used later
+var gPhotoValue = 0,
+    gPotValue = 0,
+    gPushValue = 0,
+    gPingValue = 0,
+    gRgbValue = 0,
+    gServoValue = 0,
+    gMotionValue = 0,
+    gTextValue = 0,
+    gFaceValue =0,
+    gLedValue =0;
+
 // rivvets.js initialization code
 rivets.configure({
   prefix: 'rv',
@@ -48,33 +58,26 @@ rivets.configure({
 });
 
 // rivets.js testing binding code
-$(document).ready(function(){
-    rivets.formatters.chosen = function(value,selector) {
-        $(selector).val(value).trigger('liszt:updated');
-        console.log($(selector));
-        // console.log('gets called the amount of times the object is in the dom');
-        return value;
-    };
-    window.view = rivets.bind($('#myWritable2'),{
-        truck:{id:1,job_id:3},
-        jobs:[
-            {id:1,job_number:'thing1'},
-            {id:2,job_number:'thing2'},
-            {id:3,job_number:'thing3'},
-            {id:4,job_number:'thing4'},
-        ]
-    });
-
-    //$('#chosen-version').chosen();
+rivets.formatters.chosen = function(value,selector) {
+    $(selector).val(value).trigger('liszt:updated');
+    console.log($(selector));
+    // console.log('gets called the amount of times the object is in the dom');
+    return value;
+};
+window.view = rivets.bind($('#myWritable2'),{
+    truck:{
+        id:1,
+        job_id:3},
+    myReadable:{photoValue:gPhotoValue,potValue:gPotValue,pushValue:gPushValue, motionValue:gMotionValue, pingValue:gPingValue},
+    jobs:[
+        {id:1,job_number:'thing1'},
+        {id:2,job_number:'thing2'},
+        {id:3,job_number:'thing3'},
+        {id:4,job_number:'thing4'},
+    ]
 });
 
-// rivets.js actual code
-var myReadable = {photoValue:0,potValue:0,pushValue:0, motionValue:0, pingValue:0};
-rivets.bind($('#myReadable'), {myReadable: myReadable});
-
-var myWritable = {photoValue:0,potValue:0,pushValue:0, pingValue:0};
-rivets.bind($('#myWritable'), {myWritable: myWritable});
-var user = {name:'brad'};
+var myTestVal = 55;
 
 //receiving the socket connections
 io = io.connect();
@@ -98,34 +101,35 @@ io.on('displayInitialValues', function(data) {
 });
 
 io.on('displayReadOnlyValues', function(data) {
-    myReadable.photoValue = data.photo;
-    myReadable.potValue = data.pot;
-    myReadable.pushValue = data.push;
-    myReadable.pingValue = data.ping;
+    gPhotoValue = data.photo;
+    gPotValue = data.pot;
+    gPushValue = data.push;
+    gPingValue = data.ping;
 });
 
 io.on('displayMotionValue', function(data) {
-    myReadable.motionValue = data;
+    gMotionValue = data;
 });
 
 io.on('displayPushValue', function(data) {
-    myReadable.pushValue = data;
+    gPushValue = data;
 });
 
 io.on('displayPhotoValue', function(data) {
-    myReadable.photoValue = data;
+    gPhotoValue = data;
+    console.log("gPhotoValue is now " + data);
 });
 
 io.on('displayPingValue', function(data) {
-    myReadable.pingValue = data;
+    gPingValue = data;
 });
 
 io.on('displayPotValue', function(data) {
-    myReadable.potValue = data;
+    gPotValue = data;
 });
 
 io.on('displayToggleValue', function(data) {
-    myReadable.toggleValue = data;
+    gToggleValue = data;
 });
 
 

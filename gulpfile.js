@@ -3,7 +3,7 @@
 //   gulp images
 //   gulp less
 //   gulp online
-//
+//   gulp bootstrap - run once
 //   gulp home
 
 

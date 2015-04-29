@@ -5,11 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
+    <meta name="description" content="My Arduino and Node.js server website. This site uses Redis, Rivets.js, Socket.io, gulp, less among other technologies. ">
+    <meta name="author" content="Brad Lannon">
     <title>Brad Lannon - Designer & Developer</title>
-
     <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
@@ -18,18 +16,15 @@
     <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
 </head>
 
 <body id="page-top" class="index">
-
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
@@ -104,9 +99,7 @@
         </div>
     </section>
 
-
     <!-- Tools Grid Section -->
-
     <section id="tools">
         <div class="container ">
             <div class="row">
@@ -180,7 +173,6 @@
         </div>
     </section>
 
-
     <!-- Arduino  Section -->
     <section class="success" id="arduino">
         <div class="container">
@@ -190,7 +182,6 @@
                     <hr class="star-light">
                 </div>
             </div>
-
 
             <div class="row">
                 <div class="col-lg-4 text-center" id="myReadable">
@@ -241,9 +232,7 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="col-lg-12 text-center"><br>
-
 
         <div id="myWritable2">
             <select rv-value="truck.job_id">
@@ -253,10 +242,12 @@
             <select id="chosen-version" rv-value="truck.job_id | chosen '#chosen-version'">
                 <option rv-each-job="jobs" rv-value="job.id">{ job.job_number }</option>
             </select>
-            <p>
-                { truck.job_id } <br>
-                { truck.job_number }
-            </p>
+            <p> Photo is { myReadable.photoValue } </p>
+            <p> Pot is { myReadable.potValue } </p>
+            <p> Ping is { myReadable.pingValue } </p>
+            <p> Push is { myReadable.pushValue } </p>
+
+
         </div>
 
                     <br>
@@ -264,7 +255,6 @@
                     <p class="animateblock">If you do not wish to gain access to my Arduino, then you can still just view live (read-only) data coming from the Arduino. However, if you are viewing this site on your mobile device and are not connected to a local area network,  it is very possible that you could incure data charges from your service provider as information on this site is constantly being updated and downloaded to your phone (no different then Facebook really).  Thanks and enjoy! </p>
                 </div>
     </section>
-
 
     <!-- Contact Section -->
     <section id="contact" class="contact">
@@ -320,7 +310,6 @@
             </div>
         </div>
     </section>
-
 
    <!-- Footer -->
     <footer class="text-center">
@@ -555,7 +544,6 @@
                             </div>
                         </div>
                         </div>
-
                             <p>Responsive web design allows you to resize your browser for an optimal viewing experience.  If you are on a computer, change the size of the window and notice how the site changes.  You can basically mimik the look of a phone or tablet.  Pretty much all modern sites have this feature.  They also tend to be low in data bandwith. For those interested in web development can look into <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Media_queries">Media Queries</a> It's actually pretty easy to do and all web developers should be famiar with it. A really easy responsive starter theme is Bootstrap. This site was created with <a href="http://startbootstrap.com">Bootstrap</a>. Below are a few sites I've created with good responsive front ends. </p>
                             <ul class="list-unstyled item-details">
                                 <li>Client:
@@ -615,7 +603,6 @@
             </div>
         </div>
     </div>
-
 <script src="/js/jquery.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="/js/bootstrap.min.js"></script>
@@ -624,14 +611,11 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
     <script src="/js/classie.js"></script>
     <script src="/js/cbpAnimatedHeader.js"></script>
-
     <!-- Contact Form JavaScript -->
     <script src="/js/jqBootstrapValidation.js"></script>
     <script src="/js/contact_me.js"></script>
-
     <!-- Custom Theme JavaScript -->
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/lanteka.js"></script>
     </body>
-
 </html>
