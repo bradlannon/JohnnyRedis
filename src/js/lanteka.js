@@ -35,175 +35,124 @@ $('.navbar-collapse ul li a').click(function() {
 });
 
 //  Global variables used later
-var gPhotoValue = 0,
-    gPotValue = 0,
-    gPushValue = 0,
-    gPingValue = 0,
-    gRgbValue = 0,
-    gServoValue = 0,
-    gMotionValue = 0,
-    gTextValue = 0,
-    gFaceValue =0,
-    gLedValue =0;
+var myArduino = {photoValue : 0,
+    potValue : 0,
+    pushValue : 0,
+    pingValue : 0,
+    rgbValue : '#FF0000',
+    servoValue : 0,
+    motionValue : 0,
+    textValue : 'hello world',
+    faceValue :4,
+    ledValue :1,
+    changeServo : function() {
+        data = {myVal:  myArduino.servoValue};
+        io.emit('servoValueChange', data);
+    },
+    changeRgb : function() {
+        data = {myVal:  myArduino.rgbValue};
+        io.emit('rgbValueChange', data);
+    },
+    changePiezo : function() {
+       io.emit('piezoValueChange');
+    },
+    changeFace : function() {
+       data = {myVal:  myArduino.faceValue};
+       io.emit('faceValueChange', data);
+    },
+    changeText : function() {
+        data = {myVal:  myArduino.textValue};
+        io.emit('textValueChange', data);
+    },
+    changeLed : function() {
+         data = {myVal: myArduino.ledValue};
+         io.emit('ledValueChange', data);
+    }
 
-// rivvets.js initialization code
-rivets.configure({
-  prefix: 'rv',
-  preloadData: true,
-  rootInterface: '.',
-  templateDelimiters: ['{', '}'],
-  handler: function(target, event, binding) {
-    this.call(target, event, binding.view.models);
-  }
-});
+};
+
 
 // rivets.js testing binding code
 rivets.formatters.chosen = function(value,selector) {
     $(selector).val(value).trigger('liszt:updated');
-    console.log($(selector));
+   // console.log($(selector));
     // console.log('gets called the amount of times the object is in the dom');
     return value;
 };
-window.view = rivets.bind($('#myWritable2'),{
-    truck:{
-        id:1,
-        job_id:3},
-    myReadable:{photoValue:gPhotoValue,potValue:gPotValue,pushValue:gPushValue, motionValue:gMotionValue, pingValue:gPingValue},
-    jobs:[
-        {id:1,job_number:'thing1'},
-        {id:2,job_number:'thing2'},
-        {id:3,job_number:'thing3'},
-        {id:4,job_number:'thing4'},
-    ]
+
+window.view = rivets.bind($('#arduino'),{
+    myArduino:myArduino
 });
 
-var myTestVal = 55;
-
-//receiving the socket connections
+// the socket connections
 io = io.connect();
 io.emit('getInitialValues');
 
 io.on('displayInitialValues', function(data) {
-    myReadable.photoValue = data.photo;
-    myReadable.potValue = data.pot;
-    myReadable.pushValue = data.push;
-    myReadable.pingValue = data.ping;
-    $("#rgbValue").val(data.rgb);
-    $("#servoValue").val(data.servo);
-    $("#textValue").val(data.mytext);
-    $("#faceValue").val(data.face);
-
-    if (data.led==1) {
-        $("#ledValue").attr('checked', true);
-    } else {
-        $("#ledValue").attr('checked', false);
-    }
+    myArduino.photoValue = data.myPhoto;
+    myArduino.potValue = data.myPot;
+    myArduino.pushValue = data.myPush;
+    myArduino.pingValue = data.myPing;
+    myArduino.rgbValue = data.myRgb;
+    myArduino.servoValue = data.myServo;
+    myArduino.textValue = data.myText;
+    myArduino.faceValue = data.myFace;
+    myArduino.ledValue = data.myLed;
 });
 
 io.on('displayReadOnlyValues', function(data) {
-    gPhotoValue = data.photo;
-    gPotValue = data.pot;
-    gPushValue = data.push;
-    gPingValue = data.ping;
+    myArduino.photoValue = data.myPhoto;
+    myArduino.potValue = data.myPot;
+    myArduino.pushValue = data.myPush;
+    myArduino.pingValue = data.myPing;
 });
 
 io.on('displayMotionValue', function(data) {
-    gMotionValue = data;
+    myArduino.motionValue = data;
 });
 
 io.on('displayPushValue', function(data) {
-    gPushValue = data;
+    myArduino.pushValue = data;
 });
 
 io.on('displayPhotoValue', function(data) {
-    gPhotoValue = data;
-    console.log("gPhotoValue is now " + data);
+    myArduino.photoValue = data;
 });
 
 io.on('displayPingValue', function(data) {
-    gPingValue = data;
+    myArduino.pingValue = data;
 });
 
 io.on('displayPotValue', function(data) {
-    gPotValue = data;
+    myArduino.potValue = data;
 });
 
 io.on('displayToggleValue', function(data) {
-    gToggleValue = data;
+    myArduino.toggleValue = data;
 });
-
-
-// old socket connections
 
 io.on('displayNewLED', function(myVal) {
-    if (myVal==1) {
-        $("#ledValue").prop('checked', true);
-    } else
-    {
-        $("#ledValue").prop('checked', false);
-    }
+    myArduino.ledValue = myVal;
 });
 
- io.on('displayNewRGB', function(myVal) {
-     $("#rgbValue").val(myVal);
+io.on('displayNewRGB', function(myVal) {
+     myArduino.rgbValue = myVal;
  });
 
 io.on('displayNewFace', function(myVal) {
-    $("#faceValue").val(myVal);
+    myArduino.faceValue = myVal;
 });
 
 io.on('displayNewMotor', function(myVal) {
-    $("#servoValue").val(myVal);
+    myArduino.servoValue = myVal;
 });
 
 io.on('displayNewText', function(myVal) {
-    $("#textValue").val(myVal);
+    myArduino.textValue = myVal;
 });
 
-// jquery events to socket.io server
 
-$('#ledValue').change(function(){
-    if (this.checked) {
-        data = {myVal: 1};
-        io.emit('ledValueChange', data);
-    } else {
-        data = {myVal: 0};
-        io.emit('ledValueChange', data);
-    }
-});
-
-$("#textValue").keyup(function(event){
-    if(event.keyCode == 13){
-        data = {myVal:  $(this).val()};
-        io.emit('textValueChange', data);
-    }
-});
-
-$("#textValue").focusout(function(event){
-    data = {myVal:  $(this).val()};
-    io.emit('textValueChange', data);
-});
-
-$("#faceValue").change(function() {
-    data = {myVal:  $(this).val()};
-    io.emit('faceValueChange', data);
-});
-
-$("#servoValue").change(function() {
-    data = {myVal:  $(this).val()};
-    io.emit('servoValueChange', data);
-});
-
- $("#rgbValue").change(function() {
-    console.log("rgbValue is " + $("#rgbValue").val());
-     data = {myVal:  $(this).val()};
-     io.emit('rgbValueChange', data);
- });
-
-$("#piezoValue").click(function() {
-      io.emit('piezoValueChange');
-});
-
+// jQuery events
 $("#sendEmail").click(function() {
     data = {senderName:  $(this).val(),
             senderEmail:  $(this).val(),
@@ -213,7 +162,6 @@ $("#sendEmail").click(function() {
         };
     io.emit('sendEmail');
 });
-
 
 $('#webcamValue').change(function(){
     if (this.checked) {
@@ -238,7 +186,6 @@ $("#nameValue").keyup(function(event){
 $("#nameValue").focusout(function(event){
    myNameValueChange();
 });
-
 
 // functions for enabling, hiding, locking
 function myNameValueChange() {
@@ -319,7 +266,7 @@ function animate_elems() {
       if(wintop > (topcoords - (winheight * 0.75 ))) {
         // animate when top of the window is 3/4 above the element
         //
-         console.log(wintop);
+        // console.log(wintop);
         $elm.addClass('animated');
       }
     });

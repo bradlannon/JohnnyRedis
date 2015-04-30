@@ -186,10 +186,10 @@
             <div class="row">
                 <div class="col-lg-4 text-center" id="myReadable">
                     <h4>Readable Values</h4>
-                    <div class="inlineValue">Photoresistor: { myReadable.photoValue }</div><br>
-                    <div class="inlineValue">Potentiometer: { myReadable.potValue }</div><br>
-                    <div class="inlineValue">Ping Sensor: { myReadable.pingValue }</div><br>
-                    <div class="inlineValue">Push Button: { myReadable.pushValue }</div><br><br>
+                    <div class="inlineValue">Photoresistor: { myArduino.photoValue }</div><br>
+                    <div class="inlineValue">Potentiometer: { myArduino.potValue }</div><br>
+                    <div class="inlineValue">Ping Sensor: { myArduino.pingValue }</div><br>
+                    <div class="inlineValue">Push Button: { myArduino.pushValue }</div><br><br>
                     <label>Turn ON Webcam<input type="checkbox" id="webcamValue"></label>
                     <div class="col-lg-12 text-center">
                         <canvas id="myCanvas" width="300" height="300" style="border:1px solid #000000; background-color #000022"></canvas>
@@ -212,48 +212,31 @@
                         <input type="checkbox" id="dontcheck4" class="hideme">
                     </div>
                     <div id="isHuman" class="blur">
-                        <label>Servo Motor Speed  <input type="range" id="servoValue" name="points" min="0" max="10"> </label><br>
-                        <label>LED Color Picker  <input type="color" id="rgbValue" name="favcolor"> </label><br>
-                        <label>Turn ON / Off LED  <input type="checkbox" id="ledValue" name="ledstatus"> </label><br>
-                        <label>LCD Text<input type="text" id="textValue" name="textValue" class="form-control"> </label><br>
-                        <button class="btn btn-info btn-mini" id="piezoValue"><i class="icon-white icon-music"></i> Play Piezoelectric (at my house)</button><br>
-                        <label>LCD Face<select class="form-control" id="faceValue">
-                          <option>1</option><option>2</option><option>3</option>
-                          <option>4</option><option>5</option><option>6</option>
-                          <option>7</option><option>8</option><option>9</option>
-                          <option>10</option><option>11</option><option>12</option>
-                          <option>13</option><option>14</option><option>15</option>
-                          <option>16</option><option>17</option><option>18</option>
-                          <option>19</option><option>20</option><option>31</option>
-                          <option>32</option><option>33</option><option>34</option>
-                          <option>35</option><option>36</option><option>37</option>
-                          <option>38</option><option>39</option></select>
+                        <label>Servo Motor Speed  <input type="range" rv-value="myArduino.servoValue" rv-on-change="myArduino.changeServo" min="0" max="10"> </label>
+                        <label>LED Color Picker  <input type="color" rv-value="myArduino.rgbValue" rv-on-change="myArduino.changeRgb" name="favcolor"> </label><br>
+                        <label>Turn ON / Off LED  <input type="checkbox" rv-value="myArduino.ledValue" name="ledstatus" rv-on-change="myArduino.changeLed"> </label><br>
+                        <label>LCD Text<input type="text" id="textValue" rv-value="myArduino.textValue" class="form-control" rv-on-change="myArduino.changeText"> </label><br>
+                        <label>LCD Face
+                            <select class="form-control" id="faceValue" rv-value="myArduino.faceValue" rv-on-change="myArduino.changeFace">
+                                  <option>1</option><option>2</option><option>3</option>
+                                  <option>4</option><option>5</option><option>6</option>
+                                  <option>7</option><option>8</option><option>9</option>
+                                  <option>10</option><option>11</option><option>12</option>
+                                  <option>13</option><option>14</option><option>15</option>
+                                  <option>16</option><option>17</option><option>18</option>
+                                  <option>19</option><option>20</option><option>31</option>
+                                  <option>32</option><option>33</option><option>34</option>
+                                  <option>35</option><option>36</option><option>37</option>
+                                  <option>38</option><option>39</option>
+                            </select>
                         </label>
-                        </div>
                     </div>
                 </div>
-                <div class="col-lg-12 text-center"><br>
-
-        <div id="myWritable2">
-            <select rv-value="truck.job_id">
-                <option rv-each-job="jobs" rv-value="job.id">{ job.job_number }</option>
-            </select>
-            <br/>
-            <select id="chosen-version" rv-value="truck.job_id | chosen '#chosen-version'">
-                <option rv-each-job="jobs" rv-value="job.id">{ job.job_number }</option>
-            </select>
-            <p> Photo is { myReadable.photoValue } </p>
-            <p> Pot is { myReadable.potValue } </p>
-            <p> Ping is { myReadable.pingValue } </p>
-            <p> Push is { myReadable.pushValue } </p>
-
-
+            </div>
+            <div class="col-lg-12 text-center"><br><br>
+            <p class="animateblock">Please enter your first and last name above if you wish to control the Arduino I have connected in my home.  You will also have to click the checkbox to verify you are not a bot.  Once you do this, you will have access to my LCD display, Motors, multiple RGB LEDs, and even my webcam.    </p>
+            <p class="animateblock">If you do not wish to gain access to my Arduino, then you can still just view live (read-only) data coming from the Arduino. However, if you are viewing this site on your mobile device and are not connected to a local area network,  it is very possible that you could incure data charges from your service provider as information on this site is constantly being updated and downloaded to your phone (no different then Facebook really).  Thanks and enjoy! </p>
         </div>
-
-                    <br>
-                    <p class="animateblock">Please enter your first and last name above if you wish to control the Arduino I have connected in my home.  You will also have to click the checkbox to verify you are not a bot.  Once you do this, you will have access to my LCD display, Motors, multiple RGB LEDs, and even my webcam.    </p>
-                    <p class="animateblock">If you do not wish to gain access to my Arduino, then you can still just view live (read-only) data coming from the Arduino. However, if you are viewing this site on your mobile device and are not connected to a local area network,  it is very possible that you could incure data charges from your service provider as information on this site is constantly being updated and downloaded to your phone (no different then Facebook really).  Thanks and enjoy! </p>
-                </div>
     </section>
 
     <!-- Contact Section -->

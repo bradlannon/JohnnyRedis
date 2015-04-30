@@ -120,16 +120,16 @@ function writeToRedis() {
 // Socket.io  sending and receiving from website
 app.io.route('getInitialValues', function(req) {
     req.io.emit('displayInitialValues', {
-        photo: myPhoto,
-        pot: myPot,
-        ping: myPing,
-        servo: myServo,
-        push: myPush,                                        // good
-        rgb: myRGB,
-        led: myLed,
-        motion: myMotion,
-        face: myFace,
-        mytext: myText
+        myPhoto: myPhoto,
+        myPot: myPot,
+        myPing: myPing,
+        myServo: myServo,
+        myPush: myPush,                                        // good
+        myRgb: myRGB,
+        myLed: myLed,
+        myMotion: myMotion,
+        myFace: myFace,
+        myText: myText
     });
 });
 
@@ -147,7 +147,6 @@ app.io.route('textValueChange', function(req) {
 
  app.io.route('rgbValueChange', function(req) {
      myRGB = req.data.myVal;
-     console.log("rgbValueChange is " + myRGB);
      clientPub.publish("rgbValue", myRGB);                                       // good
      req.io.broadcast('displayNewRGB',myRGB);
  });
@@ -176,15 +175,13 @@ app.io.route('ledValueChange', function(req) {
     req.io.broadcast('displayNewLED',myLed);
 });
 
-
-
 app.io.route('getReadOnlyValues', function(req) {
     req.io.emit('displayReadOnlyValues', {
-        photo: myPhoto,
-        pot: myPot,                                         // good
-        ping: myPing,
-        push: myPush,
-        motion: myMotion,
+        myPhoto: myPhoto,
+        myPot: myPot,                                         // good
+        myPing: myPing,
+        myPush: myPush,
+        myMotion: myMotion,
     });
 });
 
