@@ -74,6 +74,16 @@ hr.star-primary:after {
 .img-centered {
   margin: 0 auto;
 }
+#myReadable ul li {
+  display: block;
+  list-style-type: none;
+  padding: 0;
+}
+#myWritable ul li {
+  display: block;
+  list-style-type: none;
+  padding: 0;
+}
 #responsiveGraphicCircle {
   background-color: white;
   border-radius: 50%;

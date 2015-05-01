@@ -1,9 +1,8 @@
 //  when do you need $(document).ready(function(){
 
-
-
-// jQuery for page scrolling feature - requires jQuery Easing plugin
+// on load
 $(function() {
+    // jQuery for page scrolling feature - requires jQuery Easing plugin
     $('body').on('click', '.page-scroll a', function(event) {
         var $anchor = $(this);
         $('html, body').stop().animate({
@@ -11,10 +10,8 @@ $(function() {
         }, 1500, 'easeInOutExpo');
         event.preventDefault();
     });
-});
 
-// Floating label headings for the contact form
-$(function() {
+    // Floating label headings for the contact form
     $("body").on("input propertychange", ".floating-label-form-group", function(e) {
         $(this).toggleClass("floating-label-form-group-with-value", !! $(e.target).val());
     }).on("focus", ".floating-label-form-group", function() {
@@ -22,6 +19,7 @@ $(function() {
     }).on("blur", ".floating-label-form-group", function() {
         $(this).removeClass("floating-label-form-group-with-focus");
     });
+
 });
 
 // Highlight the top nav as scrolling occurs
@@ -34,8 +32,9 @@ $('.navbar-collapse ul li a').click(function() {
     $('.navbar-toggle:visible').click();
 });
 
-//  Global variables used later
-var myArduino = {photoValue : 0,
+//  Global variable myArduino used for rivets.js data binding
+var myArduino = {
+    photoValue : 0,
     potValue : 0,
     pushValue : 0,
     pingValue : 0,
@@ -65,24 +64,109 @@ var myArduino = {photoValue : 0,
         io.emit('textValueChange', data);
     },
     changeLed : function() {
-         data = {myVal: myArduino.ledValue};
-         io.emit('ledValueChange', data);
+        data = {myVal: myArduino.ledValue};
+        io.emit('ledValueChange', data);
+    },
+    changeRobot : function() {
+        if (document.getElementById("robotValue").value == 'on') {
+            myArduino.myNameValueChange();
+        }
+    },
+    changeWebcam : function()  {
+        if (document.getElementById("webcamValue").value == 'on') {
+            $('#myCanvas').show();
+        } else {
+            $('#myCanvas').hide();
+        }
+    },
+    enableButtons : function() {
+        $('#rgbValue').prop('disabled', false);
+        $('#servoValue').prop('disabled', false);
+        $('#ledValue').prop('disabled', false);
+        $('#textValue').prop('disabled', false);
+        $('#piezoValue').prop('disabled', false);
+        $('#webcamValue').prop('disabled', false);
+        $('#faceValue').prop('disabled', false);
+        $('#isHuman').removeClass('blur');
+        $('#confirmHuman').hide("slow");
+        $('#nameValue').hide("slow");
+    },
+    disableButtons : function() {
+        $('#rgbValue').prop('disabled', true);
+        $('#servoValue').prop('disabled', true);
+        $('#ledValue').prop('disabled', true);
+        $('#textValue').prop('disabled', true);
+        $('#faceValue').prop('disabled', true);
+        $('#webcamValue').prop('disabled', true);
+        $('#piezoValue').prop('disabled', true);
+        $('#myCanvas').hide("slow");
+        $('#robotValue').prop('disabled', true);
+        $('#name').prop('disabled', true);
+        $('#email').prop('disabled', true);
+        $('#phone').prop('disabled', true);
+        $('#nameValue').prop('disabled', true);
+        $('#message').prop('disabled', true);
+        setTimeout(function() {
+            $('#robotValue').prop('disabled', false);
+            $('#nameValue').prop('disabled', false);
+            $('#name').prop('disabled', false);
+            $('#email').prop('disabled', false);
+            $('#phone').prop('disabled', false);
+            $('#message').prop('disabled', false);
+        }, 5000);
+    },
+    myNameValueChange : function() {
+        var robValue = $('#robotValue').attr('checked');
+        var nameLength = $("#nameValue").val().length;
+        if (nameLength >= 5 ) {
+            myArduino.getInfoAndShow();
+        }
+    },
+    getInfoAndShow : function() {
+       if ($('#robotValue').is(':checked')) {
+            if(!$('#dontcheck1').is(':checked') & !$('#dontcheck2').is(':checked') & !$('#dontcheck3').is(':checked') & !$('#dontcheck4').is(':checked')) {
+                $.getJSON("http://api.ipify.org?format=json", function(data){
+                    var myIp = data.ip;
+                    myArduino.enableButtons();
+                    data = {myVal:  $("#nameValue").val() + ":" + myIp};
+                    io.emit('nameValueChange', data);
+                });
+            }
+        }
     }
-
 };
 
+var $elems = $('.animateblock');
+var winheight = $(window).height();
+var fullheight = $(document).height();
 
-// rivets.js testing binding code
-rivets.formatters.chosen = function(value,selector) {
-    $(selector).val(value).trigger('liszt:updated');
-   // console.log($(selector));
-    // console.log('gets called the amount of times the object is in the dom');
-    return value;
-};
+$(window).scroll(function(){
+    animate_elems();
+});
+
+window.onload = myArduino.disableButtons();
 
 window.view = rivets.bind($('#arduino'),{
     myArduino:myArduino
 });
+
+$("#nameValue").keyup(function(event){
+    if(event.keyCode == 13){
+        myArduino.myNameValueChange();
+    }
+});
+
+$("#nameValue").focusout(function(event){
+   myArduino.myNameValueChange();
+});
+
+// rivets.js binding code
+rivets.formatters.chosen = function(value,selector) {
+    $(selector).val(value).trigger('liszt:updated');
+   // console.log($(selector));
+   // console.log('gets called the amount of times the object is in the dom');
+    return value;
+};
 
 // the socket connections
 io = io.connect();
@@ -152,110 +236,7 @@ io.on('displayNewText', function(myVal) {
 });
 
 
-// jQuery events
-$("#sendEmail").click(function() {
-    data = {senderName:  $(this).val(),
-            senderEmail:  $(this).val(),
-            senderPhone:  $(this).val(),
-            senderMessage:  $(this).val()
 
-        };
-    io.emit('sendEmail');
-});
-
-$('#webcamValue').change(function(){
-    if (this.checked) {
-        $('#myCanvas').show();
-    } else {
-        $('#myCanvas').hide();
-    }
-});
-
-$('#robotValue').change(function(){
-    if (this.checked) {
-        myNameValueChange();
-    }
-});
-
-$("#nameValue").keyup(function(event){
-    if(event.keyCode == 13){
-        myNameValueChange();
-    }
-});
-
-$("#nameValue").focusout(function(event){
-   myNameValueChange();
-});
-
-// functions for enabling, hiding, locking
-function myNameValueChange() {
-    var robValue = $('#robotValue').attr('checked');
-    var nameLength = $("#nameValue").val().length;
-    if (nameLength >= 5 ) {
-        getInfoAndShow();
-    }
-}
-
-function getInfoAndShow() {
-   if ($('#robotValue').is(':checked')) {
-        if(!$('#dontcheck1').is(':checked') & !$('#dontcheck2').is(':checked') & !$('#dontcheck3').is(':checked') & !$('#dontcheck4').is(':checked')) {
-            $.getJSON("http://api.ipify.org?format=json", function(data){
-                var myIp = data.ip;
-                enableButtons();
-                data = {myVal:  $("#nameValue").val() + ":" + myIp};
-                io.emit('nameValueChange', data);
-            });
-        }
-    }
-}
-
-function enableButtons() {
-    $('#rgbValue').prop('disabled', false);
-    $('#servoValue').prop('disabled', false);
-    $('#ledValue').prop('disabled', false);
-    $('#textValue').prop('disabled', false);
-    $('#piezoValue').prop('disabled', false);
-    $('#webcamValue').prop('disabled', false);
-    $('#faceValue').prop('disabled', false);
-    $('#isHuman').removeClass('blur');
-    $('#confirmHuman').hide("slow");
-    $('#nameValue').hide("slow");
-}
-
-function disableButtons() {
-    $('#rgbValue').prop('disabled', true);
-    $('#servoValue').prop('disabled', true);
-    $('#ledValue').prop('disabled', true);
-    $('#textValue').prop('disabled', true);
-    $('#faceValue').prop('disabled', true);
-    $('#webcamValue').prop('disabled', true);
-    $('#piezoValue').prop('disabled', true);
-    $('#myCanvas').hide("slow");
-    $('#robotValue').prop('disabled', true);
-    $('#name').prop('disabled', true);
-    $('#email').prop('disabled', true);
-    $('#phone').prop('disabled', true);
-    $('#nameValue').prop('disabled', true);
-    $('#message').prop('disabled', true);
-    setTimeout(function() {
-        $('#robotValue').prop('disabled', false);
-        $('#nameValue').prop('disabled', false);
-        $('#name').prop('disabled', false);
-        $('#email').prop('disabled', false);
-        $('#phone').prop('disabled', false);
-        $('#message').prop('disabled', false);
-    }, 5000);
-}
-
-window.onload = disableButtons;
-
-  var $elems = $('.animateblock');
-  var winheight = $(window).height();
-  var fullheight = $(document).height();
-
-  $(window).scroll(function(){
-    animate_elems();
-  });
 
 function animate_elems() {
     wintop = $(window).scrollTop();
