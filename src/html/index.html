@@ -184,38 +184,66 @@
         </div>
 
         <div class="row">
-            <div class="col-lg-4 text-center" id="myReadable">
+             <div class="col-lg-12 text-center animateblock" id="takeControl">
+                 <h4>I have an Arduino set up at my home in Halifax, Nova Scotia.<br> Would you like to control it?</h4>
+                 <button type="button" class="btn btn-default btn-lg" rv-on-click="myArduino.showArduinoData">
+                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>Yes
+                </button>
+                <button type="button" class="btn btn-default btn-lg" rv-on-click="myArduino.hideArduinoData">
+                  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>No
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 animateblock btm">
+                <img src="img/arduino.png" data-1x="img/arduino.png" data-2x="img/arduino.png" class="hisrc img-responsive center-block" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+               <canvas id="myCanvas" width="300" height="300" style="border:1px solid #000000; background-color #000022"></canvas>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 text-center" rv-show="myArduino.showArduino" id="myReadable">
                 <h4>Readable Values</h4>
                 <ul>
                     <li>Photoresistor: { myArduino.photoValue }</li>
                     <li>Potentiometer: { myArduino.potValue }</li>
                     <li>Ping Sensor: { myArduino.pingValue }</li>
-                    <li>Push Button: { myArduino.pushValue }</li>
-                    <li></li>
-                    <li><label>Turn ON Webcam<input type="checkbox" id="webcamValue" rv-on-change="myArduino.changeWebcam"></label></li>
-                    <li><canvas id="myCanvas" width="300" height="300" style="border:1px solid #000000; background-color #000022"></canvas></li>
+                    <li>Push Button: { myArduino.pushValue } <br></li>
                 </ul>
             </div>
 
-            <div class="col-lg-4 animateblock btm">
-                <img src="img/arduino.png" data-1x="img/arduino.png" data-2x="img/arduino.png" class="hisrc img-responsive center-block" />
-            </div>
 
-            <div class="col-lg-4 text-center" id="myWritable">
+
+            <div class="col-lg-6 text-center" rv-show="myArduino.showArduino" id="myWritable">
                 <h4>Writable Values</h4>
-                <div id="confirmHuman" class="center-block">
+
+                <div id="confirmHuman" class="center-block removeme">
                     <ul>
                         <li><label><input type="text" id="nameValue" class="form-control" placeholder="Please enter your name to take control!" size="35"></label></li>
-                        <li><input type="checkbox" id="dontcheck1" class="hideme"> <input type="checkbox" id="dontcheck2" class="hideme"></li>
-                        <li><label>I am not a robot <input type="checkbox" id="robotValue" name="robotstatus"><input type="checkbox" id="dontcheck3" class="hideme">
-                        <input type="checkbox" id="dontcheck4" class="hideme"></label></li>
+                        <li><input type="checkbox" rv-checked="dontcheck1" class="hideme"> <input type="checkbox" rv-checked="dontcheck2" class="hideme"></li>
+                        <li><label>I am not a robot <input type="checkbox" rv-checked="robotValue" name="robotstatus"><input type="checkbox" rv-checked="dontcheck3" class="hideme">
+                        <input type="checkbox" rv-checked="dontcheck4" class="hideme"></label></li>
                     </ul>
                 </div>
-                <div id="isHuman" class="blur">
+
+
+                <div id="isHuman">
                     <ul>
-                        <li><label>Servo Motor Speed  <input type="range" rv-value="myArduino.servoValue" rv-on-change="myArduino.changeServo" min="0" max="10"> </label></li>
-                       <li><label>LED Color Picker  <input type="color" rv-value="myArduino.rgbValue" rv-on-change="myArduino.changeRgb" name="favcolor"> </label></li>
-                        <li><label>Turn ON / Off LED  <input type="checkbox" rv-value="myArduino.ledValue" name="ledstatus" rv-on-change="myArduino.changeLed"> </label></li>
+                        <li><div class="radio">
+                                <label><input type="radio" name="optradio">Servo Motor ON</label>
+                            </div>
+                            <div class="radio">
+                                <label><input type="radio" name="optradio">Servo Motor OFF</label>
+                            </div>
+                        </li>
+                        <li><label>LED Color Picker  <input type="color" rv-value="myArduino.rgbValue" rv-on-change="myArduino.changeRgb" name="favcolor"> </label></li>
+                        <li><label>Turn ON / Off LED  <input type="checkbox" rv-value="myArduino.ledValue" name="ledstatus" rv-checked="myArduino.changeLed"> </label></li>
                         <li><label>LCD Text<input type="text" id="textValue" rv-value="myArduino.textValue" class="form-control" rv-on-change="myArduino.changeText"> </label></li>
                         <li><label>LCD Face
                             <select class="form-control" id="faceValue" rv-value="myArduino.faceValue" rv-on-change="myArduino.changeFace">
@@ -233,10 +261,13 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-12 text-center"><br><br>
-        <p class="animateblock">Please enter your first and last name above if you wish to control the Arduino I have connected in my home.  You will also have to click the checkbox to verify you are not a bot.  Once you do this, you will have access to my LCD display, Motors, multiple RGB LEDs, and even my webcam.    </p>
-        <p class="animateblock">If you do not wish to gain access to my Arduino, then you can still just view live (read-only) data coming from the Arduino. However, if you are viewing this site on your mobile device and are not connected to a local area network,  it is very possible that you could incure data charges from your service provider as information on this site is constantly being updated and downloaded to your phone (no different then Facebook really).  Thanks and enjoy! </p>
-    </div>
+
+        <div class="row">
+            <div class="col-lg-12 text-center"><br><br>
+            <p class="animateblock">Please enter your first and last name above if you wish to control the Arduino I have connected in my home.  You will also have to click the checkbox to verify you are not a bot.  Once you do this, you will have access to my LCD display, Motors, multiple RGB LEDs, and even my webcam.    </p>
+            <p class="animateblock">If you do not wish to gain access to my Arduino, then you can still just view live (read-only) data coming from the Arduino. However, if you are viewing this site on your mobile device and are not connected to a local area network,  it is very possible that you could incure data charges from your service provider as information on this site is constantly being updated and downloaded to your phone (no different then Facebook really).  Thanks and enjoy! </p>
+            </div>
+        </div>
 </section>
 
 <!-- Contact Section -->

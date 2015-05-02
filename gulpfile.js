@@ -23,10 +23,10 @@ var gulp = require('gulp'),
     nodeInspector = require('gulp-node-inspector');
 
 // default gulp task
-gulp.task('default', ['jshint','ugly-lanteka','minify-html', 'less'], function() {
+gulp.task('default', ['jshint','minify-html', 'less'], function() {
     gulp.watch('./src/less/*.less', ['less']);   // watching for file changes
     gulp.watch('./src/html/*.html', ['minify-html']);   // watching for file changes
-    gulp.watch('./src/js/*.js',['jshint','ugly-lanteka']);   // watching for file changes
+    gulp.watch('./src/js/*.js',['jshint']);   // watching for file changes
 });
 
 gulp.task('home', function () {
@@ -48,7 +48,7 @@ gulp.task('online', function () {
     nodemon({ script: 'online.js',
             ext: 'html js less',
             ignore: ['node_modules/**', 'Public'],
-            tasks: ['jshint','ugly-lanteka','minify-html','less']
+            tasks: ['jshint','minify-html','less']
      })
 })
 
@@ -99,12 +99,9 @@ gulp.task('jshint', function() {
     gulp.src('./src/js/lanteka.js')
       .pipe(jshint())
       .pipe(jshint.reporter('default'));
-});
-
-gulp.task('ugly-lanteka', function() {
-    gulp.src(['./src/js/lanteka.js'])
+    gulp.src(['./src/js/*.js'])
       .pipe(gulp.dest('./Public/js/'));
-}); //     .pipe(stripDebug())
+});   //.pipe(stripDebug())
 
 gulp.task('minify-html', function() {
     var opts = {
@@ -116,7 +113,7 @@ gulp.task('minify-html', function() {
       .pipe(gulp.dest('./views/'));
 });
 
-gulp.task('less', ['less:freelancer', 'less:mixins','less:variables', 'less:animations','styles']);
+gulp.task('less', ['less:freelancer', 'less:mixins','less:variables', 'less:animations','styles', 'bootstrap']);
 
 gulp.task('less:freelancer', function() {
     return gulp.src('./src/less/freelancer.less')

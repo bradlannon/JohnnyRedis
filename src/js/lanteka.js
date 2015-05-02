@@ -44,6 +44,12 @@ var myArduino = {
     textValue : 'hello world',
     faceValue :4,
     ledValue :1,
+    robotValue : true,
+    dontcheck1 : true,
+    dontcheck2 : true,
+    dontcheck3 : false,
+    dontcheck4 : false,
+    showArduino : false,
     changeServo : function() {
         data = {myVal:  myArduino.servoValue};
         io.emit('servoValueChange', data);
@@ -60,13 +66,20 @@ var myArduino = {
        io.emit('faceValueChange', data);
     },
     changeText : function() {
+        console.log("sfdds");
         data = {myVal:  myArduino.textValue};
         io.emit('textValueChange', data);
     },
     changeLed : function() {
+        console.log("sfdsf");
+        return true;
+    },
+    changeLed2 : function() {
+        console.log("fdsfa");
         data = {myVal: myArduino.ledValue};
         io.emit('ledValueChange', data);
     },
+    changeLed3 : true,
     changeRobot : function() {
         if (document.getElementById("robotValue").value == 'on') {
             myArduino.myNameValueChange();
@@ -121,6 +134,14 @@ var myArduino = {
         if (nameLength >= 5 ) {
             myArduino.getInfoAndShow();
         }
+    },
+    showArduinoData : function() {
+        myArduino.showArduino  = true;  //when user clicks on 'yes'
+        myArduino.enableButtons();
+    },
+    hideArduinoData : function() {
+        myArduino.showArduino  = false;  //when user clicks on 'yes'
+        myArduino.disableButtons();
     },
     getInfoAndShow : function() {
        if ($('#robotValue').is(':checked')) {
