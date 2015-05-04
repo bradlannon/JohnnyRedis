@@ -177,7 +177,7 @@
 <section class="success" id="arduino">
     <div class="container">
         <div class="row">
-            <div class="col-lg-12 text-center">
+            <div class="col-lg-12 text-center animateblock">
                 <h2>Arduino</h2>
                 <hr class="star-light">
             </div>
@@ -196,20 +196,14 @@
         </div>
 
         <div class="row">
-            <div class="col-lg-12 animateblock btm">
-                <img src="img/arduino.png" data-1x="img/arduino.png" data-2x="img/arduino.png" class="hisrc img-responsive center-block" />
+            <div class="col-lg-12 animateblock btm" id="camPicture">
+                <img src="img/arduino.png" data-1x="img/arduino.png" data-2x="img/arduino.png" class="hisrc img-responsive center-block" id="arduinoImage" />
             </div>
         </div>
 
         <div class="row">
-            <div class="col-lg-12">
-               <canvas id="myCanvas" width="300" height="300" style="border:1px solid #000000; background-color #000022"></canvas>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-6 text-center" rv-show="myArduino.showArduino" id="myReadable">
-                <h4>Readable Values</h4>
+            <div class="col-lg-6 text-center animateblock" id="myReadable">
+                <h3>Readable Values</h3>
                 <ul>
                     <li>Photoresistor: { myArduino.photoValue }</li>
                     <li>Potentiometer: { myArduino.potValue }</li>
@@ -220,20 +214,19 @@
 
 
 
-            <div class="col-lg-6 text-center" rv-show="myArduino.showArduino" id="myWritable">
-                <h4>Writable Values</h4>
+            <div class="col-lg-6 text-center" id="myWritable">
+                <h3>Writable Values</h3>
 
-                <div id="confirmHuman" class="center-block removeme">
+                <div id="confirmHuman" class="center-block">
                     <ul>
-                        <li><label><input type="text" id="nameValue" class="form-control" placeholder="Please enter your name to take control!" size="35"></label></li>
-                        <li><input type="checkbox" rv-checked="dontcheck1" class="hideme"> <input type="checkbox" rv-checked="dontcheck2" class="hideme"></li>
-                        <li><label>I am not a robot <input type="checkbox" rv-checked="robotValue" name="robotstatus"><input type="checkbox" rv-checked="dontcheck3" class="hideme">
-                        <input type="checkbox" rv-checked="dontcheck4" class="hideme"></label></li>
+                        <li><input type="checkbox" id="chk1" rv-checked="dontcheck1" class="hideme"> <input type="checkbox" id="chk2" rv-checked="dontcheck2" class="hideme"> </li>
+                        <li><label><input type="text" id="nameValue" class="form-control" rv-on-change="myArduino.myNameValueChange" placeholder="To verify you're human, what does 1 + 1 equal?" size="34"></label> </li>
+                        <li><input type="checkbox" rv-checked="dontcheck3" id="chk3" class="hideme"> <input type="checkbox" id="chk4" rv-checked="dontcheck4" class="hideme"></label></li>
                     </ul>
                 </div>
 
 
-                <div id="isHuman">
+                <div id="isHuman" class="blur">
                     <ul>
                         <li><div class="radio">
                                 <label><input type="radio" name="optradio">Servo Motor ON</label>

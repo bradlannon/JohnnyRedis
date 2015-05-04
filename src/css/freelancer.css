@@ -73,6 +73,7 @@ hr.star-primary:after {
 }
 .removeme {
   display: none;
+  visibility: hidden;
 }
 .img-centered {
   margin: 0 auto;

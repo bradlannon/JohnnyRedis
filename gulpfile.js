@@ -50,6 +50,11 @@ gulp.task('online', function () {
             ignore: ['node_modules/**', 'Public'],
             tasks: ['jshint','minify-html','less']
      })
+    .on('restart', function () {
+      setTimeout(function() {
+            require('fs').writeFileSync('.rebooted', 'rebooted');
+          }, 6000);
+    })
 })
 
 // not working used yet

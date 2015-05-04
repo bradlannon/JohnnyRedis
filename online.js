@@ -34,7 +34,8 @@ var redis = require('redis'),
     senderName = '',
     senderEmail = '',
     senderPhone = '',
-    senderMessage = '';
+    senderMessage = '',
+    usersOnline = 0;
 
 clientPub = redis.createClient(myCredentials.myPort, myCredentials.myDB);
 clientPub.auth(myCredentials.myAuth);
@@ -131,6 +132,10 @@ app.io.route('getInitialValues', function(req) {
         myFace: myFace,
         myText: myText
     });
+    clientPub.publish("userConnected", 1);
+    usersOnline++;
+    console.log(usersOnline + " users online");
+    clientPub.publish("faceValue", myFace);
 });
 
 
@@ -184,6 +189,17 @@ app.io.route('getReadOnlyValues', function(req) {
         myMotion: myMotion,
     });
 });
+
+
+app.io.route('disconnect', function(req) {
+    usersOnline--;
+    console.log(usersOnline + " users online");
+    if (usersOnline === 0) {
+        clientPub.publish("faceValue", 1);
+    }
+});
+
+
 
 setInterval(function(){
     writeToRedis();
