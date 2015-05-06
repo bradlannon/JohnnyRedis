@@ -115,6 +115,14 @@ hr.star-primary:after {
 #myWritable2 select {
   width: 300px;
 }
+#textValue {
+  width: 320px;
+}
+#camPicture {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 header {
   text-align: center;
   background: #9c8a66;

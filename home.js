@@ -19,13 +19,16 @@ var five = require('johnny-five'),
     pinR = 2,                       // works but add lower resistor
     pinG = 3,                       // works
     pinB = 4,                       // works
-    pinPing=25,
-    pinMotion = 13,
     pinPiezo = 7,                   // works but crackily
     pinServo1 = 9,
-    pinLedEyeL = 23,                // works
+    pin2R = 9,                       // works..
+    pin2G = 10,                       // works..
+    pin2B = 11,                       // works..
+    pinMotion = 13,
     pinLedEyeR = 22,                // works
+    pinLedEyeL = 23,                // works
     pinLedWeb = 24,                 // works
+    pinPing=25,
     toggleWeb = true,
     myPot = 0,
     myPhoto = 0,
@@ -43,6 +46,7 @@ var five = require('johnny-five'),
     myPiezo = 1,
     myLed = 1,
     myText = '',
+    myWebcamValue = "mediastream:http://simpl.info/90cfcc76-740d-4610-a776-7902690b0967",
     myCredentials = require("./credentials.js"),
     boardLCD = new five.Board({ port: "COM11" }),
     boardMEGA = new five.Board({ port: "COM12" });
@@ -88,17 +92,26 @@ clientSub.on("message", function (channel, message) {
       } else if (channel == 'nameValue') {
           console.log("Received nameValue:" + message);
           myName = message;
-      } 
+      }
 });
 
 
 boardMEGA.on("ready", function() {
-  console.log("connected to Arduino MEGA on COM12");
+  clientPub.publish('webcamValue', myWebcamValue );
+  console.log("connected to Arduino MEGA on COM12" + "/n" + "connected to " + myWebcamValue);
   var led = new five.Led.RGB({
     pins: {
       red: pinR,
       green: pinG,
       blue: pinB
+    }, board: boardMEGA
+  });
+
+  var led2 = new five.Led.RGB({
+    pins: {
+      red: 8,
+      green: 9,
+      blue: 10
     }, board: boardMEGA
   });
 
@@ -117,6 +130,7 @@ boardMEGA.on("ready", function() {
     button: button,
     piezo: piezo,
     led: led,
+    led2: led2,
     ledEyeR: ledEyeR,
     ledEyeL: ledEyeL,
   //  ping:ping,
@@ -177,10 +191,20 @@ boardMEGA.on("ready", function() {
 
   setInterval(function(){
     if (myLed == 1) {
+
+        ledEyeR.on();
+        ledEyeL.on();
+        ledWebActivated.on();
         led.on();
         led.color(myRGB);
+        led2.on();
+        led2.color(myRGB);
     } else {
         led.off();
+        ledEyeR.off();
+        ledEyeL.off();
+        ledWebActivated.off();
+
     }
 
     // WEB ACTIVATED //
@@ -222,12 +246,12 @@ try {
      setInterval(function(){
     if (myPot!=myPotOld) {
     //  console.log("myPot changed " + myPot);
-      clientPub.publish('potValue', myPot ); 
+      clientPub.publish('potValue', myPot );
     }
     myPot=myPotOld;
 
     if (myPhoto!=myPhotoOld) {
-      clientPub.publish('photoValue', myPhoto ); 
+      clientPub.publish('photoValue', myPhoto );
     }
     myPhoto=myPhotoOld;
   }, 10000);  // change to something logical
@@ -236,8 +260,8 @@ try {
     console.error(e);
 }
 
-      
- 
+
+
 });
 
 
@@ -387,9 +411,9 @@ boardTMP.on("ready", function() {
   console.log("connected to Arduino TMP on COM9");
   var ledTest = new five.Led.RGB({
     pins: {
-      red: 9,
-      green: 10,
-      blue: 11
+      red: pin2R,
+      green: pin2G,
+      blue: pin2B
     }, board: boardTMP
   });
         ledTest.on();

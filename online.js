@@ -9,6 +9,7 @@ app = express().http().io();
 var redis = require('redis'),
     myCredentials = require("./credentials.js"),
     nodemailer = require('nodemailer'),
+    myLink = "<video src='mediastream:http://simpl.info/90cfcc76-740d-4610-a776-7902690b0967'></video>",
     myLed = 0,
     myLedOld = 0,
     myLcd=10,
@@ -17,8 +18,8 @@ var redis = require('redis'),
     myMotionOld = 0,
     myServo = 1,
     myServoOld = 1,
-    myText = "text",
-    myTextOld = "text",
+    myText = "",
+    myTextOld = "",
     myFace = 10,
     myFaceOld = 10,
     myName = "brad",
@@ -50,6 +51,8 @@ clientSub.subscribe("toggleValue");
 clientSub.subscribe("photoValue");
 clientSub.subscribe("potValue");
 clientSub.subscribe("pingValue");
+clientSub.subscribe("webcamValue");
+
 
 clientSub.on("message", function (channel, message) {
     if (channel == 'motionValue') {
@@ -67,10 +70,13 @@ clientSub.on("message", function (channel, message) {
         app.io.broadcast('displayPhotoValue',myPhoto);
     } else if (channel == 'pingValue') {
         myPing = message;
-       app.io.broadcast('displayPingValue',myPing);
+        app.io.broadcast('displayPingValue',myPing);
+    } else if (channel == 'webcamValue') {
+         webcamLink = message;
+         req.io.broadcast('newWebcamLink',myLink);
     } else if (channel == 'potValue') {
-        myPot = message;
-        app.io.broadcast('displayPotValue',myPot);
+         myPot = message;
+         app.io.broadcast('displayPotValue',myPot);
     }
 });
 

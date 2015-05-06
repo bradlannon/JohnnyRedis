@@ -41,7 +41,7 @@ var myArduino = {
     rgbValue : '#FF0000',
     servoValue : 0,
     motionValue : 0,
-    textValue : 'hello world',
+    textValue : '',
     faceValue :4,
     ledValue :1,
     robotValue : true,
@@ -50,6 +50,8 @@ var myArduino = {
     dontcheck3 : false,
     dontcheck4 : false,
     enableArduino : false,
+    webcamValue : 'mediastream:http://simpl.info/d17c77b5-93b1-458b-afd8-ce3bb02b2664',
+    changeLed3 : true,
     changeServo : function() {
         data = {myVal:  myArduino.servoValue};
         io.emit('servoValueChange', data);
@@ -66,20 +68,16 @@ var myArduino = {
        io.emit('faceValueChange', data);
     },
     changeText : function() {
-        console.log("sfdds");
         data = {myVal:  myArduino.textValue};
         io.emit('textValueChange', data);
     },
     changeLed : function() {
-        console.log("sfdsf");
         return true;
     },
     changeLed2 : function() {
-        console.log("fdsfa");
         data = {myVal: myArduino.ledValue};
         io.emit('ledValueChange', data);
     },
-    changeLed3 : true,
     changeRobot : function() {
         if (document.getElementById("robotValue").value == 'on') {
             myArduino.myNameValueChange();
@@ -93,6 +91,8 @@ var myArduino = {
         $('#piezoValue').prop('disabled', false);
         $('#webcamValue').prop('disabled', false);
         $('#faceValue').prop('disabled', false);
+
+
       //  $('#confirmHuman').hide("slow");
       //  $('#nameValue').hide("slow");
     },
@@ -122,17 +122,17 @@ var myArduino = {
             $('#message').prop('disabled', false);
         }, 3000);
     },
-    myNameValueChange : function() {
-        var answer = $("#nameValue").val();
+    myAnswerValueChange : function() {
+        var answer = $("#answerValue").val();
 
         if (answer == 2) {
             //myArduino.getInfoAndShow();
 
            $("#confirmHuman").hide("slow");
            $("#isHuman").removeClass('blur');
-           $("#myWebcam").attr("src", "mediastream:http://simpl.info/d17c77b5-93b1-458b-afd8-ce3bb02b2664");
+           $("#myWebcam").attr("src", myArduino.myWebcamLink);
            $("#myWebcam").attr("autoreplay", "");
-           $("#camPicture").html("<video src='mediastream:http://simpl.info/d17c77b5-93b1-458b-afd8-ce3bb02b2664' autoplay=''></video>");
+           $("#camPicture").html("<video src='mediastream:http://simpl.info/d17c77b5-93b1-458b-afd8-ce3bb02b2664'></video>");
 
         // var chk1 = $("#chk1").is(":checked");
         // var chk2 = $("#chk2").is(":checked");
@@ -145,6 +145,11 @@ var myArduino = {
         myArduino.enableArduino  = true;  //when user clicks on 'yes'
         myArduino.enableButtons();
         $('#myWritable').show("slow");
+
+          var v = document.getElementsByTagName("camPicture")[0];
+        v.play();
+        $('#myReadable').removeClass("col-lg-12");
+        $('#myReadable').addClass("col-lg-6");
     },
     hideArduinoData : function() {
         myArduino.showArduino  = false;  //when user clicks on 'no'
@@ -153,7 +158,8 @@ var myArduino = {
         $('#arduinoImage').show("slow");
         $('#myCanvas').hide("slow");
         $("#camPicture").html("<img src='img/arduino.png' data-1x='img/arduino.png' data-2x='img/arduino.png' class='hisrc img-responsive center-block' id='arduinoImage' />");
-
+  $('#myReadable').removeClass("col-lg-6");
+ $('#myReadable').addClass("col-lg-12");
     },
     getInfoAndShow : function() {
        if ($('#robotValue').is(':checked')) {
@@ -231,6 +237,11 @@ io.on('displayMotionValue', function(data) {
 io.on('displayPushValue', function(data) {
     myArduino.pushValue = data;
 });
+
+io.on('newWebcamLink', function(data) {
+    myArduino.webcamValue = data;
+});
+
 
 io.on('displayPhotoValue', function(data) {
     myArduino.photoValue = data;

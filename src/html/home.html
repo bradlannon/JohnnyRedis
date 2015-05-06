@@ -196,12 +196,12 @@
         </div>
 
         <div class="row">
-            <div class="col-lg-12 animateblock btm center-block" id="camPicture">
+            <div class="col-lg-12 animateblock btm" id="camPicture">
                 <img src="img/arduino.png" data-1x="img/arduino.png" data-2x="img/arduino.png" class="hisrc img-responsive center-block" id="arduinoImage" />
             </div>
         </div>
 
-        <div class="row center-block">
+        <div class="row">
             <div class="col-lg-6 text-center animateblock" id="myReadable">
                 <h3>Readable Values</h3>
                 <ul>
@@ -212,13 +212,13 @@
                 </ul>
             </div>
 
-            <form class="col-lg-6 text-center" id="myWritable">
+            <div class="col-lg-6 text-center" id="myWritable">
                 <h3>Writable Values</h3>
 
                 <div id="confirmHuman" class="center-block">
                     <ul>
                         <li><input type="checkbox" id="chk1" rv-checked="dontcheck1" class="hideme"> <input type="checkbox" id="chk2" rv-checked="dontcheck2" class="hideme"> </li>
-                        <li><label><input type="text" id="answerValue" class="form-control" rv-on-change="myArduino.myAnswerValueChange" placeholder="To verify you're human, what does 1 + 1 equal?" size="34"></label> </li>
+                        <li><label><input type="text" id="nameValue" class="form-control" rv-on-change="myArduino.myNameValueChange" placeholder="To verify you're human, what does 1 + 1 equal?" size="34"></label> </li>
                         <li><input type="checkbox" rv-checked="dontcheck3" id="chk3" class="hideme"> <input type="checkbox" id="chk4" rv-checked="dontcheck4" class="hideme"></label></li>
                     </ul>
                 </div>
@@ -226,33 +226,17 @@
 
                 <div id="isHuman" class="blur">
                     <ul>
-                        <li>
-                            <div class="control-group">
-                                    <label class="control-label">Servo Motor</label>
-                                    <div class="controls">
-                                        <label class="radio inline">
-                                            <input type="radio" value="2" rv-on-change="myArduino.changeServo" />
-                                            On
-                                        </label>
-                                        <label class="radio inline">
-                                            <input type="radio" value="1" rv-on-change="myArduino.changeServo"/>
-                                            Off
-                                        </label>
-                                    </div>
-                                </div>
+                        <li><div class="radio">
+                                <label><input type="radio" name="optradio">Servo Motor ON</label>
+                            </div>
+                            <div class="radio">
+                                <label><input type="radio" name="optradio">Servo Motor OFF</label>
+                            </div>
                         </li>
                         <li><label>LED Color Picker  <input type="color" rv-value="myArduino.rgbValue" rv-on-change="myArduino.changeRgb" name="favcolor"> </label></li>
                         <li><label>Turn ON / Off LED  <input type="checkbox" rv-value="myArduino.ledValue" name="ledstatus" rv-checked="myArduino.changeLed"> </label></li>
-
-                        <li>
-                            <div class="form-group center-block">
-                                <label for="inputPassword3" class="col-sm-2 control-label">LCD-Text</label>
-                                <div class="col-sm-10">
-                                 <input type="text" id="textValue" maxlength="32" rv-value="myArduino.textValue" class="form-control" rv-on-change="myArduino.changeText" placeholder="I will see this on my 16x2 LCD in my room!!">
-                                </div>
-                              </div>
-                        </li>
-                        <!-- <li><label>LCD Face
+                        <li><label>LCD Text<input type="text" id="textValue" rv-value="myArduino.textValue" class="form-control" rv-on-change="myArduino.changeText"> </label></li>
+                        <li><label>LCD Face
                             <select class="form-control" id="faceValue" rv-value="myArduino.faceValue" rv-on-change="myArduino.changeFace">
                                   <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
                                   <option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option>
@@ -263,10 +247,10 @@
                                   <option>37</option><option>38</option><option>39</option>
                             </select>
                             </label>
-                        </li> -->
+                        </li>
                     </ul>
                 </div>
-            </form>
+            </div>
         </div>
 
         <div class="row">

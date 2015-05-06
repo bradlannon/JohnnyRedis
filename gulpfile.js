@@ -25,7 +25,7 @@ var gulp = require('gulp'),
 // default gulp task
 gulp.task('default', ['jshint','minify-html', 'less'], function() {
     gulp.watch('./src/less/*.less', ['less']);   // watching for file changes
-    gulp.watch('./src/html/*.html', ['minify-html']);   // watching for file changes
+    gulp.watch('./src/html/index.html', ['minify-html']);   // watching for file changes
     gulp.watch('./src/js/*.js',['jshint']);   // watching for file changes
 });
 
@@ -33,7 +33,7 @@ gulp.task('home', function () {
     nodemon({ script: 'home.js',
             ext: 'html js',
             ignore: ['node_modules/**'],
-            tasks: ['lint']
+            tasks: ['lintHome']
              })
     .on('restart', function () {
       console.log('restarted Home Server!');
@@ -113,7 +113,7 @@ gulp.task('minify-html', function() {
       conditionals: true,
       spare:true
     };
-    return gulp.src('./src/html/*.html')
+    return gulp.src('./src/html/index.html')
       .pipe(minifyHTML(opts))
       .pipe(gulp.dest('./views/'));
 });
@@ -172,6 +172,9 @@ gulp.task('images', function(){
 ///////////////////////////////////////////////////
 
 gulp.task('lintHome', function () {
-    gulp.src('home.js')
-      .pipe(jshint())
+  //  gulp.src('home.js')
+  //    .pipe(jshint())
+          return gulp.src('./src/html/home.html')
+      .pipe(minifyHTML(opts))
+      .pipe(gulp.dest('./views/'));
 })

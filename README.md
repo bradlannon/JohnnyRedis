@@ -15,7 +15,7 @@ Redis is the middle man between the two node.js servers for communication becaus
 #### To start, first install the node package manager (npm).
 
 
-##### In terminal or command line run: 
+##### In terminal or command line run:
 * npm install
 
 ##### You may have to install some global node modules using:
@@ -27,15 +27,20 @@ Redis is the middle man between the two node.js servers for communication becaus
 ##### To run home server:
 * gulp home
 
-**You also have to have a redis account.** 
+##### Get camera  WebRTC stream from:
+
+* http://simpl.info/getusermedia/
+
+
+**You also have to have a redis account.**
 [Visit redistogo](http://redistogo.com/)  for a free account and don't forget to add the database information in credential.js. **
 
 
 ##### ARDUINO MEGA PINS:
 * Photoresistor (A0) works
-* RGB (2,3,4) works but add lower resistor on red             
+* RGB (2,3,4) works but add lower resistor on red
 * Piezo (7) works but crackily
-* LED1 (23) works                      
+* LED1 (23) works
 * LED2 (22) works
 * LED3 (24) works
 * Button (25) works
@@ -44,4 +49,5 @@ Redis is the middle man between the two node.js servers for communication becaus
 * LCD Screen
 
 ##### ARDUINO Dec. PINS:
-* RGB (9,10,11) works but add lower resistor on red 
+* RGB (9,10,11) works but add lower resistor on red
+
