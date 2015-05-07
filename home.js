@@ -19,16 +19,13 @@ var five = require('johnny-five'),
     pinR = 2,                       // works but add lower resistor
     pinG = 3,                       // works
     pinB = 4,                       // works
-    pinPiezo = 7,                   // works but crackily
-    pinServo1 = 9,
-    pin2R = 9,                       // works..
-    pin2G = 10,                       // works..
-    pin2B = 11,                       // works..
-    pinMotion = 13,
-    pinLedEyeR = 22,                // works
-    pinLedEyeL = 23,                // works
-    pinLedWeb = 24,                 // works
     pinPing=25,
+    pinMotion = 13,
+    pinPiezo = 7,                   // works but crackily
+    pinServo1 = 12,
+    pinLedEyeL = 23,                // works
+    pinLedEyeR = 22,                // works
+    pinLedWeb = 24,                 // works
     toggleWeb = true,
     myPot = 0,
     myPhoto = 0,
@@ -41,12 +38,11 @@ var five = require('johnny-five'),
     myMotion = 0,
     myPingOld = 0,
     myMotionOld = 0,
-    myFace = 4,
+    myFace = 1,
     myRGB = '#00FFDD',
     myPiezo = 1,
     myLed = 1,
     myText = '',
-    myWebcamValue = "mediastream:http://simpl.info/90cfcc76-740d-4610-a776-7902690b0967",
     myCredentials = require("./credentials.js"),
     boardLCD = new five.Board({ port: "COM11" }),
     boardMEGA = new five.Board({ port: "COM12" });
@@ -97,8 +93,7 @@ clientSub.on("message", function (channel, message) {
 
 
 boardMEGA.on("ready", function() {
-  clientPub.publish('webcamValue', myWebcamValue );
-  console.log("connected to Arduino MEGA on COM12" + "/n" + "connected to " + myWebcamValue);
+  console.log("connected to Arduino MEGA on COM12");
   var led = new five.Led.RGB({
     pins: {
       red: pinR,
@@ -138,9 +133,7 @@ boardMEGA.on("ready", function() {
     pot: potentiometer
   });
 
-  ledEyeR.on();
-  ledEyeL.on();
-  ledWebActivated.on();
+ledWebActivated.on();
 
   button.on("down", function() {
     myPush = 1;
@@ -194,7 +187,7 @@ boardMEGA.on("ready", function() {
 
         ledEyeR.on();
         ledEyeL.on();
-        ledWebActivated.on();
+
         led.on();
         led.color(myRGB);
         led2.on();
@@ -203,8 +196,6 @@ boardMEGA.on("ready", function() {
         led.off();
         ledEyeR.off();
         ledEyeL.off();
-        ledWebActivated.off();
-
     }
 
     // WEB ACTIVATED //
@@ -242,23 +233,23 @@ boardMEGA.on("ready", function() {
     myPushOld = myPush;
   }, 1000);
 
-try {
-     setInterval(function(){
-    if (myPot!=myPotOld) {
-    //  console.log("myPot changed " + myPot);
-      clientPub.publish('potValue', myPot );
-    }
-    myPot=myPotOld;
+  try {
+       setInterval(function(){
+      if (myPot!=myPotOld) {
+      //  console.log("myPot changed " + myPot);
+        clientPub.publish('potValue', myPot );
+      }
+      myPot=myPotOld;
 
-    if (myPhoto!=myPhotoOld) {
-      clientPub.publish('photoValue', myPhoto );
-    }
-    myPhoto=myPhotoOld;
-  }, 10000);  // change to something logical
-} catch(e) {
-    getDateTime();
-    console.error(e);
-}
+      if (myPhoto!=myPhotoOld) {
+        clientPub.publish('photoValue', myPhoto );
+      }
+      myPhoto=myPhotoOld;
+    }, 10000);  // change to something logical
+  } catch(e) {
+      getDateTime();
+      console.error(e);
+  }
 
 
 
@@ -275,128 +266,133 @@ boardLCD.on("ready", function() {
   });
   try {
     setInterval(function(){
-      if (myFace==0) {
-        p.useChar("circle");
-        p.cursor(0, 0).print("   --      --");
-        p.cursor(1, 0).print("    :circle:      :circle:");
-      } else if (myFace==1) {
-        p.cursor(0, 0).print("   --      --");
-        p.cursor(1, 0).print("    -      -");
-      } else if (myFace==2) {
-        p.useChar("x");
-        p.cursor(0, 0).print("   --      --");
-        p.cursor(1, 0).print("    :x:      :x:");
-      } else if (myFace==3) {
-        p.useChar("sound");
-        p.cursor(0, 0).print("   --      --");
-        p.cursor(1, 0).print("    :sound:      :sound:");
-      } else if (myFace==4) {
-        p.useChar("heart");
-        p.cursor(0, 0).print("   --      --");
-        p.cursor(1, 0).print("    :heart:      :heart:");
-      } else if (myFace==5) {
-        p.useChar("cdot");
-        p.cursor(0, 0).print("   --      --");
-        p.cursor(1, 0).print("    :cdot:      :cdot:");
-      } else if (myFace==6) {
-        p.useChar("ball");
-        p.cursor(0, 0).print("   --      --");
-        p.cursor(1, 0).print("    :ball:      :ball:");
-      } else if (myFace==7) {
-        p.useChar("cent");
-        p.cursor(0, 0).print("   --      --");
-        p.cursor(1, 0).print("    :cent:      :cent:");
-      } else if (myFace==8) {
-        p.useChar("donut");
-        p.cursor(0, 0).print("   --      --");
-        p.cursor(1, 0).print("    :donut:      :donut:");
-      } else if (myFace==9) {
-        p.useChar("euro");
-        p.cursor(0, 0).print("   --      --");
-        p.cursor(1, 0).print("    :euro:      :euro:");
-      } else if (myFace==10) {
-        p.useChar("circle");
-        p.cursor(0, 0).print("   /        \\");
-        p.cursor(1, 0).print("    :circle:      :circle:");
-      } else if (myFace==11) {
-        p.cursor(0, 0).print("   /        \\");
-        p.cursor(1, 0).print("    -      -");
-      } else if (myFace==12) {
-        p.useChar("x");
-        p.cursor(0, 0).print("   /        \\");
-        p.cursor(1, 0).print("    :x:      :x:");
-      } else if (myFace==13) {
-        p.useChar("sound");
-        p.cursor(0, 0).print("   /        \\");
-        p.cursor(1, 0).print("    :sound:      :sound:");
-      } else if (myFace==14) {
-        p.useChar("heart");
-        p.cursor(0, 0).print("   /        \\");
-        p.cursor(1, 0).print("    :heart:      :heart:");
-      } else if (myFace==15) {
-        p.useChar("cdot");
-        p.cursor(0, 0).print("   /        \\");
-        p.cursor(1, 0).print("    :cdot:      :cdot:");
-      } else if (myFace==16) {
-        p.useChar("ball");
-        p.cursor(0, 0).print("   /        \\");
-        p.cursor(1, 0).print("    :ball:      :ball:");
-      } else if (myFace==17) {
-        p.useChar("cent");
-        p.cursor(0, 0).print("   /        \\");
-        p.cursor(1, 0).print("    :cent:      :cent:");
-      } else if (myFace==18) {
-        p.useChar("donut");
-        p.cursor(0, 0).print("   /        \\");
-        p.cursor(1, 0).print("    :donut:      :donut:");
-      } else if (myFace==19) {
-        p.useChar("euro");
-        p.cursor(0, 0).print("   --      --");
-        p.cursor(1, 0).print("    :euro:      :euro:");
-      } else if (myFace==20) {
-        p.useChar("circle");
-        p.cursor(0, 0).print("    \\      / ");
-        p.cursor(1, 0).print("    :circle:      :circle:");
-      } else if (myFace==21) {
-        p.cursor(0, 0).print("    \\      / ");
-        p.cursor(1, 0).print("    -      -");
-      } else if (myFace==22) {
-        p.useChar("x");
-        p.cursor(0, 0).print("    \\      / ");
-        p.cursor(1, 0).print("    :x:      :x:");
-      } else if (myFace==23) {
-        p.useChar("sound");
-        p.cursor(0, 0).print("    \\      / ");
-        p.cursor(1, 0).print("    :sound:      :sound:");
-      } else if (myFace==24) {
-        p.useChar("heart");
-        p.cursor(0, 0).print("    \\      / ");
-        p.cursor(1, 0).print("    :heart:      :heart:");
-      } else if (myFace==25) {
-        p.useChar("cdot");
-        p.cursor(0, 0).print("    \\      / ");
-        p.cursor(1, 0).print("    :cdot:      :cdot:");
-      } else if (myFace==26) {
-        p.useChar("ball");
-        p.cursor(0, 0).print("    \\      / ");
-        p.cursor(1, 0).print("    :ball:      :ball:");
-      } else if (myFace==27) {
-        p.useChar("cent");
-        p.cursor(0, 0).print("    \\      / ");
-        p.cursor(1, 0).print("    :cent:      :cent:");
-      } else if (myFace==28) {
-        p.useChar("donut");
-        p.cursor(0, 0).print("    \\      / ");
-        p.cursor(1, 0).print("    :donut:      :donut:");
-      } else if (myFace==29) {
-        p.useChar("euro");
-        p.cursor(0, 0).print("    \\      / ");
-        p.cursor(1, 0).print("    :euro:      :euro:");
-      } else if (myFace==30) {
-        p.useChar("circle");
-        p.cursor(0, 0).print("   --      --");
-        p.cursor(1, 0).print("    :circle:      :circle:");
-     }
+      if (myPush == 1) {
+        p.cursor(0, 0).print(myText);
+          p.cursor(1, 0).print(myText);
+      } else {
+          if (myFace==0) {
+            p.useChar("circle");
+            p.cursor(0, 0).print("   --      --");
+            p.cursor(1, 0).print("    :circle:      :circle:");
+          } else if (myFace==1) {
+            p.cursor(0, 0).print("   --      --");
+            p.cursor(1, 0).print("    -      -");
+          } else if (myFace==2) {
+            p.useChar("x");
+            p.cursor(0, 0).print("   --      --");
+            p.cursor(1, 0).print("    :x:      :x:");
+          } else if (myFace==3) {
+            p.useChar("sound");
+            p.cursor(0, 0).print("   --      --");
+            p.cursor(1, 0).print("    :sound:      :sound:");
+          } else if (myFace==4) {
+            p.useChar("heart");
+            p.cursor(0, 0).print("   --      --");
+            p.cursor(1, 0).print("    :heart:      :heart:");
+          } else if (myFace==5) {
+            p.useChar("cdot");
+            p.cursor(0, 0).print("   --      --");
+            p.cursor(1, 0).print("    :cdot:      :cdot:");
+          } else if (myFace==6) {
+            p.useChar("ball");
+            p.cursor(0, 0).print("   --      --");
+            p.cursor(1, 0).print("    :ball:      :ball:");
+          } else if (myFace==7) {
+            p.useChar("cent");
+            p.cursor(0, 0).print("   --      --");
+            p.cursor(1, 0).print("    :cent:      :cent:");
+          } else if (myFace==8) {
+            p.useChar("donut");
+            p.cursor(0, 0).print("   --      --");
+            p.cursor(1, 0).print("    :donut:      :donut:");
+          } else if (myFace==9) {
+            p.useChar("euro");
+            p.cursor(0, 0).print("   --      --");
+            p.cursor(1, 0).print("    :euro:      :euro:");
+          } else if (myFace==10) {
+            p.useChar("circle");
+            p.cursor(0, 0).print("   /        \\");
+            p.cursor(1, 0).print("    :circle:      :circle:");
+          } else if (myFace==11) {
+            p.cursor(0, 0).print("   /        \\");
+            p.cursor(1, 0).print("    -      -");
+          } else if (myFace==12) {
+            p.useChar("x");
+            p.cursor(0, 0).print("   /        \\");
+            p.cursor(1, 0).print("    :x:      :x:");
+          } else if (myFace==13) {
+            p.useChar("sound");
+            p.cursor(0, 0).print("   /        \\");
+            p.cursor(1, 0).print("    :sound:      :sound:");
+          } else if (myFace==14) {
+            p.useChar("heart");
+            p.cursor(0, 0).print("   /        \\");
+            p.cursor(1, 0).print("    :heart:      :heart:");
+          } else if (myFace==15) {
+            p.useChar("cdot");
+            p.cursor(0, 0).print("   /        \\");
+            p.cursor(1, 0).print("    :cdot:      :cdot:");
+          } else if (myFace==16) {
+            p.useChar("ball");
+            p.cursor(0, 0).print("   /        \\");
+            p.cursor(1, 0).print("    :ball:      :ball:");
+          } else if (myFace==17) {
+            p.useChar("cent");
+            p.cursor(0, 0).print("   /        \\");
+            p.cursor(1, 0).print("    :cent:      :cent:");
+          } else if (myFace==18) {
+            p.useChar("donut");
+            p.cursor(0, 0).print("   /        \\");
+            p.cursor(1, 0).print("    :donut:      :donut:");
+          } else if (myFace==19) {
+            p.useChar("euro");
+            p.cursor(0, 0).print("   --      --");
+            p.cursor(1, 0).print("    :euro:      :euro:");
+          } else if (myFace==20) {
+            p.useChar("circle");
+            p.cursor(0, 0).print("    \\      / ");
+            p.cursor(1, 0).print("    :circle:      :circle:");
+          } else if (myFace==21) {
+            p.cursor(0, 0).print("    \\      / ");
+            p.cursor(1, 0).print("    -      -");
+          } else if (myFace==22) {
+            p.useChar("x");
+            p.cursor(0, 0).print("    \\      / ");
+            p.cursor(1, 0).print("    :x:      :x:");
+          } else if (myFace==23) {
+            p.useChar("sound");
+            p.cursor(0, 0).print("    \\      / ");
+            p.cursor(1, 0).print("    :sound:      :sound:");
+          } else if (myFace==24) {
+            p.useChar("heart");
+            p.cursor(0, 0).print("    \\      / ");
+            p.cursor(1, 0).print("    :heart:      :heart:");
+          } else if (myFace==25) {
+            p.useChar("cdot");
+            p.cursor(0, 0).print("    \\      / ");
+            p.cursor(1, 0).print("    :cdot:      :cdot:");
+          } else if (myFace==26) {
+            p.useChar("ball");
+            p.cursor(0, 0).print("    \\      / ");
+            p.cursor(1, 0).print("    :ball:      :ball:");
+          } else if (myFace==27) {
+            p.useChar("cent");
+            p.cursor(0, 0).print("    \\      / ");
+            p.cursor(1, 0).print("    :cent:      :cent:");
+          } else if (myFace==28) {
+            p.useChar("donut");
+            p.cursor(0, 0).print("    \\      / ");
+            p.cursor(1, 0).print("    :donut:      :donut:");
+          } else if (myFace==29) {
+            p.useChar("euro");
+            p.cursor(0, 0).print("    \\      / ");
+            p.cursor(1, 0).print("    :euro:      :euro:");
+          } else if (myFace==30) {
+            p.useChar("circle");
+            p.cursor(0, 0).print("   --      --");
+            p.cursor(1, 0).print("    :circle:      :circle:");
+          }
+       }
     }, 1000);
   } catch(e) {
       getDateTime();
@@ -411,9 +407,9 @@ boardTMP.on("ready", function() {
   console.log("connected to Arduino TMP on COM9");
   var ledTest = new five.Led.RGB({
     pins: {
-      red: pin2R,
-      green: pin2G,
-      blue: pin2B
+      red: 9,
+      green: 10,
+      blue: 11
     }, board: boardTMP
   });
         ledTest.on();

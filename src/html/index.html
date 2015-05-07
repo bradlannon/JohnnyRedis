@@ -196,13 +196,14 @@
         </div>
 
         <div class="row">
-            <div class="col-lg-12 animateblock btm center-block" id="camPicture">
+            <div class="col-lg-12 animateblock" id="camPicture">
+      <!--        animateblock btm text-center -->
                 <img src="img/arduino.png" data-1x="img/arduino.png" data-2x="img/arduino.png" class="hisrc img-responsive center-block" id="arduinoImage" />
             </div>
         </div>
 
-        <div class="row center-block">
-            <div class="col-lg-6 text-center animateblock" id="myReadable">
+        <div class="row">
+            <form class="col-lg-12 text-center animateblock" id="myReadable">
                 <h3>Readable Values</h3>
                 <ul>
                     <li>Photoresistor: { myArduino.photoValue }</li>
@@ -210,9 +211,9 @@
                     <li>Ping Sensor: { myArduino.pingValue }</li>
                     <li>Push Button: { myArduino.pushValue } <br></li>
                 </ul>
-            </div>
+            </form>
 
-            <form class="col-lg-6 text-center" id="myWritable">
+            <form class="col-lg-12 text-center hideme" id="myWritable">
                 <h3>Writable Values</h3>
 
                 <div id="confirmHuman" class="center-block">
@@ -246,7 +247,7 @@
 
                         <li>
                             <div class="form-group center-block">
-                                <label for="inputPassword3" class="col-sm-2 control-label">LCD-Text</label>
+                                <label for="inputPassword3" class="col-sm-2 control-label">LCD Text</label>
                                 <div class="col-sm-10">
                                  <input type="text" id="textValue" maxlength="32" rv-value="myArduino.textValue" class="form-control" rv-on-change="myArduino.changeText" placeholder="I will see this on my 16x2 LCD in my room!!">
                                 </div>
@@ -271,7 +272,7 @@
 
         <div class="row">
             <div class="col-lg-12 text-center"><br><br>
-            <p class="animateblock">Please enter your first and last name above if you wish to control the Arduino I have connected in my home.  You will also have to click the checkbox to verify you are not a bot.  Once you do this, you will have access to my LCD display, Motors, multiple RGB LEDs, and even my webcam.    </p>
+            <p class="animateblock">To use my Arduino, first click the 'Yes' button above and then answer the question in the 'Writable' (hint:: the answer is 2 Once you do this, you will have access to my LCD display, Motors, multiple RGB LEDs, and even my webcam.</p>
             <p class="animateblock">If you do not wish to gain access to my Arduino, then you can still just view live (read-only) data coming from the Arduino. However, if you are viewing this site on your mobile device and are not connected to a local area network,  it is very possible that you could incure data charges from your service provider as information on this site is constantly being updated and downloaded to your phone (no different then Facebook really).  Thanks and enjoy! </p>
             </div>
         </div>
