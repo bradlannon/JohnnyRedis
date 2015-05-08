@@ -82,8 +82,8 @@
 .animation {
   display: inline-block;
   position: relative;
-  width: 460px;
-  height: 377px;
+  width: 50vw;
+  height: 50vw;
   margin: 0 auto;
   vertical-align: middle;
 }
@@ -187,7 +187,7 @@
   left: 0;
   top: 50%;
   margin-top: -14px;
-  font-size: 1.1em;
+  font-size: 0.8em;
   text-align: center;
   color: #2c3e50;
 }
@@ -219,7 +219,7 @@
 .animation[data-animation-step="2"] .device {
   width: 45%;
   height: 72%;
-  padding: 24px;
+  padding: 7px;
   border-radius: 10px;
 }
 .animation[data-animation-step="2"] .device .slide1 {
@@ -234,7 +234,7 @@
 .animation[data-animation-step="3"] .device {
   width: 54%;
   height: 38%;
-  padding: 10px 36px;
+  padding: 7px 7px;
   border-radius: 6px;
 }
 .animation[data-animation-step="3"] .device .slide1,

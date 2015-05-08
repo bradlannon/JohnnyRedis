@@ -91,7 +91,7 @@ var myArduino = {
         $('#textValue').prop('disabled', false);
         $('#piezoValue').prop('disabled', false);
         $('#webcamValue').prop('disabled', false);
-        $('#faceValue').prop('disabled', false);
+        $('#answerValue').prop('disabled', false);
         // $('#confirmHuman').hide("slow");
         // $('#nameValue').hide("slow");
     },
@@ -100,7 +100,7 @@ var myArduino = {
         $('#servoValue').prop('disabled', true);
         $('#ledValue').prop('disabled', true);
         $('#textValue').prop('disabled', true);
-        $('#faceValue').prop('disabled', true);
+        $('#answerValue').prop('disabled', true);
         $('#webcamValue').prop('disabled', true);
         $('#piezoValue').prop('disabled', true);
         $('#myCanvas').hide("slow");
@@ -131,27 +131,26 @@ var myArduino = {
             // console.log(chk1 + ", " + chk2 + ", " + chk3 + ", " + chk4);
            $("#confirmHuman").hide("slow");
            $("#isHuman").removeClass('blur');
+           $("#camPicture").html("<video autoplay src='https://apprtc.appspot.com/r/440597995' class='center-block'></video>");
         }
     },
     showArduinoData : function() {
-        // myArduino.enableArduino  = true;  //when user clicks on 'yes'
+         //when user clicks on 'yes'
         myArduino.enableButtons();
         $('#myWritable').show("slow");
-        //      var v = document.getElementsByTagName("camPicture")[0];
-        //      v.play();
-        $('#myWritable').removeClass("hideme");
+        $('#myWritable').removeClass("removeme");
         $('#myWritable').removeClass("col-lg-12");
         $('#myWritable').addClass("col-lg-6");
         $('#myReadable').removeClass("col-lg-12");
         $('#myReadable').addClass("col-lg-6");
-
-        $("#myWebcam").attr("src", myArduino.myWebcamLink);
-        $("#myWebcam").attr("autoreplay", "");
-        $("#camPicture").html("<video src='mediastream:http://simpl.info/c96c2560-87f3-4506-bd7a-1a7ac91aed4b' class='center-block' autoplay></video>");
-        //blob:http%3A//simpl.info/c96c2560-87f3-4506-bd7a-1a7ac91aed4b
+        //$("#myWebcam").attr("src", myArduino.myWebcamLink);
+        //$("#myWebcam").attr("autoreplay", "");
+        $("#confirmHuman").removeClass('removeme');
+        $("#camPicture").html("");
+        myArduino.myAnswerValueChange();
     },
     hideArduinoData : function() {
-        //  myArduino.showArduino  = false;  //when user clicks on 'no'
+        // when user clicks on 'no'
         myArduino.disableButtons();
         $('#myWritable').hide("slow");
         $('#arduinoImage').show("slow");
@@ -160,7 +159,7 @@ var myArduino = {
 
         $('#myWritable').removeClass("col-lg-6");
         $('#myWritable').addClass("col-lg-12");
-        $('#myWritable').addClass("hideme");
+        $('#myWritable').addClass("removeme");
         $('#myReadable').removeClass("col-lg-6");
         $('#myReadable').addClass("col-lg-12");
 

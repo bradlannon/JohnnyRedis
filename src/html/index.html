@@ -74,6 +74,11 @@
                     <span class="name">Brad Lannon</span>
                     <hr class="star-light">
                     <span class="skills">Web Designer and Developer</span>
+
+
+
+
+
                 </div>
             </div>
         </div>
@@ -201,6 +206,15 @@
                 <img src="img/arduino.png" data-1x="img/arduino.png" data-2x="img/arduino.png" class="hisrc img-responsive center-block" id="arduinoImage" />
             </div>
         </div>
+        <div class="row">
+            <div id="confirmHuman" class="text-center removeme col-lg-12">
+                    <ul>
+                        <li><input type="checkbox" id="chk1" rv-checked="dontcheck1" class="hideme"> <input type="checkbox" id="chk2" rv-checked="dontcheck2" class="hideme"> </li>
+                        <li><label><input type="text" id="answerValue" class="form-control" rv-on-change="myArduino.myAnswerValueChange" placeholder="To verify you're human, what is 1 + 1?" size="31"></label> </li>
+                        <li><input type="checkbox" rv-checked="dontcheck3" id="chk3" class="hideme"> <input type="checkbox" id="chk4" rv-checked="dontcheck4" class="hideme"></label></li>
+                    </ul>
+                </div>
+        </div>
 
         <div class="row">
             <form class="col-lg-12 text-center animateblock" id="myReadable">
@@ -213,22 +227,14 @@
                 </ul>
             </form>
 
-            <form class="col-lg-12 text-center hideme" id="myWritable">
+            <form class="col-lg-12 text-center removeme" id="myWritable">
                 <h3>Writable Values</h3>
-
-                <div id="confirmHuman" class="center-block">
-                    <ul>
-                        <li><input type="checkbox" id="chk1" rv-checked="dontcheck1" class="hideme"> <input type="checkbox" id="chk2" rv-checked="dontcheck2" class="hideme"> </li>
-                        <li><label><input type="text" id="answerValue" class="form-control" rv-on-change="myArduino.myAnswerValueChange" placeholder="To verify you're human, what does 1 + 1 equal?" size="34"></label> </li>
-                        <li><input type="checkbox" rv-checked="dontcheck3" id="chk3" class="hideme"> <input type="checkbox" id="chk4" rv-checked="dontcheck4" class="hideme"></label></li>
-                    </ul>
-                </div>
 
 
                 <div id="isHuman" class="blur">
                     <ul>
                         <li>
-                            <div class="control-group">
+                            <div class="control-group" id="servoMotor">
                                     <label class="control-label">Servo Motor</label>
                                     <div class="controls">
                                         <label class="radio inline">
@@ -247,8 +253,7 @@
 
                         <li>
                             <div class="form-group center-block">
-                                <label for="inputPassword3" class="col-sm-2 control-label">LCD Text</label>
-                                <div class="col-sm-10">
+                                <div class="col-sm-12">
                                  <input type="text" id="textValue" maxlength="32" rv-value="myArduino.textValue" class="form-control" rv-on-change="myArduino.changeText" placeholder="I will see this on my 16x2 LCD in my room!!">
                                 </div>
                               </div>
@@ -547,25 +552,25 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2">
                     <div class="modal-body">
-                        <h2>Mobile/Responsive</h2>
+                        <h2>Mobile<br>Responsive</h2>
                         <hr class="star-primary">
                         <!--  <img src="img/portfolio/Responsive.png" class="img-responsive img-centered" alt=""> -->
                         <div id="responsiveGraphicBox" class="img-responsive img-centered">
-                        <div id="responsiveGraphicCircle"  class="">
-                        <div class="animation img-" data-animation-step="1">
-                            <div class="device">
-                                <div class="phone-home-button"></div>
-                                <div class="tablet-home-button"></div>
-                                <div class="screen-stand"><div class="leg"></div><div class="foot"></div></div>
-                                <div class="display">
-                                    <div class="slide1"><div>Works on <em>desktops</em></div></div>
-                                    <div class="slide2"><div>Works on <em>tablets</em></div></div>
-                                    <div class="slide3"><div>Works on <em>phones</em></div></div>
+                            <div id="responsiveGraphicCircle"  class="">
+                            <div class="animation img-" data-animation-step="1">
+                                <div class="device">
+                                    <div class="phone-home-button"></div>
+                                    <div class="tablet-home-button"></div>
+                                    <div class="screen-stand"><div class="leg"></div><div class="foot"></div></div>
+                                    <div class="display">
+                                        <div class="slide1"><div>Works on <br><em>desktops</em></br></div></div>
+                                        <div class="slide2"><div>Works on <br><em>tablets</em></br></div></div>
+                                        <div class="slide3"><div>Works on <br><em>phones</em></br></div></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    </div>
+                        </div>
                         <p>Responsive web design allows you to resize your browser for an optimal viewing experience.  If you are on a computer, change the size of the window and notice how the site changes.  You can basically mimik the look of a phone or tablet.  Pretty much all modern sites have this feature.  They also tend to be low in data bandwith. For those interested in web development can look into <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Media_queries">Media Queries</a> It's actually pretty easy to do and all web developers should be famiar with it. A really easy responsive starter theme is Bootstrap. This site was created with <a href="http://startbootstrap.com">Bootstrap</a>. Below are a few sites I've created with good responsive front ends. </p>
                         <ul class="list-unstyled item-details">
                             <li>Client:
