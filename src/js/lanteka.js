@@ -131,7 +131,7 @@ var myArduino = {
             // console.log(chk1 + ", " + chk2 + ", " + chk3 + ", " + chk4);
            $("#confirmHuman").hide("slow");
            $("#isHuman").removeClass('blur');
-           $("#camPicture").html("<video autoplay src='https://apprtc.appspot.com/r/440597995' class='center-block'></video>");
+           $("#camPicture").html("<video autoplay src='" + webcamValue + "' class='center-block'></video>");
         }
     },
     showArduinoData : function() {
@@ -186,7 +186,7 @@ rivets.formatters.chosen = function(value,selector) {
     return value;
 };
 
-// the socket connections
+// the socket.io connections
 io = io.connect();
 io.emit('getInitialValues');
 
@@ -276,11 +276,11 @@ function animate_elems() {
     });
   }
 
-// animates the responsive image when you click on  Responsive image link
-var duration = 7000, steps = 3, step = 1;
-setInterval( function() {
-    document.querySelector( '.animation' ).setAttribute( 'data-animation-step', step = ++step > steps ? 1 : step );
-}, duration / steps );
+// animates the responsive image when you click on  Responsive image link        currently removed
+// var duration = 7000, steps = 3, step = 1;
+// setInterval( function() {
+//    document.querySelector('.animation').setAttribute( 'data-animation-step', step = ++step > steps ? 1 : step );
+// }, duration / steps );
 
 var $elems = $('.animateblock');
 var winheight = $(window).height();

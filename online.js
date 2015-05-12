@@ -8,8 +8,7 @@ express = require('express.io');
 app = express().http().io();
 var redis = require('redis'),
     myCredentials = require("./credentials.js"),
-    nodemailer = require('nodemailer'),
-    myLink = "<video src='mediastream:http://simpl.info/90cfcc76-740d-4610-a776-7902690b0967'></video>",
+    myWeb = "<video src='http://somewebrtcstreamhere'></video>",
     myLed = 0,
     myLedOld = 0,
     myLcd=10,
@@ -32,10 +31,6 @@ var redis = require('redis'),
     myPhoto = 0,
     myPot = 0,
     myPing = 0,
-    senderName = '',
-    senderEmail = '',
-    senderPhone = '',
-    senderMessage = '',
     usersOnline = 0;
 
 clientPub = redis.createClient(myCredentials.myPort, myCredentials.myDB);
@@ -139,7 +134,7 @@ app.io.route('getInitialValues', function(req) {
         myPot: myPot,
         myPing: myPing,
         myServo: myServo,
-        myPush: myPush,                                        // good
+        myPush: myPush,
         myRgb: myRGB,
         myLed: myLed,
         myMotion: myMotion,
@@ -155,23 +150,23 @@ app.io.route('getInitialValues', function(req) {
 
 app.io.route('servoValueChange', function(req) {
     myServo = req.data.myVal;
-    req.io.broadcast('displayNewMotor',myServo);                   // good
+    req.io.broadcast('displayNewMotor',myServo);
 });
 
 app.io.route('textValueChange', function(req) {
     myText = req.data.myVal;
-    req.io.broadcast('displayNewText',myText);                      // good
+    req.io.broadcast('displayNewText',myText);
     clientPub.publish("textValue", myText);
 });
 
  app.io.route('rgbValueChange', function(req) {
      myRGB = req.data.myVal;
-     clientPub.publish("rgbValue", myRGB);                                       // good
+     clientPub.publish("rgbValue", myRGB);
      req.io.broadcast('displayNewRGB',myRGB);
  });
 
 app.io.route('piezoValueChange', function(req) {
-    myPiezo = 1;                                                   // good
+    myPiezo = 1;
 });
 
 app.io.route('getName', function(req) {
@@ -181,7 +176,7 @@ app.io.route('getName', function(req) {
 
 app.io.route('faceValueChange', function(req) {
     myFace = req.data.myVal;
-    req.io.broadcast('displayNewFace',myFace);                   // good
+    req.io.broadcast('displayNewFace',myFace);
     clientPub.publish("faceValue", myFace);
 });
 
@@ -190,20 +185,19 @@ app.io.route('nameValueChange', function(req) {
 });
 
 app.io.route('ledValueChange', function(req) {
-    myLed = req.data.myVal;                                          //   good
+    myLed = req.data.myVal;
     req.io.broadcast('displayNewLED',myLed);
 });
 
 app.io.route('getReadOnlyValues', function(req) {
     req.io.emit('displayReadOnlyValues', {
         myPhoto: myPhoto,
-        myPot: myPot,                                         // good
+        myPot: myPot,
         myPing: myPing,
         myPush: myPush,
         myMotion: myMotion,
     });
 });
-
 
 app.io.route('disconnect', function(req) {
     usersOnline--;
@@ -212,8 +206,6 @@ app.io.route('disconnect', function(req) {
         clientPub.publish("faceValue", 1);
     }
 });
-
-
 
 setInterval(function(){
     writeToRedis();
@@ -227,38 +219,10 @@ app.use(express.static(process.cwd() + '/Public'));
     console.log("Visit to localhost:8081 in your browser");
 app.listen(8081);
 
-// create reusable transporter object using SMTP transport
-var transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-        user: myCredentials.myGmail,
-        pass: myCredentials.myPass
-    }
-});
-
 app.io.route('sendEmail', function(req) {
     senderName = req.data.senderName;
     senderEmail = req.data.senderEmail;
     senderPhone = req.data.senderPhone;
     senderMessage = req.data.senderMessage;
-   // sendMail();
+   // call php function
 });
-
-var mailOptions = { // setup e-mail data with unicode symbols
-    from: senderName + '✔ <' + senderEmail + '>',
-    to: myCredentials.myEmail,
-    subject: 'Email from Website ✔',
-    text: senderMessage,
-    html: senderMessage
-};
-
-// send mail with defined transport object
-function sendMail() {
-     transporter.sendMail(mailOptions, function(error, info){
-         if(error){
-             console.log(error);
-         }else{
-             console.log('Message sent: ' + info.response);
-         }
-     });
-}
