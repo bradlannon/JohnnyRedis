@@ -211,7 +211,7 @@
                     <ul>
                         <li><input type="checkbox" id="chk1" rv-checked="dontcheck1" class="hideme"> <input type="checkbox" id="chk2" rv-checked="dontcheck2" class="hideme"> </li>
                         <li><label><input type="text" id="answerValue" class="form-control" rv-on-change="myArduino.myAnswerValueChange" placeholder="To verify you're human, what is 1 + 1?" size="31"></label> </li>
-                        <li><input type="checkbox" rv-checked="dontcheck3" id="chk3" class="hideme"> <input type="checkbox" id="chk4" rv-checked="dontcheck4" class="hideme"></label></li>
+                        <li><input type="checkbox" rv-checked="dontcheck3" id="chk3" class="hideme"> <input type="checkbox" id="chk4"  rv-checked="dontcheck4" class="hideme"></label></li>
                     </ul>
                 </div>
         </div>
@@ -233,23 +233,10 @@
 
                 <div id="isHuman" class="blur">
                     <ul>
-                        <li>
-                            <div class="control-group" id="servoMotor">
-                                    <label class="control-label">Servo Motor</label>
-                                    <div class="controls">
-                                        <label class="radio inline">
-                                            <input type="radio" value="2" rv-on-change="myArduino.changeServo" />
-                                            On
-                                        </label>
-                                        <label class="radio inline">
-                                            <input type="radio" value="1" rv-on-change="myArduino.changeServo"/>
-                                            Off
-                                        </label>
-                                    </div>
-                                </div>
-                        </li>
+
+                        <li><label>Servo Motor ON / Off <input type="checkbox" name="ledstatus" rv-checked="myArduino.servoValue" rv-on-change="myArduino.changeServo"> </label></li>
                         <li><label>LED Color Picker  <input type="color" rv-value="myArduino.rgbValue" rv-on-change="myArduino.changeRgb" name="favcolor"> </label></li>
-                        <li><label>Turn ON / Off LED  <input type="checkbox" rv-value="myArduino.ledValue" name="ledstatus" rv-checked="myArduino.changeLed"> </label></li>
+                        <li><label>Turn ON / Off LED  <input type="checkbox" name="ledstatus" rv-checked="myArduino.ledValue" rv-on-change="myArduino.changeLed"> </label></li>
 
                         <li>
                             <div class="form-group center-block">
@@ -554,8 +541,8 @@
                     <div class="modal-body">
                         <h2>Mobile<br>Responsive</h2>
                         <hr class="star-primary">
-                        <!--  <img src="img/portfolio/Responsive.png" class="img-responsive img-centered" alt=""> -->
-                        <div id="responsiveGraphicBox" class="img-responsive img-centered">
+                         <img src="img/portfolio/Responsive.png" class="img-responsive img-centered" alt="">
+<!--                         <div id="responsiveGraphicBox" class="img-responsive img-centered">
                             <div id="responsiveGraphicCircle"  class="">
                             <div class="animation img-" data-animation-step="1">
                                 <div class="device">
@@ -570,7 +557,7 @@
                                 </div>
                             </div>
                         </div>
-                        </div>
+                        </div> -->
                         <p>Responsive web design allows you to resize your browser for an optimal viewing experience.  If you are on a computer, change the size of the window and notice how the site changes.  You can basically mimik the look of a phone or tablet.  Pretty much all modern sites have this feature.  They also tend to be low in data bandwith. For those interested in web development can look into <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Media_queries">Media Queries</a> It's actually pretty easy to do and all web developers should be famiar with it. A really easy responsive starter theme is Bootstrap. This site was created with <a href="http://startbootstrap.com">Bootstrap</a>. Below are a few sites I've created with good responsive front ends. </p>
                         <ul class="list-unstyled item-details">
                             <li>Client:

@@ -118,7 +118,7 @@ gulp.task('minify-html', function() {
       .pipe(gulp.dest('./views/'));
 });
 
-gulp.task('less', ['less:freelancer', 'less:mixins','less:variables', 'less:animations','styles', 'bootstrap']);
+gulp.task('less', ['less:freelancer', 'less:animations','styles', 'bootstrap']);
 
 gulp.task('less:freelancer', function() {
     return gulp.src('./src/less/freelancer.less')
@@ -126,17 +126,17 @@ gulp.task('less:freelancer', function() {
       .pipe(gulp.dest('./src/css'));
 });
 
-gulp.task('less:mixins', function() {
-    return gulp.src('./src/less/mixins.less')
-      .pipe(less({ paths: [path.join(__dirname, 'less', 'includes')] }))
-      .pipe(gulp.dest('./src/css'));
-});
+// gulp.task('less:mixins', function() {
+//     return gulp.src('./src/less/mixins.less')
+//       .pipe(less({ paths: [path.join(__dirname, 'less', 'includes')] }))
+//       .pipe(gulp.dest('./src/css'));
+// });
 
-gulp.task('less:variables', function() {
-    return gulp.src('./src/less/variables.less')
-      .pipe(less({ paths: [path.join(__dirname, 'less', 'includes')] }))
-      .pipe(gulp.dest('./src/css'));
-});
+// gulp.task('less:variables', function() {
+//     return gulp.src('./src/less/variables.less')
+//       .pipe(less({ paths: [path.join(__dirname, 'less', 'includes')] }))
+//       .pipe(gulp.dest('./src/css'));
+// });
 
 gulp.task('less:animations', function() {
     return gulp.src('./src/less/animations.less')

@@ -63,6 +63,14 @@ clientSub.subscribe("faceValue");
 clientSub.subscribe("textValue");
 clientSub.subscribe("nameValue");
 
+clientSub.on("error", function(err) {
+    console.error("Error connecting to redis subscribe", err);
+});
+
+clientPub.on("error", function(err) {
+    console.error("Error connecting to redis publish", err);
+});
+
 clientSub.on("message", function (channel, message) {
      if (channel == 'rgbValue') {
           console.log("Received rgbValue: " + message);

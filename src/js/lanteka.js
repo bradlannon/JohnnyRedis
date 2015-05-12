@@ -56,6 +56,9 @@ var myArduino = {
         data = {myVal:  myArduino.servoValue};
         io.emit('servoValueChange', data);
     },
+    complete : function() {
+        console.log("complete");
+    },
     changeRgb : function() {
         data = {myVal:  myArduino.rgbValue};
         io.emit('rgbValueChange', data);
@@ -72,12 +75,9 @@ var myArduino = {
         io.emit('textValueChange', data);
     },
     changeLed : function() {
-        console.log("changeLED event");
-        return true;
-    },
-    changeLed2 : function() {
-        data = {myVal: myArduino.ledValue};
+        data = {myVal:  myArduino.ledValue};
         io.emit('ledValueChange', data);
+   //     return true;
     },
     changeRobot : function() {
         if (document.getElementById("robotValue").value == 'on') {
@@ -162,8 +162,6 @@ var myArduino = {
         $('#myWritable').addClass("removeme");
         $('#myReadable').removeClass("col-lg-6");
         $('#myReadable').addClass("col-lg-12");
-
-
     },
     getInfoAndShow : function() {
        if ($('#robotValue').is(':checked')) {
@@ -179,29 +177,6 @@ var myArduino = {
     }
 };
 
-var $elems = $('.animateblock');
-var winheight = $(window).height();
-var fullheight = $(document).height();
-
-$(window).scroll(function(){
-    animate_elems();
-});
-
-window.onload = myArduino.disableButtons();
-
-window.view = rivets.bind($('#arduino'),{
-    myArduino:myArduino
-});
-
-$("#nameValue").keyup(function(event){
-    if(event.keyCode == 13){
-        myArduino.myNameValueChange();
-    }
-});
-
-$("#nameValue").focusout(function(event){
-   myArduino.myNameValueChange();
-});
 
 // rivets.js binding code
 rivets.formatters.chosen = function(value,selector) {
@@ -306,3 +281,17 @@ var duration = 7000, steps = 3, step = 1;
 setInterval( function() {
     document.querySelector( '.animation' ).setAttribute( 'data-animation-step', step = ++step > steps ? 1 : step );
 }, duration / steps );
+
+var $elems = $('.animateblock');
+var winheight = $(window).height();
+var fullheight = $(document).height();
+
+$(window).scroll(function(){
+    animate_elems();
+});
+
+window.onload = myArduino.disableButtons();
+
+window.view = rivets.bind($('#arduino'),{
+    myArduino:myArduino
+});

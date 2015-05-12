@@ -53,6 +53,14 @@ clientSub.subscribe("potValue");
 clientSub.subscribe("pingValue");
 clientSub.subscribe("webcamValue");
 
+clientSub.on("error", function(err) {
+    console.error("Error connecting to redis subscribe", err);
+});
+
+clientPub.on("error", function(err) {
+    console.error("Error connecting to redis publish", err);
+});
+
 
 clientSub.on("message", function (channel, message) {
     if (channel == 'motionValue') {
