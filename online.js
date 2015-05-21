@@ -31,13 +31,14 @@ var redis = require('redis'),
     myPhoto = 0,
     myPot = 0,
     myPing = 0,
+    currentTime = '12:00',
     usersOnline = 0;
 
 clientPub = redis.createClient(myCredentials.myPort, myCredentials.myDB);
 clientPub.auth(myCredentials.myAuth);
 clientSub = redis.createClient(myCredentials.myPort, myCredentials.myDB);
 clientSub.auth(myCredentials.myAuth, function() {
-  console.log("Connected successfully to Redis");
+  trace("Connected successfully to Redis");
 });
 
 clientSub.subscribe("motionValue");
@@ -49,11 +50,11 @@ clientSub.subscribe("pingValue");
 clientSub.subscribe("webcamValue");
 
 clientSub.on("error", function(err) {
-    console.error("Error connecting to redis subscribe", err);
+    trace("Error connecting to redis subscribing server: " + err);
 });
 
 clientPub.on("error", function(err) {
-    console.error("Error connecting to redis publish", err);
+    trace("Error connecting to redis publishing server: " + err);
 });
 
 
@@ -69,7 +70,7 @@ clientSub.on("message", function (channel, message) {
         app.io.broadcast('displayToggleValue',myPush);
     } else if (channel == 'photoValue') {
         myPhoto = message;
-        console.log("photo is " + myPhoto);
+        trace("photo is " + myPhoto);
         app.io.broadcast('displayPhotoValue',myPhoto);
     } else if (channel == 'pingValue') {
         myPing = message;
@@ -86,37 +87,37 @@ clientSub.on("message", function (channel, message) {
 function writeToRedis() {
      if (myRGBOld != myRGB) {
          clientPub.publish("rgbValue", myRGB);
-         console.log("written to redis rgbValue:" + myRGB);
+         trace("written to redis rgbValue:" + myRGB);
      }
 
     if (myLedOld != myLed) {
         clientPub.publish("ledValue", myLed);
-        console.log("written to redis ledValue:" + myLed);
+        trace("written to redis ledValue:" + myLed);
     }
 
     if (myServoOld != myServo) {
         clientPub.publish("servoValue", myServo);
-        console.log("written to redis servoValue:" + myServo);
+        trace("written to redis servoValue:" + myServo);
     }
 
     if (myPiezoOld != myPiezo) {
         clientPub.publish("piezoValue", myPiezo);
-        console.log("written to redis piezoValue:" + myPiezo);
+        trace("written to redis piezoValue:" + myPiezo);
     }
 
     if (myTextOld != myText) {
         clientPub.publish("textValue", myText);
-        console.log("written to redis textValue:" + myText);
+        trace("written to redis textValue:" + myText);
     }
 
     if (myFaceOld != myFace) {
         clientPub.publish("faceValue", myFace);
-        console.log("written to redis faceValue:" + myFace);
+        trace("written to redis faceValue:" + myFace);
     }
 
     if (myNameOld != myName) {
         clientPub.publish("nameValue", myName);
-        console.log("written to redis nameValue:" + myName);
+        trace("written to redis nameValue:" + myName);
     }
     myNameOld = myName;
     myFaceOld = myFace;
@@ -143,7 +144,8 @@ app.io.route('getInitialValues', function(req) {
     });
     clientPub.publish("userConnected", 1);
     usersOnline++;
-    console.log(usersOnline + " users online");
+
+    trace(usersOnline + " users online");
     clientPub.publish("faceValue", myFace);
 });
 
@@ -201,7 +203,7 @@ app.io.route('getReadOnlyValues', function(req) {
 
 app.io.route('disconnect', function(req) {
     usersOnline--;
-    console.log(usersOnline + " users online");
+    trace(usersOnline + " users online");
     if (usersOnline === 0) {
         clientPub.publish("faceValue", 1);
     }
@@ -219,8 +221,18 @@ app.get('/', function(req, res) {
 
 app.use(express.static(process.cwd() + '/Public'));
 
-console.log("Visit to localhost:8081 in your browser");
-
+trace("Visit to localhost:8081 in your browser");
 app.listen(8081);
 
-
+function trace(text) {
+    var date = new Date();
+    var hour = date.getHours();
+    hour = (hour < 10 ? "0" : "") + hour;
+    var min  = date.getMinutes();
+    min = (min < 10 ? "0" : "") + min;
+    var sec  = date.getSeconds();
+    sec = (sec < 10 ? "0" : "") + sec;
+    var currentTime;
+    currentTime = "[" + hour + ":" + min + ":" + sec + "]";
+    console.log(currentTime + " " + text);
+}
