@@ -48,7 +48,7 @@ var five = require('johnny-five'),
     boardMEGA = new five.Board({ port: "COM12" });
     boardTMP = new five.Board({ port: "COM9" });
 
-//memwatch.on('leak', function(info) { console.log("leaks: "+ info) });
+//memwatch.on('leak', function(info) { trace("leaks: "+ info) });
 
 clientSub = redis.createClient(myCredentials.myPort, myCredentials.myDB);
 clientSub.auth(myCredentials.myAuth);
@@ -64,44 +64,44 @@ clientSub.subscribe("textValue");
 clientSub.subscribe("nameValue");
 
 clientSub.on("error", function(err) {
-    console.error("Error connecting to redis subscribe", err);
+    trace("Error connecting to redis subscribe: " + err);
 });
 
 clientPub.on("error", function(err) {
-    console.error("Error connecting to redis publish", err);
+    trace("Error connecting to redis publish: " + err);
 });
 
 clientSub.on("message", function (channel, message) {
      if (channel == 'rgbValue') {
-          console.log("Received rgbValue: " + message);
+          trace("Received rgbValue: " + message);
           myRGB = message;
       } else if (channel == 'ledValue') {
-          console.log("Received ledValue:" + message);
+          trace("Received ledValue:" + message);
           myLed = message;
       } else if (channel == 'servoValue') {
-          console.log("Received servoValue:" + message);
+          trace("Received servoValue:" + message);
           myServo = message;
       } else if (channel == 'faceValue') {
-          console.log("Received faceValue:" + message);
+          trace("Received faceValue:" + message);
           myFace = message;
       } else if (channel == 'piezoValue') {
-          console.log("Received piezoValue:" + message);
+          trace("Received piezoValue:" + message);
           myPiezo = message;
       } else if (channel == 'faceValue') {
-          console.log("Received faceValue:" + message);
+          trace("Received faceValue:" + message);
           myFace = message;
       } else if (channel == 'textValue') {
-          console.log("Received textValue:" + message);
+          trace("Received textValue:" + message);
           myText = message;
       } else if (channel == 'nameValue') {
-          console.log("Received nameValue:" + message);
+          trace("Received nameValue:" + message);
           myName = message;
       }
 });
 
 
 boardMEGA.on("ready", function() {
-  console.log("connected to Arduino MEGA on COM12");
+  trace("connected to Arduino MEGA on COM12");
   var led = new five.Led.RGB({
     pins: {
       red: pinR,
@@ -150,7 +150,7 @@ ledWebActivated.on();
 
 
  // ping.on("change", function(err, value) {
- //   console.log("Object is " + this.in + "inches away");
+ //   trace("Object is " + this.in + "inches away");
  // });
 
   button.on("hold", function() {
@@ -158,13 +158,13 @@ ledWebActivated.on();
      if (toggleWeb == false) {
         toggleWeb = true;
         clientPub.publish('toggleWeb', 'true' );
-        console.log("WEB ACTIVATED");
+        trace("WEB ACTIVATED");
         ledWebActivated.on();
       }
       else {
         toggleWeb = false;
         clientPub.publish('toggleWeb', 'false' );
-        console.log("WEB CONTROLS DISABLED");
+        trace("WEB CONTROLS DISABLED");
         ledWebActivated.off();
       }
   });
@@ -244,7 +244,7 @@ ledWebActivated.on();
   try {
        setInterval(function(){
       if (myPot!=myPotOld) {
-      //  console.log("myPot changed " + myPot);
+      //  trace("myPot changed " + myPot);
         clientPub.publish('potValue', myPot );
       }
       myPot=myPotOld;
@@ -256,7 +256,7 @@ ledWebActivated.on();
     }, 10000);  // change to something logical
   } catch(e) {
       getDateTime();
-      console.error(e);
+      trace("Error: " + e);
   }
 
 
@@ -266,7 +266,7 @@ ledWebActivated.on();
 
 
 boardLCD.on("ready", function() {
-  console.log("connected to Arduino (LCD) on COM11");
+  trace("connected to Arduino (LCD) on COM11");
 
   var p = new five.LCD({
     pins: [pinLCD1, pinLCD2, pinLCD3, pinLCD4, pinLCD5, pinLCD6],
@@ -404,7 +404,7 @@ boardLCD.on("ready", function() {
     }, 1000);
   } catch(e) {
       getDateTime();
-      console.error(e);
+      trace("Error: " + e);
   }
 
 });
@@ -412,7 +412,7 @@ boardLCD.on("ready", function() {
 
 
 boardTMP.on("ready", function() {
-  console.log("connected to Arduino TMP on COM9");
+  trace("connected to Arduino TMP on COM9");
   var ledTest = new five.Led.RGB({
     pins: {
       red: 9,
@@ -424,26 +424,19 @@ boardTMP.on("ready", function() {
         ledTest.color(myRGB);
 });
 
-function getDateTime() {
 
+
+
+function trace(text) {
     var date = new Date();
-
     var hour = date.getHours();
     hour = (hour < 10 ? "0" : "") + hour;
-
     var min  = date.getMinutes();
     min = (min < 10 ? "0" : "") + min;
-
     var sec  = date.getSeconds();
     sec = (sec < 10 ? "0" : "") + sec;
-
-    var year = date.getFullYear();
-
-    var month = date.getMonth() + 1;
-    month = (month < 10 ? "0" : "") + month;
-
-    var day  = date.getDate();
-    day = (day < 10 ? "0" : "") + day;
-
-    return year + ":" + month + ":" + day + ":" + hour + ":" + min + ":" + sec;
+    var currentTime;
+    currentTime = "[" + hour + ":" + min + ":" + sec + "]";
+    console.log(currentTime + " " + text);
 }
+

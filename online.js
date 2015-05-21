@@ -57,7 +57,6 @@ clientPub.on("error", function(err) {
     trace("Error connecting to redis publishing server: " + err);
 });
 
-
 clientSub.on("message", function (channel, message) {
     if (channel == 'motionValue') {
         myMotion = message;
@@ -149,7 +148,6 @@ app.io.route('getInitialValues', function(req) {
     clientPub.publish("faceValue", myFace);
 });
 
-
 app.io.route('servoValueChange', function(req) {
     myServo = req.data.myVal;
     req.io.broadcast('displayNewMotor',myServo);
@@ -213,16 +211,14 @@ setInterval(function(){
     writeToRedis();
 }, 1000);
 
-
-
 app.get('/', function(req, res) {
     res.sendfile(__dirname + '/views/index.html');
 });
 
 app.use(express.static(process.cwd() + '/Public'));
-
-trace("Visit to localhost:8081 in your browser");
 app.listen(8081);
+trace("Visit to localhost:8081 in your browser");
+
 
 function trace(text) {
     var date = new Date();
