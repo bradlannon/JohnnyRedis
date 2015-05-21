@@ -19,7 +19,6 @@ $(function() {
     }).on("blur", ".floating-label-form-group", function() {
         $(this).removeClass("floating-label-form-group-with-focus");
     });
-
 });
 
 // Highlight the top nav as scrolling occurs
@@ -84,43 +83,6 @@ var myArduino = {
             myArduino.myNameValueChange();
         }
     },
-    enableButtons : function() {
-        $('#rgbValue').prop('disabled', false);
-        $('#servoValue').prop('disabled', false);
-        $('#ledValue').prop('disabled', false);
-        $('#textValue').prop('disabled', false);
-        $('#piezoValue').prop('disabled', false);
-        $('#webcamValue').prop('disabled', false);
-        $('#answerValue').prop('disabled', false);
-        // $('#confirmHuman').hide("slow");
-        // $('#nameValue').hide("slow");
-    },
-    disableButtons : function() {
-        $('#rgbValue').prop('disabled', true);
-        $('#servoValue').prop('disabled', true);
-        $('#ledValue').prop('disabled', true);
-        $('#textValue').prop('disabled', true);
-        $('#answerValue').prop('disabled', true);
-        $('#webcamValue').prop('disabled', true);
-        $('#piezoValue').prop('disabled', true);
-        $('#myCanvas').hide("slow");
-        $('#robotValue').prop('disabled', true);
-        $('#name').prop('disabled', true);
-        $('#email').prop('disabled', true);
-        $('#phone').prop('disabled', true);
-        $('#nameValue').prop('disabled', true);
-        $('#message').prop('disabled', true);
-        $('#myWritable').hide();
-
-        setTimeout(function() {
-            $('#robotValue').prop('disabled', false);
-            $('#nameValue').prop('disabled', false);
-            $('#name').prop('disabled', false);
-            $('#email').prop('disabled', false);
-            $('#phone').prop('disabled', false);
-            $('#message').prop('disabled', false);
-        }, 3000);
-    },
     myAnswerValueChange : function() {
         var answer = $("#answerValue").val();
         if (answer == 2) {
@@ -129,37 +91,39 @@ var myArduino = {
             // var chk3 = $("#chk3").is(":checked");
             // var chk4 = $("#chk4").is(":checked");
             // console.log(chk1 + ", " + chk2 + ", " + chk3 + ", " + chk4);
+           myArduino.enableArduino = true;
            $("#confirmHuman").hide("slow");
            $("#isHuman").removeClass('blur');
-           $("#camPicture").html("<video autoplay src='" + webcamValue + "' class='center-block'></video>");
+           $("#camPicture").html("<video autoplay src='" + myArduino.webcamValue + "' class='center-block'></video>");
         }
     },
     showArduinoData : function() {
          //when user clicks on 'yes'
-        myArduino.enableButtons();
-        $('#myWritable').show("slow");
-        $('#myWritable').removeClass("removeme");
-        $('#myWritable').removeClass("col-lg-12");
-        $('#myWritable').addClass("col-lg-6");
+        $('#takeControl').hide("slow");
+        $('#arduinoExplained').hide("slow");
+        $("#myWritable").removeClass('removeme');
+        $("#myWritable").hide("slow");
         $('#myReadable').removeClass("col-lg-12");
         $('#myReadable').addClass("col-lg-6");
-        //$("#myWebcam").attr("src", myArduino.myWebcamLink);
-        //$("#myWebcam").attr("autoreplay", "");
+        $('#myReadable').removeClass("hideme");
+        $('#myWritable').removeClass("col-lg-12");
+        $('#myWritable').addClass("col-lg-6");
+        $("#myWritable").removeClass('hideme');
         $("#confirmHuman").removeClass('removeme');
-        $("#camPicture").html("");
-        myArduino.myAnswerValueChange();
+        $("#myWritable").show("slow");
     },
     hideArduinoData : function() {
         // when user clicks on 'no'
-        myArduino.disableButtons();
+        $('#takeControl').hide("slow");
+        $('#arduinoExplained').hide("slow");
         $('#myWritable').hide("slow");
         $('#arduinoImage').show("slow");
         $('#myCanvas').hide("slow");
         $("#camPicture").html("<img src='img/arduino.png' data-1x='img/arduino.png' data-2x='img/arduino.png' class='hisrc img-responsive center-block' id='arduinoImage' />");
-
         $('#myWritable').removeClass("col-lg-6");
         $('#myWritable').addClass("col-lg-12");
         $('#myWritable').addClass("removeme");
+        $('#myWritable').addClass("hideme");
         $('#myReadable').removeClass("col-lg-6");
         $('#myReadable').addClass("col-lg-12");
     },
@@ -176,7 +140,6 @@ var myArduino = {
         }
     }
 };
-
 
 // rivets.js binding code
 rivets.formatters.chosen = function(value,selector) {
@@ -258,9 +221,6 @@ io.on('displayNewText', function(myVal) {
     myArduino.textValue = myVal;
 });
 
-
-
-
 function animate_elems() {
     wintop = $(window).scrollTop();
     $elems.each(function(){
@@ -289,8 +249,6 @@ var fullheight = $(document).height();
 $(window).scroll(function(){
     animate_elems();
 });
-
-window.onload = myArduino.disableButtons();
 
 window.view = rivets.bind($('#arduino'),{
     myArduino:myArduino

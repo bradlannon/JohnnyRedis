@@ -227,23 +227,16 @@
                 </ul>
             </form>
 
-            <form class="col-lg-12 text-center removeme" id="myWritable">
+            <form class="col-lg-12 text-center hideme removeme" id="myWritable">
                 <h3>Writable Values</h3>
-
-
                 <div id="isHuman" class="blur">
                     <ul>
-
-                        <li><label>Servo Motor ON / Off <input type="checkbox" name="ledstatus" rv-checked="myArduino.servoValue" rv-on-change="myArduino.changeServo"> </label></li>
-                        <li><label>LED Color Picker  <input type="color" rv-value="myArduino.rgbValue" rv-on-change="myArduino.changeRgb" name="favcolor"> </label></li>
-                        <li><label>Turn ON / Off LED  <input type="checkbox" name="ledstatus" rv-checked="myArduino.ledValue" rv-on-change="myArduino.changeLed"> </label></li>
-
-                        <li>
-                            <div class="form-group center-block">
-                                <div class="col-sm-12">
-                                 <input type="text" id="textValue" maxlength="32" rv-value="myArduino.textValue" class="form-control" rv-on-change="myArduino.changeText" placeholder="I will see this on my 16x2 LCD in my room!!">
-                                </div>
-                              </div>
+                        <li><label>Servo Motor ON / Off <input type="checkbox" name="ledstatus" rv-checked="myArduino.servoValue" rv-on-change="myArduino.changeServo" rv-enabled="myArduino.enableArduino"> </label></li>
+                        <li><label>LED Color Picker  <input type="color" rv-value="myArduino.rgbValue" rv-on-change="myArduino.changeRgb" rv-enabled="myArduino.enableArduino" name="favcolor"> </label></li>
+                        <li><label>Turn ON / Off LED  <input type="checkbox" name="ledstatus" rv-checked="myArduino.ledValue"  rv-enabled="myArduino.enableArduino" rv-on-change="myArduino.changeLed"> </label></li>
+                        <li><div class="form-group center-block col-sm-12">
+                                <input type="text" id="textValue" maxlength="32" rv-value="myArduino.textValue" class="form-control" rv-on-change="myArduino.changeText" rv-enabled="myArduino.enableArduino" placeholder="I will see this on my 16x2 LCD in my room!!">
+                            </div>
                         </li>
                         <!-- <li><label>LCD Face
                             <select class="form-control" id="faceValue" rv-value="myArduino.faceValue" rv-on-change="myArduino.changeFace">
@@ -263,7 +256,7 @@
         </div>
 
         <div class="row">
-            <div class="col-lg-12 text-center"><br>
+            <div class="col-lg-12 text-center" id="arduinoExplained"><br>
             <p class="animateblock">To use my Arduino, first click the 'Yes' button above and then answer the question in the 'Writable' (hint: answer is 2).  Once you do this, you will have access to my LCD display, Motors, multiple RGB LEDs, and even my webcam.</p>
             <p class="animateblock">If you do not wish to gain access to my Arduino, then you can still just view live (read-only) data coming from the Arduino. However, if you are viewing this site on your mobile device and are not connected to a local area network,  it is very possible that you could incure data charges from your service provider as information on this site is constantly being updated and downloaded to your phone (no different than Facebook really).  Thanks and enjoy! </p>
             </div>
@@ -301,7 +294,7 @@
                     <div class="row control-group">
                         <div class="form-group col-xs-12 floating-label-form-group controls">
                             <label>Phone Number</label>
-                            <input type="tel" class="form-control" placeholder="Phone Number" id="phone" required data-validation-required-message="Please enter your phone number.">
+                            <input type="tel" class="form-control" placeholder="Phone Number" id="phone" >
                             <p class="help-block text-danger"></p>
                         </div>
                     </div>
@@ -319,7 +312,6 @@
                     <div class="row">
                         <div class="form-group col-xs-12">
                             <input type="submit" value="Send" class="btn btn-success btn-lg">
-                             <button type="submit" class="btn btn-success btn-lg" id="sendEmail">Sendemail</button>
                         </div>
                     </div>
 
