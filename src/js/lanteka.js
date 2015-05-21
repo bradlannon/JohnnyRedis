@@ -295,3 +295,5 @@ window.onload = myArduino.disableButtons();
 window.view = rivets.bind($('#arduino'),{
     myArduino:myArduino
 });
+
+

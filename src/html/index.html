@@ -171,7 +171,7 @@
                             <i class="fa fa-search-plus fa-3x"></i>
                         </div>
                     </div>
-                    <img src="img/tools/Aws.png" class="img-responsive" alt="">
+                    <img src="/img/tools/Aws.png" class="img-responsive" alt="">
                 </a>
             </div>
         </div>
@@ -263,7 +263,7 @@
         </div>
 
         <div class="row">
-            <div class="col-lg-12 text-center"><br><br>
+            <div class="col-lg-12 text-center"><br>
             <p class="animateblock">To use my Arduino, first click the 'Yes' button above and then answer the question in the 'Writable' (hint: answer is 2).  Once you do this, you will have access to my LCD display, Motors, multiple RGB LEDs, and even my webcam.</p>
             <p class="animateblock">If you do not wish to gain access to my Arduino, then you can still just view live (read-only) data coming from the Arduino. However, if you are viewing this site on your mobile device and are not connected to a local area network,  it is very possible that you could incure data charges from your service provider as information on this site is constantly being updated and downloaded to your phone (no different than Facebook really).  Thanks and enjoy! </p>
             </div>
@@ -283,7 +283,7 @@
             <div class="col-lg-8 col-lg-offset-2">
                 <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
                 <!-- The form should work on most web servers, but if the form is not working you may need to configure your web server differently. -->
-                <form name="sentMessage" id="contactForm" novalidate>
+                <form name="sentMessage" id="contactForm" novalidate action="//formspree.io/brad.lannon@gmail.com" method="POST">
                     <div class="row control-group">
                         <div class="form-group col-xs-12 floating-label-form-group controls">
                             <label>Name</label>
@@ -294,7 +294,7 @@
                     <div class="row control-group">
                         <div class="form-group col-xs-12 floating-label-form-group controls">
                             <label>Email Address</label>
-                            <input type="email" class="form-control" placeholder="Email Address" id="email" required data-validation-required-message="Please enter your email address.">
+                            <input type="text" class="form-control" placeholder="Email Address" name="_replyto" id="email" required data-validation-required-message="Please enter your email address.">
                             <p class="help-block text-danger"></p>
                         </div>
                     </div>
@@ -310,15 +310,19 @@
                             <label>Message</label>
                             <textarea rows="5" class="form-control" placeholder="Message" id="message" required data-validation-required-message="Please enter a message."></textarea>
                             <p class="help-block text-danger"></p>
+                            <input type="text" name="_gotcha" style="display:none" />
+                            <input type="hidden" name="_cc" value="contactme@bradlannon.ca" />
                         </div>
                     </div>
                     <br>
                     <div id="success"></div>
                     <div class="row">
                         <div class="form-group col-xs-12">
-                            <button type="submit" class="btn btn-success btn-lg" id="sendEmail">Send</button>
+                            <input type="submit" value="Send" class="btn btn-success btn-lg">
+                             <button type="submit" class="btn btn-success btn-lg" id="sendEmail">Sendemail</button>
                         </div>
                     </div>
+
                 </form>
             </div>
         </div>
@@ -630,10 +634,15 @@
     <script src="/js/classie.js"></script>
     <script src="/js/cbpAnimatedHeader.js"></script>
     <!-- Contact Form JavaScript -->
+        <script src="/js/contact_me.js"></script>
     <script src="/js/jqBootstrapValidation.js"></script>
-    <script src="/js/contact_me.js"></script>
     <!-- Custom Theme JavaScript -->
     <script src="/socket.io/socket.io.js"></script>
+    <!-- WebRTC JavaScript -->
+    <script src="//cdn.webrtc-experiment.com/socket.io.js"> </script>
+    <script src="//cdn.webrtc-experiment.com/RTCPeerConnection-v1.5.js"> </script>
+    <script src="//cdn.webrtc-experiment.com/webrtc-broadcasting/broadcast.js"> </script>
+    <script src="http://simplewebrtc.com/latest.js"></script>
     <script src="/js/lanteka.js"></script>
     </body>
 </html>

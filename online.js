@@ -211,18 +211,16 @@ setInterval(function(){
     writeToRedis();
 }, 1000);
 
+
+
 app.get('/', function(req, res) {
     res.sendfile(__dirname + '/views/index.html');
 });
 
 app.use(express.static(process.cwd() + '/Public'));
-    console.log("Visit to localhost:8081 in your browser");
+
+console.log("Visit to localhost:8081 in your browser");
+
 app.listen(8081);
 
-app.io.route('sendEmail', function(req) {
-    senderName = req.data.senderName;
-    senderEmail = req.data.senderEmail;
-    senderPhone = req.data.senderPhone;
-    senderMessage = req.data.senderMessage;
-   // call php function
-});
+
