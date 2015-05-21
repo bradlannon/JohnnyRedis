@@ -94,7 +94,7 @@ var myArduino = {
            myArduino.enableArduino = true;
            $("#confirmHuman").hide("slow");
            $("#isHuman").removeClass('blur');
-           $("#camPicture").html("<video autoplay src='" + myArduino.webcamValue + "' class='center-block'></video>");
+           $("#camPicture").html("<iframe width='480' height='320' src='http://www.ustream.tv/embed/20579011?v=3&amp;wmode=direct' scrolling='no' frameborder='0' style='border: 0px none transparent;'>    </iframe>");
         }
     },
     showArduinoData : function() {
