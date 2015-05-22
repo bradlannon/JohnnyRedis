@@ -76,7 +76,7 @@ clientSub.on("message", function (channel, message) {
         app.io.broadcast('displayPingValue',myPing);
     } else if (channel == 'webcamValue') {
          webcamLink = message;
-         req.io.broadcast('newWebcamLink',myLink);
+         req.io.broadcast('newWebcamLink',webcamLink);
     } else if (channel == 'potValue') {
          myPot = message;
          app.io.broadcast('displayPotValue',myPot);

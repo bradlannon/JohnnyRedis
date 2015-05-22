@@ -49,7 +49,7 @@ var myArduino = {
     dontcheck3 : false,
     dontcheck4 : false,
     enableArduino : false,
-    webcamValue : 'mediastream:http://simpl.info/d17c77b5-93b1-458b-afd8-ce3bb02b2664',
+    webcamValue : 'http://www.ustream.tv/embed/20579011?v=3&amp;wmode=direct',
     changeLed3 : true,
     changeServo : function() {
         data = {myVal:  myArduino.servoValue};
@@ -94,7 +94,7 @@ var myArduino = {
            myArduino.enableArduino = true;
            $("#confirmHuman").hide("slow");
            $("#isHuman").removeClass('blur');
-           $("#camPicture").html("<iframe width='480' height='320' src='http://www.ustream.tv/embed/20579011?v=3&amp;wmode=direct' scrolling='no' frameborder='0' style='border: 0px none transparent;'>    </iframe>");
+           $("#camPicture").html("<iframe width='480' height='320' src='" + myArduino.webcamValue + "' scrolling='no' frameborder='0' style='border: 0px none transparent;' class='center-block'>    </iframe><br><div class='text-center'>Currently there is about 20sec delay. Sorry!</div>");
         }
     },
     showArduinoData : function() {
