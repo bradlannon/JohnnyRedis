@@ -45,6 +45,8 @@ var five = require('johnny-five'),
     myPiezo = 1,
     myLed = 1,
     myText = '',
+    myUsers = 0,
+    currentTime,
     myCredentials = require("./credentials.js"),
     boardLCD = new five.Board({ port: "COM11" }),
     boardMEGA = new five.Board({ port: "COM12" });
@@ -62,6 +64,7 @@ clientSub.subscribe("piezoValue");
 clientSub.subscribe("faceValue");
 clientSub.subscribe("textValue");
 clientSub.subscribe("nameValue");
+clientSub.subscribe("usersValue");
 
 clientSub.on("error", function(err) {
     trace("Error connecting to redis subscribe: " + err);
@@ -75,9 +78,11 @@ clientSub.on("message", function (channel, message) {
      if (channel == 'rgbValue') {
           trace("Received rgbValue: " + message);
           myRGB = message;
+         // app.io.broadcast('addNewUser',myRGB);
       } else if (channel == 'ledValue') {
           trace("Received ledValue:" + message);
           myLed = message;
+          // app.io.broadcast('addNewUser',myLed);
       } else if (channel == 'servoValue') {
           trace("Received servoValue:" + message);
           myServo = message;
@@ -96,6 +101,11 @@ clientSub.on("message", function (channel, message) {
       } else if (channel == 'nameValue') {
           trace("Received nameValue:" + message);
           myName = message;
+      } else if (channel == 'usersValue') {
+          getTime();
+          myUsers = currentTime + " -- " + message;
+          trace("Received usersValue:" + myUsers);
+          app.io.broadcast('addNewUser',myUsers);
       }
 });
 
@@ -245,12 +255,13 @@ ledWebActivated.on();
        setInterval(function(){
       if (myPot!=myPotOld) {
         clientPub.publish('potValue', myPot );
-        app.io.broadcast('displayServoValue',myServo);
+        app.io.broadcast('displayPotValue',myPot);
       }
       myPot=myPotOld;
 
       if (myPhoto!=myPhotoOld) {
         clientPub.publish('photoValue', myPhoto );
+        app.io.broadcast('displayPhotoValue',myPhoto);
       }
       myPhoto=myPhotoOld;
     }, 10000);  // change to something logical
@@ -424,16 +435,20 @@ boardTMP.on("ready", function() {
         ledTest.color(myRGB);
 });
 
-function trace(text) {
-    var date = new Date();
+
+function getTime() {
+   var date = new Date();
     var hour = date.getHours();
     hour = (hour < 10 ? "0" : "") + hour;
     var min  = date.getMinutes();
     min = (min < 10 ? "0" : "") + min;
     var sec  = date.getSeconds();
     sec = (sec < 10 ? "0" : "") + sec;
-    var currentTime;
     currentTime = "[" + hour + ":" + min + ":" + sec + "]";
+}
+
+function trace(text) {
+    getTime();
     console.log(currentTime + " " + text);
 }
 

@@ -141,9 +141,9 @@ app.io.route('getInitialValues', function(req) {
         myFace: myFace,
         myText: myText
     });
-    clientPub.publish("userConnected", 1);
-    usersOnline++;
 
+    usersOnline++;
+    clientPub.publish("usersValue", usersOnline);
     trace(usersOnline + " users online");
     clientPub.publish("faceValue", myFace);
 });
@@ -201,9 +201,14 @@ app.io.route('getReadOnlyValues', function(req) {
 
 app.io.route('disconnect', function(req) {
     usersOnline--;
+    clientPub.publish("usersValue", usersOnline);
     trace(usersOnline + " users online");
     if (usersOnline === 0) {
         clientPub.publish("faceValue", 1);
+        clientPub.publish("usersValue", 0);
+    } else if (usersOnline <= 0) {
+        usersOnline = 0;
+        clientPub.publish("usersValue", 0);
     }
 });
 

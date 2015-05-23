@@ -99,6 +99,17 @@ io.on('displayInitialValues', function(data) {
     myArduino.ledValue = data.myLed;
 });
 
+io.on('addNewUser', function(data) {
+console.log("made it" + data);
+  $("#usersOnline ul").append("<li>" + data + "</li>");
+    var ul = document.getElementById("usersOnline");
+    var li = document.createElement("li");
+    li.appendChild(document.createTextNode(data + " Users Online"));
+    // li.setAttribute("id","element4");
+    ul.appendChild(li);
+});
+
+// check the io's below to see which ones are not used
 io.on('displayReadOnlyValues', function(data) {
     myArduino.photoValue = data.myPhoto;
     myArduino.potValue = data.myPot;
