@@ -45,7 +45,8 @@ var myArduino = {
     textValue : '',
     faceValue :4,
     ledValue :1,
-    ledEyesValue :1,
+    lcdEyesValue :1,
+    lcdEyeBrowsValue :1,
     onlineValue :0,                                          // 1 is allow online access, 0 is don't
     enableArduino : true,
     webcamValue : 'http://www.youtube.com/embed/i6x-5bQx91c',
@@ -80,6 +81,19 @@ var myArduino = {
        data = {myVal:  myArduino.faceValue};
        io.emit('faceValueChange', data);
     },
+    changeLCDEyes : function() {
+       data = {myVal:  myArduino.lcdEyesValue};        // do this later
+       io.emit('lcdEyesChange', data);
+    },
+    changeLCDEyeBrows : function() {
+       data = {myVal:  myArduino.lcdEyeBrowsValue};         // do this later
+       io.emit('lcdEyeBrowsChange', data);
+    },
+    changeWebcamLink : function() {
+       data = {myVal:  myArduino.webcamValue};         // do this later
+       io.emit('webcamChange', data);
+    },
+
     changeText : function() {
         data = {myVal:  myArduino.textValue};
         io.emit('textValueChange', data);

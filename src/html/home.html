@@ -79,7 +79,7 @@
                     </li>
                     <li>
                         <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">LCD Eyebrows Value<span class="caret"></span>
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true" rv-on-click="myArduino.changeLCDEyebrows">LCD Eyebrows Value<span class="caret"></span>
                             </button>
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Happy</a></li>
@@ -89,7 +89,7 @@
                         </div>
                     </li>
                     <li><div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">LCD Eye Value<span class="caret"></span>
+                            <button class="btn btn-default dropdown-toggle"  rv-on-click="myArduino.changeLCDEyes" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">LCD Eye Value<span class="caret"></span>
                             </button>
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Love</a></li>
@@ -97,23 +97,19 @@
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Squint</a></li>
                               </ul>
                         </div></li>
-                    <li>&nbsp;</li>
+                    <li><div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"  rv-on-click="myArduino.changeWebcamLink" aria-expanded="true">
+                        Set Webcam Links
+                        <span class="caret"></span></button>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" id="webcamLinks"></ul>
+                        </div>
+                    </li>
                     <li>&nbsp;</li>
                     <li>&nbsp;</li>
                 </ul>
             </form>
              <div class="col-lg-12 text-center">
-                <input type="text" class="form-control" id="webcamValue" placeholder="This is the link for the webcam online!">
-             </div>
-             <div class="col-lg-12 text-center">
-                <div class="dropdown">
-                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                    Set Webcam Links
-                    <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" id="webcamLinks">
-                  </ul>
-                </div>
+
              </div>
         </div>
     </div>
@@ -126,7 +122,6 @@
         <div class="container">
             <div class="row">
                 <div class="footer-col col-md-12 center-text">
-
                 </div>
 
             </div>

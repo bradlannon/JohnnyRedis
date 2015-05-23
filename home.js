@@ -47,7 +47,10 @@ var five = require('johnny-five'),
     myPiezo = 1,
     myLed = 1,
     myLedEyes = 1,
+    myLCDEyes = 1,
+    myLCDEyeBrows = 1,
     myText = '',
+    myWebcam = '',
     myUsers = 0,
     currentTime,
     myCredentials = require("./credentials.js"),
@@ -499,6 +502,11 @@ app.io.route('rgbValueChange', function(req) {
      req.io.broadcast('displayNewRGB',myRGB);
  });
 
+app.io.route('webcamChange', function(req) {
+     myWebcam = req.data.myVal;
+     clientPub.publish("webcamValue", myWebcam);  //publises but others dont
+ });
+
 app.io.route('rosieRgbValueChange', function(req) {
      myRosieRGB = req.data.myVal;
      req.io.broadcast('displayNewRosieRGB',myRosieRGB);
@@ -523,4 +531,18 @@ app.io.route('textValueChange', function(req) {
     myText = req.data.myVal;
     req.io.broadcast('displayNewText',myText);
     clientPub.publish("textValue", myText);
+});
+
+app.io.route('lcdEyesChange', function(req) {
+    myLCDEyes = req.data.myVal;
+    trace(myLCDEyes);
+   // req.io.broadcast('displayNewText',myLCDEyes);        // not needed if they are buttons
+   //             look into button toolbar in bootstrap
+});
+
+app.io.route('lcdEyeBrowsChange', function(req) {
+    myLCDEyeBrows = req.data.myVal;
+    trace(myLCDEyeBrows);
+   // req.io.broadcast('displayNewText',myLCDEyeBrows);    // not needed if they are buttons
+     //             look into button toolbar in bootstrap
 });
