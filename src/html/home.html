@@ -52,14 +52,6 @@
                     <li>Potentiometer: { myArduino.potValue }</li>
                     <li>Ping Sensor: { myArduino.pingValue }</li>
                     <li>&nbsp;</li>
-                    <li>&nbsp;</li>
-                    <li>&nbsp;</li>
-                    <li>&nbsp;</li>
-                    <li>&nbsp;</li>
-                    <li>&nbsp;</li>
-                    <li>&nbsp;</li>
-                    <li>&nbsp;</li>
-                    <li>&nbsp;</li>
                 </ul>
             </form>
 
@@ -67,15 +59,44 @@
                 <ul>
                     <li><h3>Writable Values</h3></li>
                     <li>
-                    <label>Servo Motor ON / Off <input type="checkbox" name="ledstatus" rv-checked="myArduino.servoValue" rv-on-change="myArduino.changeServo" rv-enabled="myArduino.enableArduino"> </label></li>
-                    <li><label>LED Color Picker  <input type="color" rv-value="myArduino.rgbValue" rv-on-change="myArduino.changeRgb" rv-enabled="myArduino.enableArduino" name="favcolor"> </label></li>
-                    <li><label>Turn ON / Off LED  <input type="checkbox" name="ledstatus" rv-checked="myArduino.ledValue"  rv-enabled="myArduino.enableArduino" rv-on-change="myArduino.changeLed"> </label></li>
+                    <label>Allow online website controls ON / Off <input type="checkbox" rv-checked="myArduino.onlineValue" rv-on-change="myArduino.changeOnline"> </label></li>
+
+                    <li><label>Servo Motor ON / Off <input type="checkbox" rv-checked="myArduino.servoValue" rv-on-change="myArduino.changeServo"> </label></li>
+
+                    <li><label>Online LED Color Picker<input type="color" rv-value="myArduino.rgbValue" rv-on-change="myArduino.changeRgb" name="favcolor"> </label></li>
+
+                     <li><label>Rosie Toy LED Color Picker  <input type="color" rv-value="myArduino.rosieRgbValue" rv-on-change="myArduino.changeRosieRgb" name="favcolor"> </label></li>
+
+                      <li><label>Ping Sensor's LED Color Picker  <input type="color" rv-value="myArduino.pingRgbValue" rv-on-change="myArduino.changePingRgb" name="favcolor"> </label></li>
+
+                    <li><label>Turn ON / Off Online LED  <input type="checkbox"rv-checked="myArduino.ledValue"  rv-on-change="myArduino.changeLed"> </label></li>
+
+                     <li><label>Turn ON / Off Auto-colored Eyes  <input type="checkbox" rv-checked="myArduino.ledEyesValue"  rv-on-change="myArduino.changeLedEyes"> </label></li>
+
                     <li><div class="form-group center-block col-sm-12">
-                            <input type="text" id="textValue" maxlength="32" rv-value="myArduino.textValue" class="form-control" rv-on-change="myArduino.changeText" rv-enabled="myArduino.enableArduino" placeholder="I will see this on my 16x2 LCD in my room!!">
+                            <input type="text" id="textValue" maxlength="32" rv-value="myArduino.textValue" class="form-control" rv-on-change="myArduino.changeText" placeholder="I will see this on my 16x2 LCD in my room!!">
                         </div>
                     </li>
-                    <li>&nbsp;</li>
-                    <li>&nbsp;</li>
+                    <li>
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">LCD Eyebrows Value<span class="caret"></span>
+                            </button>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Happy</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Ok</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Mad</a></li>
+                              </ul>
+                        </div>
+                    </li>
+                    <li><div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">LCD Eye Value<span class="caret"></span>
+                            </button>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Love</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Wide Awake</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Squint</a></li>
+                              </ul>
+                        </div></li>
                     <li>&nbsp;</li>
                     <li>&nbsp;</li>
                     <li>&nbsp;</li>
@@ -83,6 +104,16 @@
             </form>
              <div class="col-lg-12 text-center">
                 <input type="text" class="form-control" id="webcamValue" placeholder="This is the link for the webcam online!">
+             </div>
+             <div class="col-lg-12 text-center">
+                <div class="dropdown">
+                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                    Set Webcam Links
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" id="webcamLinks">
+                  </ul>
+                </div>
              </div>
         </div>
     </div>

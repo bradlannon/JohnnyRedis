@@ -48,6 +48,13 @@ clientSub.subscribe("photoValue");
 clientSub.subscribe("potValue");
 clientSub.subscribe("pingValue");
 clientSub.subscribe("webcamValue");
+//
+//add these for home console purposes
+clientSub.subscribe("servoValue");
+clientSub.subscribe("ledValue");
+clientSub.subscribe("rgbValue");
+clientSub.subscribe("textValue");
+// to do: add events
 
 clientSub.on("error", function(err) {
     trace("Error connecting to redis subscribing server: " + err);
@@ -80,6 +87,18 @@ clientSub.on("message", function (channel, message) {
     } else if (channel == 'potValue') {
          myPot = message;
          app.io.broadcast('displayPotValue',myPot);
+    } else if (channel == 'servoValue') {
+       //  myServo = message;   //manual override
+       //  app.io.broadcast('displayServoValue',myServo);  //add broadcast
+    } else if (channel == 'ledValue') {
+       //  myLed = message;   //manual override
+       //  app.io.broadcast('displayLedValue',myLed);      //add broadcast
+    } else if (channel == 'rgbValue') {
+       //  myRgb = message;   //manual override
+       //  app.io.broadcast('displayLedValue',myRgb);      //add broadcast
+    } else if (channel == 'textValue') {
+       //  myText = message;   //manual override
+       //  app.io.broadcast('displayTextValue',myRgb);     //add broadcast
     }
 });
 

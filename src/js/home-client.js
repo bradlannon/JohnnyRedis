@@ -38,11 +38,15 @@ var myArduino = {
     pushValue : 0,
     pingValue : 0,
     rgbValue : '#FF0000',
+    rosieRgbValue : '#FF0000',
+    pingRgbValue : '#FF0000',
     servoValue : 0,
     motionValue : 0,
     textValue : '',
     faceValue :4,
     ledValue :1,
+    ledEyesValue :1,
+    onlineValue :0,                                          // 1 is allow online access, 0 is don't
     enableArduino : true,
     webcamValue : 'http://www.youtube.com/embed/i6x-5bQx91c',
     changeLed3 : true,
@@ -56,6 +60,18 @@ var myArduino = {
     changeRgb : function() {
         data = {myVal:  myArduino.rgbValue};
         io.emit('rgbValueChange', data);
+    },
+    changeRosieRgb : function() {
+        data = {myVal:  myArduino.rosieRgbValue};
+        io.emit('rosieRgbValueChange', data);
+    },
+    changePingRgb : function() {
+        data = {myVal:  myArduino.pingRgbValue};
+        io.emit('pingRgbValueChange', data);
+    },
+    changeOnline : function() {
+        data = {myVal:  myArduino.onlineValue};
+        io.emit('onlineValueChange', data);
     },
     changePiezo : function() {
        io.emit('piezoValueChange');
@@ -71,6 +87,10 @@ var myArduino = {
     changeLed : function() {
         data = {myVal:  myArduino.ledValue};
         io.emit('ledValueChange', data);
+    },
+    changeLedEyes : function() {
+        data = {myVal:  myArduino.ledEyesValue};
+        io.emit('ledEyesValueChange', data);
     }
 };
 
@@ -108,6 +128,17 @@ console.log("made it" + data);
     // li.setAttribute("id","element4");
     ul.appendChild(li);
 });
+
+io.on('displayNewOnline', function(data) {
+    console.log("new online made it" + data);
+    myArduino.onlineValue = data;
+});
+
+io.on('displayNewServo', function(data) {
+    console.log("new online made it" + data);
+    myArduino.servoValue = data;
+});
+
 
 // check the io's below to see which ones are not used
 io.on('displayReadOnlyValues', function(data) {
@@ -149,6 +180,18 @@ io.on('displayToggleValue', function(data) {
 io.on('displayNewLED', function(myVal) {
     myArduino.ledValue = myVal;
 });
+
+io.on('displayNewLEDEyes', function(myVal) {
+    myArduino.ledEyesValue = myVal;
+});
+
+io.on('displayNewPingRGB', function(myVal) {
+     myArduino.pingRgbValue = myVal;
+ });
+
+io.on('displayNewRosieRGB', function(myVal) {
+     myArduino.rosieRgbValue = myVal;
+ });
 
 io.on('displayNewRGB', function(myVal) {
      myArduino.rgbValue = myVal;
@@ -192,4 +235,14 @@ $(window).scroll(function(){
 window.view = rivets.bind($('#page-top'),{
     myArduino:myArduino
 });
+
+window.onload = function() {
+    $.getJSON('js/webcam.json', function(data){
+        webcamArray = data.webcam[0]; //data.webcam.webcamValue;
+        $('#webcamLinks').append('<li role="presentation"><a role="menuitem" tabindex="-1" href="#">'+data.webcam[0]+'</a></li>');
+        $('#webcamLinks').append('<li role="presentation"><a role="menuitem" tabindex="-1" href="#">'+data.webcam[1]+'</a></li>');
+        $('#webcamLinks').append('<li role="presentation"><a role="menuitem" tabindex="-1" href="#">'+data.webcam[2]+'</a></li>');
+        // myArduino.webcamValue
+    });
+};
 

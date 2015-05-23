@@ -42,8 +42,11 @@ var five = require('johnny-five'),
     myMotionOld = 0,
     myFace = 1,
     myRGB = '#00FFDD',
+    myPingRGB = '#00FFDD',
+    myRosieRGB = '#00FFDD',
     myPiezo = 1,
     myLed = 1,
+    myLedEyes = 1,
     myText = '',
     myUsers = 0,
     currentTime,
@@ -202,19 +205,23 @@ ledWebActivated.on();
 
   setInterval(function(){
     if (myLed == 1) {
-
-        ledEyeR.on();
-        ledEyeL.on();
-
         led.on();
         led.color(myRGB);
         led2.on();
         led2.color(myRGB);
     } else {
         led.off();
+    }
+
+    if (myLedEyes == 1) {
+        ledEyeR.on();
+        ledEyeL.on();
+    } else {
         ledEyeR.off();
         ledEyeL.off();
     }
+
+
 
     // WEB ACTIVATED //
     if ( toggleWeb == true) {
@@ -432,7 +439,7 @@ boardTMP.on("ready", function() {
     }, board: boardTMP
   });
         ledTest.on();
-        ledTest.color(myRGB);
+        ledTest.color(myPingRGB);
 });
 
 
@@ -475,12 +482,45 @@ app.io.route('getInitialValues', function(req) {
     });
 });
 
-app.io.route('servoValueChange', function(req) {
-    trace("servo changed");
-    myServo = req.data.myVal;
-    //req.io.broadcast('displayNewMotor',myServo);
-    // make it compatible with other screens in my house
-    //
-    //also send this to redis because if I make a change, then  it had to show up online website, eg led on or rgb color change
+app.io.route('onlineValueChange', function(req) {
+    myOnline = req.data.myVal;
+    req.io.broadcast('displayNewOnline',myOnline);
 });
 
+app.io.route('servoValueChange', function(req) {
+    myServo = req.data.myVal;
+    req.io.broadcast('displayNewServo',myServo);
+    //send this to redis SOMETIMES because if I make a change, then  it had to show up online website, eg led on or rgb color change
+});
+
+app.io.route('rgbValueChange', function(req) {
+     myRGB = req.data.myVal;
+     clientPub.publish("rgbValue", myRGB);  //publises but others dont
+     req.io.broadcast('displayNewRGB',myRGB);
+ });
+
+app.io.route('rosieRgbValueChange', function(req) {
+     myRosieRGB = req.data.myVal;
+     req.io.broadcast('displayNewRosieRGB',myRosieRGB);
+ });
+
+app.io.route('pingRgbValueChange', function(req) {
+     myPingRGB = req.data.myVal;
+     req.io.broadcast('displayNewPingRGB',myPingRGB);
+ });
+
+app.io.route('ledValueChange', function(req) {
+    myLed = req.data.myVal;
+    req.io.broadcast('displayNewLED',myLed);
+});
+
+app.io.route('ledEyesValueChange', function(req) {
+    myLedEyes = req.data.myVal;
+    req.io.broadcast('displayNewLEDEyes',myLedEyes);
+});
+
+app.io.route('textValueChange', function(req) {
+    myText = req.data.myVal;
+    req.io.broadcast('displayNewText',myText);
+    clientPub.publish("textValue", myText);
+});
