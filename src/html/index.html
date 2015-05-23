@@ -73,12 +73,7 @@
                 <div class="intro-text">
                     <span class="name">Brad Lannon</span>
                     <hr class="star-light">
-                    <span class="skills">Web Designer and Developer</span>
-
-
-
-
-
+                    <span class="skills" rv-text="myArduino.subtitle"></span>
                 </div>
             </div>
         </div>
@@ -94,9 +89,9 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-12 text-center">
-                <p class="animateblock">As an experienced and versatile IT Specialist for the last 6 years working at Darose Control Systems Ltd, I’ve acquired a wealth of technical skills within the IT sector, with extensive technical support, network administration, software development and database management. During this time I have worked with several multi-million dollar corporate clients around the world, including those in the Dairy, Seafood, and lumber industry. </p>
-                <p class="animateblock">In my spare time, when I'm not enjoying the outdoors, you can usually find me doing many of my favorite hobbies including playing music, tinkering with electronics, and developing websites. In the past year I've really taken a liking to Node.js and the possibilities is has to offer in web development.  On the front side of things, my weapons of choice are Photoshop/Inkscape for drawing layouts and Sublime Text to produce clean semantic code.  Generally I prefer the development side of things, however I do like to experiment with new and exciting web layouts. In the past I’ve also used Flash for animations and entire web sites.
+            <div class="col-lg-12 text-center" rv-text="myArduino.txtAbout">
+                <p class="animateblock"> Control Systems Ltd, I’ve acquired a wealth of technical skills within the IT sector, with extensive technical support, network administration, software development and database management. During this time I have worked with several multi-million dollar corporate clients around the world, including those in the Dairy, Seafood, and lumber industry.</p>
+                <p class="animateblock"> In my spare time, when I'm not enjoying the outdoors, you can usually find me doing many of my favorite hobbies including playing music, tinkering with electronics, and developing websites. In the past year I've really taken a liking to Node.js and the possibilities is has to offer in web development.  On the front side of things, my weapons of choice are Photoshop/Inkscape for drawing layouts and Sublime Text to produce clean semantic code.  Generally I prefer the development side of things, however I do like to experiment with new and exciting web layouts. In the past I’ve also used Flash for animations and entire web sites.
                 <p class="animateblock"> Currently,  my CMS of choice is WordPress which is coded in php and although before I learned about Node.js (and Express.js), I did enjoy creating websites using the Django Framework (Python). This really helped me get a grasp on the Model-View-Controller software architectural pattern that's similarly used in many different frameworks like Express.js.</p>
                 <p class="animateblock">This website was created with most of my interests in mind. For starters, the site has a clean layout and will adapt to different screen sizes whether it be a phone, tablet or desktop.  Next is the web server that I have written in Node.js.  It is realtime meaning that if, for example, you click the color picker below, and choose a new color, everyone else who is currently viewing the page (across the world) will see the color immediately change as well.  The reason why I did this was I wanted it to be the interface (controller) for an Arduino microcontroller that I have set up at my home in Halifax, Nova Scotia.  An arduino (pictured below) is an electronic development board that you can plug sensors and motors into and control them through code.  </p>
             </div>
@@ -106,7 +101,7 @@
 
 <!-- Tools Grid Section -->
 <section id="tools">
-    <div class="container ">
+    <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h2>TOOLS</h2>
@@ -202,13 +197,8 @@
 
         <div class="row">
             <div class="col-lg-12 animateblock" id="camPicture">
-      <!--        animateblock btm text-center -->
-
-
-       <!--  <iframe width="480" height="320" src="http://www.ustream.tv/embed/20579011?v=3&amp;wmode=direct" scrolling="no" frameborder="0" style="border: 0px none transparent;">    </iframe>
-<br /><a href="http://www.ustream.tv" style="font-size: 12px; line-height: 20px; font-weight: normal; text-align: left;" target="_blank">Broadcast live streaming video on Ustream</a> -->
-
-
+                <!--  <iframe width="480" height="320" src="http://www.ustream.tv/embed/20579011?v=3&amp;wmode=direct" scrolling="no" frameborder="0" style="border: 0px none transparent;">    </iframe>
+                <br /><a href="http://www.ustream.tv" style="font-size: 12px; line-height: 20px; font-weight: normal; text-align: left;" target="_blank">Broadcast live streaming video on Ustream</a> -->
                 <img src="img/arduino.png" data-1x="img/arduino.png" data-2x="img/arduino.png" class="hisrc img-responsive center-block" id="arduinoImage" />
             </div>
         </div>
@@ -219,7 +209,7 @@
                         <li><label><input type="text" id="answerValue" class="form-control" rv-on-change="myArduino.myAnswerValueChange" placeholder="To verify you're human, what is 1 + 1?" size="31"></label> </li>
                         <li><input type="checkbox" rv-checked="dontcheck3" id="chk3" class="hideme"> <input type="checkbox" id="chk4"  rv-checked="dontcheck4" class="hideme"></label></li>
                     </ul>
-                </div>
+            </div>
         </div>
 
         <div class="row">
@@ -245,25 +235,13 @@
                                 <input type="text" id="textValue" maxlength="32" rv-value="myArduino.textValue" class="form-control" rv-on-change="myArduino.changeText" rv-enabled="myArduino.enableArduino" placeholder="I will see this on my 16x2 LCD in my room!!">
                             </div>
                         </li>
-                        <!-- <li><label>LCD Face
-                            <select class="form-control" id="faceValue" rv-value="myArduino.faceValue" rv-on-change="myArduino.changeFace">
-                                  <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
-                                  <option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option>
-                                  <option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option>
-                                  <option>19</option><option>20</option><option>21</option><option>22</option><option>23</option><option>24</option>
-                                  <option>25</option><option>26</option><option>27</option><option>28</option><option>29</option><option>30</option>
-                                  <option>31</option><option>32</option><option>33</option><option>34</option><option>35</option><option>36</option>
-                                  <option>37</option><option>38</option><option>39</option>
-                            </select>
-                            </label>
-                        </li> -->
                     </ul>
                 </div>
             </form>
         </div>
 
         <div class="row">
-            <div class="col-lg-12 text-center" id="arduinoExplained"><br>
+            <div class="col-lg-12 text-center" tv-text="txtArduino" id="arduinoExplained"><br>
             <p class="animateblock">To use my Arduino, first click the 'Yes' button above and then answer the question in the 'Writable' (hint: answer is 2).  Once you do this, you will have access to my LCD display, Motors, multiple RGB LEDs, and even my webcam.</p>
             <p class="animateblock">If you do not wish to gain access to my Arduino, then you can still just view live (read-only) data coming from the Arduino. However, if you are viewing this site on your mobile device and are not connected to a local area network,  it is very possible that you could incure data charges from your service provider as information on this site is constantly being updated and downloaded to your phone (no different than Facebook really).  Thanks and enjoy! </p>
             </div>

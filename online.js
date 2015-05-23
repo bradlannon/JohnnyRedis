@@ -219,7 +219,6 @@ app.use(express.static(process.cwd() + '/Public'));
 app.listen(8081);
 trace("Visit to localhost:8081 in your browser");
 
-
 function trace(text) {
     var date = new Date();
     var hour = date.getHours();

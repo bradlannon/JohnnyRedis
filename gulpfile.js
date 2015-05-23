@@ -113,7 +113,7 @@ gulp.task('minify-html', function() {
       conditionals: true,
       spare:true
     };
-    return gulp.src('./src/html/index.html')
+    return gulp.src('./src/html/*.html')
       .pipe(minifyHTML(opts))
       .pipe(gulp.dest('./views/'));
 });

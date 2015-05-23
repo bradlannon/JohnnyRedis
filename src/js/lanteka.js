@@ -49,7 +49,17 @@ var myArduino = {
     dontcheck3 : false,
     dontcheck4 : false,
     enableArduino : false,
-    webcamValue : 'http://www.ustream.tv/embed/20579011?v=3&amp;wmode=direct',
+    txtSubtitle: null,
+    txtAbout: 'text',
+    txtTools1: 'text',
+    txtTools2:'text',
+    txtTools3:'text',
+    txtTools4: 'text',
+    txtTools5: 'text',
+    txtTools6: 'text',
+    txtArduino: 'text',
+    // webcamValue : 'http://www.ustream.tv/embed/20579011?v=3&amp;wmode=direct',
+    webcamValue : 'http://www.youtube.com/embed/i6x-5bQx91c',
     changeLed3 : true,
     changeServo : function() {
         data = {myVal:  myArduino.servoValue};
@@ -250,8 +260,28 @@ $(window).scroll(function(){
     animate_elems();
 });
 
-window.view = rivets.bind($('#arduino'),{
+window.view = rivets.bind($('#page-top'),{
     myArduino:myArduino
 });
+        myArduino.about = 'asdf';
+        myArduino.txtTools1 = 'asdf';
+        myArduino.txtTools2 ='asdf';
+        myArduino.txtTools3 = 'asdf';
+        myArduino.txtTools4 = 'asdf';
+        myArduino.txtTools5 ='asdf';
+        myArduino.txtTools6 = 'asdf';
+window.onload = function() {
 
+    $.getJSON('js/data.json', function(data){
+        myArduino.txtSubtitle = data.siteText.subtitle;
+        myArduino.txtAbout = data.siteText.about;
+        myArduino.txtTools1 = data.siteText.tools1;
+        myArduino.txtTools2 = data.siteText.tools2;
+        myArduino.txtTools3 = data.siteText.tools3;
+        myArduino.txtTools4 = data.siteText.tools4;
+        myArduino.txtTools5 = data.siteText.tools5;
+        myArduino.txtTools6 = data.siteText.tools6;
+        myArduino.txtArduino = data.siteText.arduino;
+    });
+};
 

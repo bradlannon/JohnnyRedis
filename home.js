@@ -5,6 +5,8 @@
 //
 //var memwatch = require('memwatch');
 var five = require('johnny-five'),
+    express = require('express.io'),
+    app = express().http().io(),
     redis = require('redis'),
     pinLCD1 = 8,
     pinLCD2 = 9,
@@ -47,8 +49,6 @@ var five = require('johnny-five'),
     boardLCD = new five.Board({ port: "COM11" }),
     boardMEGA = new five.Board({ port: "COM12" });
     boardTMP = new five.Board({ port: "COM9" });
-
-//memwatch.on('leak', function(info) { trace("leaks: "+ info) });
 
 clientSub = redis.createClient(myCredentials.myPort, myCredentials.myDB);
 clientSub.auth(myCredentials.myAuth);
@@ -244,8 +244,8 @@ ledWebActivated.on();
   try {
        setInterval(function(){
       if (myPot!=myPotOld) {
-      //  trace("myPot changed " + myPot);
         clientPub.publish('potValue', myPot );
+        app.io.broadcast('displayServoValue',myServo);
       }
       myPot=myPotOld;
 
@@ -424,9 +424,6 @@ boardTMP.on("ready", function() {
         ledTest.color(myRGB);
 });
 
-
-
-
 function trace(text) {
     var date = new Date();
     var hour = date.getHours();
@@ -439,4 +436,36 @@ function trace(text) {
     currentTime = "[" + hour + ":" + min + ":" + sec + "]";
     console.log(currentTime + " " + text);
 }
+
+app.get('/', function(req, res) {
+    res.sendfile(__dirname + '/views/home.html');
+});
+
+app.use(express.static(process.cwd() + '/Public'));
+app.listen(8082);
+trace("Visit to localhost:8082 in your browser to view Admin Console");
+
+app.io.route('getInitialValues', function(req) {
+    req.io.emit('displayInitialValues', {
+        myPhoto: myPhoto,
+        myPot: myPot,
+        myPing: myPing,
+        myServo: myServo,
+        myPush: myPush,
+        myRgb: myRGB,
+        myLed: myLed,
+        myMotion: myMotion,
+        myFace: myFace,
+        myText: myText
+    });
+});
+
+app.io.route('servoValueChange', function(req) {
+    trace("servo changed");
+    myServo = req.data.myVal;
+    //req.io.broadcast('displayNewMotor',myServo);
+    // make it compatible with other screens in my house
+    //
+    //also send this to redis because if I make a change, then  it had to show up online website, eg led on or rgb color change
+});
 

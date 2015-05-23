@@ -43,22 +43,7 @@ var myArduino = {
     textValue : '',
     faceValue :4,
     ledValue :1,
-    robotValue : true,
-    dontcheck1 : true,
-    dontcheck2 : true,
-    dontcheck3 : false,
-    dontcheck4 : false,
-    enableArduino : false,
-    txtSubtitle: null,
-    txtAbout: 'text',
-    txtTools1: 'text',
-    txtTools2:'text',
-    txtTools3:'text',
-    txtTools4: 'text',
-    txtTools5: 'text',
-    txtTools6: 'text',
-    txtArduino: 'text',
-    // webcamValue : 'http://www.ustream.tv/embed/20579011?v=3&amp;wmode=direct',
+    enableArduino : true,
     webcamValue : 'http://www.youtube.com/embed/i6x-5bQx91c',
     changeLed3 : true,
     changeServo : function() {
@@ -86,68 +71,6 @@ var myArduino = {
     changeLed : function() {
         data = {myVal:  myArduino.ledValue};
         io.emit('ledValueChange', data);
-   //     return true;
-    },
-    changeRobot : function() {
-        if (document.getElementById("robotValue").value == 'on') {
-            myArduino.myNameValueChange();
-        }
-    },
-    myAnswerValueChange : function() {
-        var answer = $("#answerValue").val();
-        if (answer == 2) {
-            // var chk1 = $("#chk1").is(":checked");
-            // var chk2 = $("#chk2").is(":checked");
-            // var chk3 = $("#chk3").is(":checked");
-            // var chk4 = $("#chk4").is(":checked");
-            // console.log(chk1 + ", " + chk2 + ", " + chk3 + ", " + chk4);
-           myArduino.enableArduino = true;
-           $("#confirmHuman").hide("slow");
-           $("#isHuman").removeClass('blur');
-           $("#camPicture").html("<iframe width='480' height='320' src='" + myArduino.webcamValue + "' scrolling='no' frameborder='0' style='border: 0px none transparent;' class='center-block'>    </iframe><br><div class='text-center'>Currently there is about 20sec delay. Sorry!</div>");
-        }
-    },
-    showArduinoData : function() {
-         //when user clicks on 'yes'
-        $('#takeControl').hide("slow");
-        $('#arduinoExplained').hide("slow");
-        $("#myWritable").removeClass('removeme');
-        $("#myWritable").hide("slow");
-        $('#myReadable').removeClass("col-lg-12");
-        $('#myReadable').addClass("col-lg-6");
-        $('#myReadable').removeClass("hideme");
-        $('#myWritable').removeClass("col-lg-12");
-        $('#myWritable').addClass("col-lg-6");
-        $("#myWritable").removeClass('hideme');
-        $("#confirmHuman").removeClass('removeme');
-        $("#myWritable").show("slow");
-    },
-    hideArduinoData : function() {
-        // when user clicks on 'no'
-        $('#takeControl').hide("slow");
-        $('#arduinoExplained').hide("slow");
-        $('#myWritable').hide("slow");
-        $('#arduinoImage').show("slow");
-        $('#myCanvas').hide("slow");
-        $("#camPicture").html("<img src='img/arduino.png' data-1x='img/arduino.png' data-2x='img/arduino.png' class='hisrc img-responsive center-block' id='arduinoImage' />");
-        $('#myWritable').removeClass("col-lg-6");
-        $('#myWritable').addClass("col-lg-12");
-        $('#myWritable').addClass("removeme");
-        $('#myWritable').addClass("hideme");
-        $('#myReadable').removeClass("col-lg-6");
-        $('#myReadable').addClass("col-lg-12");
-    },
-    getInfoAndShow : function() {
-       if ($('#robotValue').is(':checked')) {
-            if(!$('#dontcheck1').is(':checked') & !$('#dontcheck2').is(':checked') & !$('#dontcheck3').is(':checked') & !$('#dontcheck4').is(':checked')) {
-                $.getJSON("http://api.ipify.org?format=json", function(data){
-                    var myIp = data.ip;
-                    myArduino.enableButtons();
-                    data = {myVal:  $("#nameValue").val() + ":" + myIp};
-                    io.emit('nameValueChange', data);
-                });
-            }
-        }
     }
 };
 
@@ -160,6 +83,7 @@ rivets.formatters.chosen = function(value,selector) {
 };
 
 // the socket.io connections
+
 io = io.connect();
 io.emit('getInitialValues');
 
@@ -246,12 +170,6 @@ function animate_elems() {
     });
   }
 
-// animates the responsive image when you click on  Responsive image link        currently removed
-// var duration = 7000, steps = 3, step = 1;
-// setInterval( function() {
-//    document.querySelector('.animation').setAttribute( 'data-animation-step', step = ++step > steps ? 1 : step );
-// }, duration / steps );
-
 var $elems = $('.animateblock');
 var winheight = $(window).height();
 var fullheight = $(document).height();
@@ -263,25 +181,4 @@ $(window).scroll(function(){
 window.view = rivets.bind($('#page-top'),{
     myArduino:myArduino
 });
-        myArduino.about = 'asdf';
-        myArduino.txtTools1 = 'asdf';
-        myArduino.txtTools2 ='asdf';
-        myArduino.txtTools3 = 'asdf';
-        myArduino.txtTools4 = 'asdf';
-        myArduino.txtTools5 ='asdf';
-        myArduino.txtTools6 = 'asdf';
-window.onload = function() {
-
-    $.getJSON('js/data.json', function(data){
-        myArduino.txtSubtitle = data.siteText.subtitle;
-        myArduino.txtAbout = data.siteText.about;
-        myArduino.txtTools1 = data.siteText.tools1;
-        myArduino.txtTools2 = data.siteText.tools2;
-        myArduino.txtTools3 = data.siteText.tools3;
-        myArduino.txtTools4 = data.siteText.tools4;
-        myArduino.txtTools5 = data.siteText.tools5;
-        myArduino.txtTools6 = data.siteText.tools6;
-        myArduino.txtArduino = data.siteText.arduino;
-    });
-};
 
