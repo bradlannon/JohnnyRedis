@@ -109,8 +109,20 @@
             </div>
         </div>
         <div class="row">
+
             <div class="col-sm-4 tools-item">
                 <a href="#toolsModal1" class="tools-link" data-toggle="modal">
+                    <div class="caption">
+                        <div class="caption-content">
+                            <i class="fa fa-search-plus fa-3x"></i>
+                        </div>
+                    </div>
+                    <img src="img/tools/Video.png" class="img-responsive" alt="">
+                </a>
+            </div>
+
+            <div class="col-sm-4 tools-item">
+                <a href="#toolsModal2" class="tools-link" data-toggle="modal">
                     <div class="caption">
                         <div class="caption-content">
                             <i class="fa fa-search-plus fa-3x"></i>
@@ -119,8 +131,9 @@
                     <img src="img/tools/Node.png" class="img-responsive" alt="">
                 </a>
             </div>
+
             <div class="col-sm-4 tools-item">
-                <a href="#toolsModal2" class="tools-link" data-toggle="modal">
+                <a href="#toolsModal3" class="tools-link" data-toggle="modal">
                     <div class="caption">
                         <div class="caption-content">
                             <i class="fa fa-search-plus fa-3x"></i>
@@ -129,16 +142,9 @@
                     <img src="img/tools/Arduino.png" class="img-responsive" alt="">
                 </a>
             </div>
-            <div class="col-sm-4 tools-item">
-                <a href="#toolsModal3" class="tools-link" data-toggle="modal">
-                    <div class="caption">
-                        <div class="caption-content">
-                            <i class="fa fa-search-plus fa-3x"></i>
-                        </div>
-                    </div>
-                    <img src="img/tools/Gulp.png" class="img-responsive" alt="">
-                </a>
-            </div>
+
+
+
             <div class="col-sm-4 tools-item">
                 <a href="#toolsModal4" class="tools-link" data-toggle="modal">
                     <div class="caption">
@@ -149,6 +155,7 @@
                     <img src="img/tools/Git.png" class="img-responsive" alt="">
                 </a>
             </div>
+
             <div class="col-sm-4 tools-item">
                 <a href="#toolsModal5" class="tools-link" data-toggle="modal">
                     <div class="caption">
@@ -159,6 +166,7 @@
                     <img src="img/tools/Responsive.png" class="img-responsive" alt="">
                 </a>
             </div>
+
             <div class="col-sm-4 tools-item">
                 <a href="#toolsModal6" class="tools-link" data-toggle="modal">
                     <div class="caption">
@@ -368,10 +376,42 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2">
                     <div class="modal-body">
+                        <h2>Project & Video</h2>
+                        <hr class="star-primary">
+                        <img src="img/tools/Video.png" class="img-responsive img-centered" alt="">
+                        <p>The idea for this project started out in 2010 when I bought my first Arduino.  I would do some very simple things with it but had always wanted to build a web interface for it so that others could control as well.  I had experimented with web design for a number of years before this and had enjoyed creating wordpress themes for friends and clients. My first approach to combining my web skills with my arduino skills was to create a php page hosted on the Arduino's SD card and forward traffic on my modem to that Arduino's <a href="shield">ethernet port</a>.  By practise, this is not a wise idea as it leaves your home network open to the world, sort of.</p>
+                        <p>It wasn't until a few years ago that I learned about NodeJs and the Johnny-Five framework that allowed me to take another crack at the idea that I had. This time, instead of using php, I would be using javascript and html5. I would still have a server set up at my home to control the Arduino, but then I would also have the actual website (that you are viewing) hosted on Amazon's cloud services for the webpage. Every time an Arduino sensor changes value (eg. light sensor), it sends that value to a <a href="what is redis">Redis server</a> in the cloud. The same goes for anything on the website (eg. LED control below).  When you change a value, it sends the message to the Redis server in the cloud.  The thing about Redis is that it lets you subscribe to change events and be the middleman between the Arduino server and the Online webpage server, to try to put in in lamens terms... </p>
+                        <p> If you are having trouble grasping this, no worries, it took me months to figure it all out. Please watch the video below for more information.
+                        <ul class="list-unstyled item-details">
+                            <li>Video:
+                                <strong><a href="https://www.youtube.com/ballloonfight">Tools I've used to create website</a>
+                                </strong>
+                            </li>
+                        </ul>
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="tools-modal modal fade" id="toolsModal2" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-content">
+        <div class="close-modal" data-dismiss="modal">
+            <div class="lr">
+                <div class="rl">
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <div class="modal-body">
                         <h2>Node.js</h2>
                         <hr class="star-primary">
                         <img src="img/tools/Node.png" class="img-responsive img-centered" alt="">
                         <p><a href="https://sellfy.com/p/8Q9P/jV3VZ/">Node.js </a> is at the heart of this website. It is an open source, cross-platform server environment for networked applications. In other words, it is a number of tools that allowg you to build applications in JavaScript. Within node.js, I've used a framework called <a href="http://expressjs.com/">Express</a> that allows you to build applications specifically for the web. Another major JavaScript framework I've used within this project is Johnny-Five. It made it easy to interface with the <a href="http://www.arduino.cc/">Arduino.</a> Lastly, another framework, called Socket.io was used to create real-time event-based communication between the website, to the Arduino.  </p>
+                        Build toos like <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Gulp</a> and Grunt are my new best friend when it comes to web development.  It allows you to do many things whether it be automatically converting your LESS to css, minifying your javascript and html as you save your work or even more advanced features such as Browsersync so that if you scroll your mouse, and you have multiple screens such as a phone, tablet, and monitor all scrolling together.  It's pretty magical and it saves you a lot of time in web development! Below are some links to help you get started. </p>
                         <ul class="list-unstyled item-details">
                             <li>Node.js Tutorial Video:
                                 <strong><a href="https://www.youtube.com/watch?v=Lgk3gAt9tsE">Building Applications with Node.js (4hrs)</a>
@@ -385,6 +425,18 @@
                                 <strong><a href="http://nodeschool.io/">nodeschool</a>
                                 </strong>
                             </li>
+                                           <li>Video:
+                                <strong><a href="https://www.youtube.com/watch?v=XJ5F-Auhato">Why you need build tools like Gulp and Grunt</a>
+                                </strong>
+                            </li>
+                            <li>Gulp Official Plugins:
+                                <strong><a href="http://gulpjs.com/plugins/">Lots of plugins</a>
+                                </strong>
+                            </li>
+                            <li>Video:
+                                <strong><a href="https://www.youtube.com/watch?v=LmdT2zhFmn4">Gulp 101</a>
+                                </strong>
+                            </li>
                         </ul>
                         <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
                     </div>
@@ -393,7 +445,7 @@
         </div>
     </div>
 </div>
-<div class="tools-modal modal fade" id="toolsModal2" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="tools-modal modal fade" id="toolsModal3" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-content">
         <div class="close-modal" data-dismiss="modal">
             <div class="lr">
@@ -430,43 +482,7 @@
         </div>
     </div>
 </div>
-<div class="tools-modal modal fade" id="toolsModal3" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-content">
-        <div class="close-modal" data-dismiss="modal">
-            <div class="lr">
-                <div class="rl">
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2">
-                    <div class="modal-body">
-                        <h2>Build Tools</h2>
-                        <hr class="star-primary">
-                        <img src="img/tools/Gulp.png" class="img-responsive img-centered" alt="">
-                        <p>Build toos like <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Gulp</a> and Grunt are my new best friend when it comes to web development.  It allows you to do many things whether it be automatically converting your LESS to css, minifying your javascript and html as you save your work or even more advanced features such as Browsersync so that if you scroll your mouse, and you have multiple screens such as a phone, tablet, and monitor all scrolling together.  It's pretty magical and it saves you a lot of time in web development! Below are some links to help you get started. </p>
-                        <ul class="list-unstyled item-details">
-                            <li>Video:
-                                <strong><a href="https://www.youtube.com/watch?v=XJ5F-Auhato">Why you need build tools likw Gulp and Grunt</a>
-                                </strong>
-                            </li>
-                            <li>Gulp Official Plugins:
-                                <strong><a href="http://gulpjs.com/plugins/">Lots of plugins</a>
-                                </strong>
-                            </li>
-                            <li>Video:
-                                <strong><a href="https://www.youtube.com/watch?v=LmdT2zhFmn4">Gulp 101</a>
-                                </strong>
-                            </li>
-                        </ul>
-                        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 <div class="tools-modal modal fade" id="toolsModal4" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-content">
         <div class="close-modal" data-dismiss="modal">

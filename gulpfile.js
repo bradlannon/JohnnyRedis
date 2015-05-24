@@ -158,13 +158,13 @@ gulp.task('styles', function() {
 });
 
 gulp.task('images', function(){
-    return gulp.src('src/img/*')
+    return gulp.src('src/img/tools/*.png')
       .pipe(imagemin({
         progressive: true,
         svgoPlugins: [{removeViewBox: false}],
         use: [pngquant()]
       }))
-    .pipe(gulp.dest('Public/img'));
+    .pipe(gulp.dest('Public/img/tools/'));
 });
 
 ///////////////////////////////////////////////////
