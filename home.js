@@ -1,61 +1,20 @@
 //  NODE.JS HOME SERVER
 //
+// to do:
+// fix initial values...and make sure 8081 makes 8082 change.
 //
 //
-//
-//var memwatch = require('memwatch');
+
+
 var five = require('johnny-five'),
     express = require('express.io'),
     app = express().http().io(),
     redis = require('redis'),
-    pinLCD1 = 8,
-    pinLCD2 = 9,
-    pinLCD3 = 4,
-    pinLCD4 = 5,
-    pinLCD5 = 6,
-    pinLCD6 = 7,
-    pinLCD7 = 10,
-    pinPhotoresistor = "A0",        // works
-    pinPotentiometer = "A5",
-    pinButton =26,                 // works
-    pinR = 2,                       // works but add lower resistor
-    pinG = 3,                       // works
-    pinB = 4,                       // works
-    pinPing=25,
-    pinMotion = 13,
-    pinPiezo = 7,                   // works but crackily
-    pinServo1 = 12,
-    pinLedEyeL = 23,                // works
-    pinLedEyeR = 22,                // works
-    pinLedWeb = 24,                 // works
-    toggleWeb = true,
-    myPot = 0,
-    myPhoto = 0,
-    myPotOld = 0,
-    myPhotoOld = 0,
-    myServo = 1,
-    myPush = 0,
-    myPushOld = 0,
-    myPing = 0,
-    myMotion = 0,
-    myPingOld = 0,
-    myMotionOld = 0,
-    myFace = 1,
-    myRGB = '#00FFDD',
-    myPingRGB = '#00FFDD',
-    myRosieRGB = '#00FFDD',
-    myPiezo = 1,
-    myLed = 1,
-    myLedEyes = 1,
-    myLCDEyes = 1,
-    myLCDEyeBrows = 1,
-    myText = '',
-    myWebcam = '',
-    myUsers = 0,
+    myCredentials = require("./Public/js/credentials.js"),
+    myArduino = require("./Public/js/arduino.js"),
     currentTime,
-    myCredentials = require("./credentials.js"),
-    boardLCD = new five.Board({ port: "COM11" }),
-    boardMEGA = new five.Board({ port: "COM12" });
+    boardLCD = new five.Board({ port: "COM17" }),
+    boardMEGA = new five.Board({ port: "COM12" }),
     boardTMP = new five.Board({ port: "COM9" });
 
 clientSub = redis.createClient(myCredentials.myPort, myCredentials.myDB);
@@ -69,7 +28,6 @@ clientSub.subscribe("servoValue");
 clientSub.subscribe("piezoValue");
 clientSub.subscribe("faceValue");
 clientSub.subscribe("textValue");
-clientSub.subscribe("nameValue");
 clientSub.subscribe("usersValue");
 
 clientSub.on("error", function(err) {
@@ -81,37 +39,33 @@ clientPub.on("error", function(err) {
 });
 
 clientSub.on("message", function (channel, message) {
-     if (channel == 'rgbValue') {
+      if (channel == 'rgbValue') {
           trace("Received rgbValue: " + message);
-          myRGB = message;
-         // app.io.broadcast('addNewUser',myRGB);
+          myArduino.myRGB = message;
+          app.io.broadcast('displayNewRGB',myArduino.myRGB);
       } else if (channel == 'ledValue') {
           trace("Received ledValue:" + message);
-          myLed = message;
-          // app.io.broadcast('addNewUser',myLed);
+          myArduino.myLed = message;
+          app.io.broadcast('displayNewLED',myArduino.myLed);
       } else if (channel == 'servoValue') {
           trace("Received servoValue:" + message);
-          myServo = message;
+          myArduino.myServo = message;
+          app.io.broadcast('displayNewMotor',myArduino.myServo);
       } else if (channel == 'faceValue') {
           trace("Received faceValue:" + message);
-          myFace = message;
+          myArduino.myFace = message;
       } else if (channel == 'piezoValue') {
           trace("Received piezoValue:" + message);
-          myPiezo = message;
-      } else if (channel == 'faceValue') {
-          trace("Received faceValue:" + message);
-          myFace = message;
+          myArduino.myPiezo = message;
       } else if (channel == 'textValue') {
           trace("Received textValue:" + message);
-          myText = message;
-      } else if (channel == 'nameValue') {
-          trace("Received nameValue:" + message);
-          myName = message;
+          myArduino.myText = message;
+          app.io.broadcast('displayNewText',myArduino.myLed);
       } else if (channel == 'usersValue') {
           getTime();
-          myUsers = currentTime + " -- " + message;
-          trace("Received usersValue:" + myUsers);
-          app.io.broadcast('addNewUser',myUsers);
+          myArduino.myUsers = currentTime + " -- " + message;
+          trace("Received usersValue:" + myArduino.myUsers);
+          app.io.broadcast('addNewUser', myArduino.myUsers);
       }
 });
 
@@ -120,82 +74,81 @@ boardMEGA.on("ready", function() {
   trace("connected to Arduino MEGA on COM12");
   var led = new five.Led.RGB({
     pins: {
-      red: pinR,
-      green: pinG,
-      blue: pinB
+      red: myArduino.pinR1,
+      green: myArduino.pinG1,
+      blue: myArduino.pinB1
     }, board: boardMEGA
   });
 
   var led2 = new five.Led.RGB({
     pins: {
-      red: 8,
-      green: 9,
-      blue: 10
+      red: myArduino.pinR2,
+      green: myArduino.pinG2,
+      blue: myArduino.pinB2
     }, board: boardMEGA
   });
 
-  var ledEyeL = new five.Led({ pin: pinLedEyeL, board: boardMEGA }),
-    ledWebActivated = new five.Led({ pin: pinLedWeb, board: boardMEGA }),
-    ledEyeR = new five.Led({ pin: pinLedEyeR, board: boardMEGA }),
-    button = new five.Button({ pin: pinButton, board: boardMEGA }),
-    piezo = new five.Piezo({ pin: pinPiezo, board:boardMEGA }),
-    potentiometer = new five.Sensor({ pin: pinPotentiometer,freq: 250, board: boardMEGA });
-    photoresistor = new five.Sensor({pin: pinPhotoresistor,freq: 250, board: boardMEGA });
-    servo = new five.Servo({pin: pinServo1, type: "standard", board: boardMEGA });
+  var ledEyeL = new five.Led({ pin: myArduino.pinLedEyeL, board: boardMEGA }),
+    ledWebActivated = new five.Led({ pin: myArduino.pinLedWeb, board: boardMEGA }),
+    ledEyeR = new five.Led({ pin: myArduino.pinLedEyeR, board: boardMEGA }),
+    button = new five.Button({ pin: myArduino.pinButton, board: boardMEGA }),
+    piezo = new five.Piezo({ pin: myArduino.pinPiezo, board:boardMEGA }),
+    potentiometer = new five.Sensor({ pin: myArduino.pinPotentiometer,freq: 250, board: boardMEGA });
+    photoresistor = new five.Sensor({pin: myArduino.pinPhotoresistor,freq: 250, board: boardMEGA });
+    servo = new five.Servo({pin: myArduino.pinServo1, type: "standard", board: boardMEGA });
    // var ping = new five.Ping({ pin: pinPing, board: boardMEGA });
 
-  boardMEGA.repl.inject({
-    pot: photoresistor,
-    button: button,
-    piezo: piezo,
-    led: led,
+ /* boardMEGA.repl.inject({
+    pot: myArduino.myPot,
+    button: myArduino.myPush,
+    piezo: myArduino.myPiezo,
+    led: myArduino.myLed,
     led2: led2,
-    ledEyeR: ledEyeR,
-    ledEyeL: ledEyeL,
+    ledEyeR: myArduino.ledEyeR,
+    ledEyeL: myArduino.ledEyeL,
   //  ping:ping,
     ledWebActivated:ledWebActivated,
     pot: potentiometer
-  });
+  });*/
 
 ledWebActivated.on();
 
   button.on("down", function() {
-    myPush = 1;
+    myArduino.myPush = 1;
     clientPub.publish('pushValue', '1' );
   });
 
-
- // ping.on("change", function(err, value) {
- //   trace("Object is " + this.in + "inches away");
- // });
+  // ping.on("change", function(err, value) {
+  //   trace("Object is " + this.in + "inches away");
+  // });
 
   button.on("hold", function() {
-     myPush = 2;
-     if (toggleWeb == false) {
-        toggleWeb = true;
-        clientPub.publish('toggleWeb', 'true' );
+     myArduino.myPush = 2;
+     if (myArduino.toggleWeb == false) {
+        myArduino.toggleWeb = true;
+        clientPub.publish('webValue', 'true' );
         trace("WEB ACTIVATED");
         ledWebActivated.on();
       }
       else {
-        toggleWeb = false;
-        clientPub.publish('toggleWeb', 'false' );
+        myArduino.toggleWeb = false;
+        clientPub.publish('webValue', 'false' );
         trace("WEB CONTROLS DISABLED");
         ledWebActivated.off();
       }
   });
 
   button.on("up", function() {
-    myPush = 0;
+    myArduino.myPush = 0;
     clientPub.publish('pushValue', '0' );
   });
 
   potentiometer.on("data", function() {
-    myPot  = this.value;
+    myArduino.myPot  = this.value;
   });
 
   photoresistor.on("data", function() {
-    myPhoto = this.value;
+    myArduino.myPhoto = this.value;
   });
 
   function playSong() {
@@ -207,16 +160,16 @@ ledWebActivated.on();
   }
 
   setInterval(function(){
-    if (myLed == 1) {
+    if (myArduino.myLed == 1) {
         led.on();
-        led.color(myRGB);
+        led.color(myArduino.myRGB);
         led2.on();
-        led2.color(myRGB);
+        led2.color(myArduino.myRGB);
     } else {
         led.off();
     }
 
-    if (myLedEyes == 1) {
+    if (myArduino.myLedEyes == 1) {
         ledEyeR.on();
         ledEyeL.on();
     } else {
@@ -227,16 +180,16 @@ ledWebActivated.on();
 
 
     // WEB ACTIVATED //
-    if ( toggleWeb == true) {
-      if (myPiezo == 1) {
-        myPiezo = 0;
+    if ( myArduino.toggleWeb == true) {
+      if (myArduino.myPiezo == 1) {
+        myArduino.myPiezo = 0;
         playSong();
       }
-      if (myServo == 0) {
+      if (myArduino.myServo == 0) {
            // servo.ccw(1);
-      } else if (myServo == 1) {
+      } else if (myArduino.myServo == 1) {
            // servo.cw(0);
-      } else if (myServo == 2) {
+      } else if (myArduino.myServo == 2) {
            // servo.cw(1);
       }
 
@@ -258,30 +211,27 @@ ledWebActivated.on();
     //       led.strobe(50);
     //   }
     }
-    myPushOld = myPush;
+    myArduino.myPushOld = myArduino.myPush;
   }, 1000);
 
   try {
        setInterval(function(){
-      if (myPot!=myPotOld) {
-        clientPub.publish('potValue', myPot );
-        app.io.broadcast('displayPotValue',myPot);
+      if (myArduino.myPot!=myArduino.myPotOld) {
+        clientPub.publish('potValue', myArduino.myPot );
+        app.io.broadcast('displayPotValue',myArduino.myPot);
       }
-      myPot=myPotOld;
+      myArduino.myPot=myArduino.myPotOld;
 
-      if (myPhoto!=myPhotoOld) {
-        clientPub.publish('photoValue', myPhoto );
-        app.io.broadcast('displayPhotoValue',myPhoto);
+      if (myArduino.myPhoto!=myArduino.myPhotoOld) {
+        clientPub.publish('photoValue', myArduino.myPhoto );
+        app.io.broadcast('displayPhotoValue',myArduino.myPhoto);
       }
-      myPhoto=myPhotoOld;
+      myArduino.myPhoto=myArduino.myPhotoOld;
     }, 10000);  // change to something logical
   } catch(e) {
       getDateTime();
       trace("Error: " + e);
   }
-
-
-
 });
 
 
@@ -290,133 +240,133 @@ boardLCD.on("ready", function() {
   trace("connected to Arduino (LCD) on COM11");
 
   var p = new five.LCD({
-    pins: [pinLCD1, pinLCD2, pinLCD3, pinLCD4, pinLCD5, pinLCD6],
-    backlight: pinLCD7,
+    pins: [myArduino.pinLCD1, myArduino.pinLCD2, myArduino.pinLCD3, myArduino.pinLCD4, myArduino.pinLCD5, myArduino.pinLCD6],
+    backlight: myArduino.pinLCD7,
   });
   try {
     setInterval(function(){
-      if (myPush == 1) {
-        p.cursor(0, 0).print(myText);
-          p.cursor(1, 0).print(myText);
+      if (myArduino.myPush == 1) {
+        p.cursor(0, 0).print(myArduino.myText);
+        p.cursor(1, 0).print(myArduino.myText);
       } else {
-          if (myFace==0) {
+          if (myArduino.myFace==0) {
             p.useChar("circle");
             p.cursor(0, 0).print("   --      --");
             p.cursor(1, 0).print("    :circle:      :circle:");
-          } else if (myFace==1) {
+          } else if (myArduino.myFace==1) {
             p.cursor(0, 0).print("   --      --");
             p.cursor(1, 0).print("    -      -");
-          } else if (myFace==2) {
+          } else if (myArduino.myFace==2) {
             p.useChar("x");
             p.cursor(0, 0).print("   --      --");
             p.cursor(1, 0).print("    :x:      :x:");
-          } else if (myFace==3) {
+          } else if (myArduino.myFace==3) {
             p.useChar("sound");
             p.cursor(0, 0).print("   --      --");
             p.cursor(1, 0).print("    :sound:      :sound:");
-          } else if (myFace==4) {
+          } else if (myArduino.myFace==4) {
             p.useChar("heart");
             p.cursor(0, 0).print("   --      --");
             p.cursor(1, 0).print("    :heart:      :heart:");
-          } else if (myFace==5) {
+          } else if (myArduino.myFace==5) {
             p.useChar("cdot");
             p.cursor(0, 0).print("   --      --");
             p.cursor(1, 0).print("    :cdot:      :cdot:");
-          } else if (myFace==6) {
+          } else if (myArduino.myFace==6) {
             p.useChar("ball");
             p.cursor(0, 0).print("   --      --");
             p.cursor(1, 0).print("    :ball:      :ball:");
-          } else if (myFace==7) {
+          } else if (myArduino.myFace==7) {
             p.useChar("cent");
             p.cursor(0, 0).print("   --      --");
             p.cursor(1, 0).print("    :cent:      :cent:");
-          } else if (myFace==8) {
+          } else if (myArduino.myFace==8) {
             p.useChar("donut");
             p.cursor(0, 0).print("   --      --");
             p.cursor(1, 0).print("    :donut:      :donut:");
-          } else if (myFace==9) {
+          } else if (myArduino.myFace==9) {
             p.useChar("euro");
             p.cursor(0, 0).print("   --      --");
             p.cursor(1, 0).print("    :euro:      :euro:");
-          } else if (myFace==10) {
+          } else if (myArduino.myFace==10) {
             p.useChar("circle");
             p.cursor(0, 0).print("   /        \\");
             p.cursor(1, 0).print("    :circle:      :circle:");
-          } else if (myFace==11) {
+          } else if (myArduino.myFace==11) {
             p.cursor(0, 0).print("   /        \\");
             p.cursor(1, 0).print("    -      -");
-          } else if (myFace==12) {
+          } else if (myArduino.myFace==12) {
             p.useChar("x");
             p.cursor(0, 0).print("   /        \\");
             p.cursor(1, 0).print("    :x:      :x:");
-          } else if (myFace==13) {
+          } else if (myArduino.myFace==13) {
             p.useChar("sound");
             p.cursor(0, 0).print("   /        \\");
             p.cursor(1, 0).print("    :sound:      :sound:");
-          } else if (myFace==14) {
+          } else if (myArduino.myFace==14) {
             p.useChar("heart");
             p.cursor(0, 0).print("   /        \\");
             p.cursor(1, 0).print("    :heart:      :heart:");
-          } else if (myFace==15) {
+          } else if (myArduino.myFace==15) {
             p.useChar("cdot");
             p.cursor(0, 0).print("   /        \\");
             p.cursor(1, 0).print("    :cdot:      :cdot:");
-          } else if (myFace==16) {
+          } else if (myArduino.myFace==16) {
             p.useChar("ball");
             p.cursor(0, 0).print("   /        \\");
             p.cursor(1, 0).print("    :ball:      :ball:");
-          } else if (myFace==17) {
+          } else if (myArduino.myFace==17) {
             p.useChar("cent");
             p.cursor(0, 0).print("   /        \\");
             p.cursor(1, 0).print("    :cent:      :cent:");
-          } else if (myFace==18) {
+          } else if (myArduino.myFace==18) {
             p.useChar("donut");
             p.cursor(0, 0).print("   /        \\");
             p.cursor(1, 0).print("    :donut:      :donut:");
-          } else if (myFace==19) {
+          } else if (myArduino.myFace==19) {
             p.useChar("euro");
             p.cursor(0, 0).print("   --      --");
             p.cursor(1, 0).print("    :euro:      :euro:");
-          } else if (myFace==20) {
+          } else if (myArduino.myFace==20) {
             p.useChar("circle");
             p.cursor(0, 0).print("    \\      / ");
             p.cursor(1, 0).print("    :circle:      :circle:");
-          } else if (myFace==21) {
+          } else if (myArduino.myFace==21) {
             p.cursor(0, 0).print("    \\      / ");
             p.cursor(1, 0).print("    -      -");
-          } else if (myFace==22) {
+          } else if (myArduino.myFace==22) {
             p.useChar("x");
             p.cursor(0, 0).print("    \\      / ");
             p.cursor(1, 0).print("    :x:      :x:");
-          } else if (myFace==23) {
+          } else if (myArduino.myFace==23) {
             p.useChar("sound");
             p.cursor(0, 0).print("    \\      / ");
             p.cursor(1, 0).print("    :sound:      :sound:");
-          } else if (myFace==24) {
+          } else if (myArduino.myFace==24) {
             p.useChar("heart");
             p.cursor(0, 0).print("    \\      / ");
             p.cursor(1, 0).print("    :heart:      :heart:");
-          } else if (myFace==25) {
+          } else if (myArduino.myFace==25) {
             p.useChar("cdot");
             p.cursor(0, 0).print("    \\      / ");
             p.cursor(1, 0).print("    :cdot:      :cdot:");
-          } else if (myFace==26) {
+          } else if (myArduino.myFace==26) {
             p.useChar("ball");
             p.cursor(0, 0).print("    \\      / ");
             p.cursor(1, 0).print("    :ball:      :ball:");
-          } else if (myFace==27) {
+          } else if (myArduino.myFace==27) {
             p.useChar("cent");
             p.cursor(0, 0).print("    \\      / ");
             p.cursor(1, 0).print("    :cent:      :cent:");
-          } else if (myFace==28) {
+          } else if (myArduino.myFace==28) {
             p.useChar("donut");
             p.cursor(0, 0).print("    \\      / ");
             p.cursor(1, 0).print("    :donut:      :donut:");
-          } else if (myFace==29) {
+          } else if (myArduino.myFace==29) {
             p.useChar("euro");
             p.cursor(0, 0).print("    \\      / ");
             p.cursor(1, 0).print("    :euro:      :euro:");
-          } else if (myFace==30) {
+          } else if (myArduino.myFace==30) {
             p.useChar("circle");
             p.cursor(0, 0).print("   --      --");
             p.cursor(1, 0).print("    :circle:      :circle:");
@@ -442,7 +392,7 @@ boardTMP.on("ready", function() {
     }, board: boardTMP
   });
         ledTest.on();
-        ledTest.color(myPingRGB);
+        ledTest.color(myArduino.myPingRGB);
 });
 
 
@@ -472,77 +422,94 @@ trace("Visit to localhost:8082 in your browser to view Admin Console");
 
 app.io.route('getInitialValues', function(req) {
     req.io.emit('displayInitialValues', {
-        myPhoto: myPhoto,
-        myPot: myPot,
-        myPing: myPing,
-        myServo: myServo,
-        myPush: myPush,
-        myRgb: myRGB,
-        myLed: myLed,
-        myMotion: myMotion,
-        myFace: myFace,
-        myText: myText
+        myPhoto: myArduino.myPhoto,
+        myPot: myArduino.myPot,
+        myPing: myArduino.myPing,
+        myServo: myArduino.myServo,
+        myPush: myArduino.myPush,
+        myRGB: myArduino.myRGB,
+        myLed: myArduino.myLed,
+        myMotion: myArduino.myMotion,
+        myFace: myArduino.myFace,
+        myText: myArduino.myText,
+        myOnline: myArduino.myOnline,
+        myWebcam: myArduino.myWebcam,
+        myRosieRGB: myArduino.myRosieRGB,
+        myPingRGB : myArduino.myPingRGB,
+        myLedEyes: myArduino.myLedEyes,
+        myLCDEyes: myArduino.myLCDEyes,
+        myLCDEyeBrows: myArduino.myLCDEyeBrows
     });
 });
 
 app.io.route('onlineValueChange', function(req) {
-    myOnline = req.data.myVal;
-    req.io.broadcast('displayNewOnline',myOnline);
+    myArduino.myOnline = req.data.myVal;
+    trace("Received myOnline: " + myArduino.myOnline);
+    req.io.broadcast('displayNewOnline',myArduino.myOnline);
 });
 
 app.io.route('servoValueChange', function(req) {
-    myServo = req.data.myVal;
-    req.io.broadcast('displayNewServo',myServo);
-    //send this to redis SOMETIMES because if I make a change, then  it had to show up online website, eg led on or rgb color change
-});
+    myArduino.myServo = req.data.myVal;
+    trace("Received myServo: " + myArduino.myServo);
+    clientPub.publish("servoValue", myArduino.myServo);
+  //  req.io.broadcast('displayNewServo',myArduino.myServo);
+ });
 
 app.io.route('rgbValueChange', function(req) {
-     myRGB = req.data.myVal;
-     clientPub.publish("rgbValue", myRGB);  //publises but others dont
-     req.io.broadcast('displayNewRGB',myRGB);
+     myArduino.myRGB = req.data.myVal;
+     clientPub.publish("rgbValue", myArduino.myRGB);  //publises but others dont
+     trace("Received myRGB: " + myArduino.myRGB);
+ //    req.io.broadcast('displayNewRGB',myArduino.myRGB);
  });
 
 app.io.route('webcamChange', function(req) {
-     myWebcam = req.data.myVal;
-     clientPub.publish("webcamValue", myWebcam);  //publises but others dont
+     myArduino.myWebcam = req.data.myVal;
+     trace("Received myWebcam: " + myArduino.myWebcam);
+     clientPub.publish("webcamValue", myArduino.myWebcam);  //publises but others dont
  });
 
 app.io.route('rosieRgbValueChange', function(req) {
-     myRosieRGB = req.data.myVal;
-     req.io.broadcast('displayNewRosieRGB',myRosieRGB);
+     myArduino.myRosieRGB = req.data.myVal;
+     trace("Received myRosieRGB: " + myArduino.myRosieRGB);
+     req.io.broadcast('displayNewRosieRGB',myArduino.myRosieRGB);
  });
 
 app.io.route('pingRgbValueChange', function(req) {
-     myPingRGB = req.data.myVal;
-     req.io.broadcast('displayNewPingRGB',myPingRGB);
+     myArduino.myPingRGB = req.data.myVal;
+     trace("Received myPingRGB: " + myArduino.myPingRGB);
+     req.io.broadcast('displayNewPingRGB',myArduino.myPingRGB);
  });
 
 app.io.route('ledValueChange', function(req) {
-    myLed = req.data.myVal;
-    req.io.broadcast('displayNewLED',myLed);
+    myArduino.myLed = req.data.myVal;
+    trace("Received myLed: " + myArduino.myLed);
+    clientPub.publish("ledValue", myArduino.myLed);
+    req.io.broadcast('displayNewLED',myArduino.myLed);
 });
 
 app.io.route('ledEyesValueChange', function(req) {
-    myLedEyes = req.data.myVal;
-    req.io.broadcast('displayNewLEDEyes',myLedEyes);
+    myArduino.myLedEyes = req.data.myVal;
+    trace("Received myLedEyes: " + myArduino.myLedEyes);
+    req.io.broadcast('displayNewLEDEyes',myArduino.myLedEyes);
 });
 
 app.io.route('textValueChange', function(req) {
-    myText = req.data.myVal;
-    req.io.broadcast('displayNewText',myText);
-    clientPub.publish("textValue", myText);
+    myArduino.myText = req.data.myVal;
+    trace("Received myText: " + myArduino.myText);
+    req.io.broadcast('displayNewText',myArduino.myText);
+    clientPub.publish("textValue", myArduino.myText);
 });
 
 app.io.route('lcdEyesChange', function(req) {
-    myLCDEyes = req.data.myVal;
-    trace(myLCDEyes);
+    myArduino.myLCDEyes = req.data.myVal;
+    trace(myArduino.myLCDEyes);
    // req.io.broadcast('displayNewText',myLCDEyes);        // not needed if they are buttons
    //             look into button toolbar in bootstrap
 });
 
 app.io.route('lcdEyeBrowsChange', function(req) {
-    myLCDEyeBrows = req.data.myVal;
-    trace(myLCDEyeBrows);
+    myArduino.myLCDEyeBrows = req.data.myVal;
+    trace(myArduino.myLCDEyeBrows);
    // req.io.broadcast('displayNewText',myLCDEyeBrows);    // not needed if they are buttons
      //             look into button toolbar in bootstrap
 });

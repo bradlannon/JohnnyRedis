@@ -124,13 +124,21 @@ io.emit('getInitialValues');
 io.on('displayInitialValues', function(data) {
     myArduino.photoValue = data.myPhoto;
     myArduino.potValue = data.myPot;
-    myArduino.pushValue = data.myPush;
+    myArduino.pushValue = data.myPush; ''
     myArduino.pingValue = data.myPing;
     myArduino.rgbValue = data.myRgb;
     myArduino.servoValue = data.myServo;
     myArduino.textValue = data.myText;
     myArduino.faceValue = data.myFace;
     myArduino.ledValue = data.myLed;
+    myArduino.motionValue = data.myMotion;
+    myArduino.onlineValue = data.myOnline;
+    myArduino.webcamValue = data.myWebcam;
+    myArduino.rosieRgbValue = data.myRosieRGB;
+    myArduino.pingRgbValue = data.myPingRGB;
+    myArduino.ledValue = data.myLedEyes;
+    myArduino.lcdEyesValue = data.myLCDEyes;
+    myArduino.lcdEyeBrowsValue = data.myLCDEyeBrows;
 });
 
 io.on('addNewUser', function(data) {
@@ -173,7 +181,6 @@ io.on('displayPushValue', function(data) {
 io.on('newWebcamLink', function(data) {
     myArduino.webcamValue = data;
 });
-
 
 io.on('displayPhotoValue', function(data) {
     myArduino.photoValue = data;
@@ -260,3 +267,6 @@ window.onload = function() {
     });
 };
 
+$('dropdownMenu1 a').on('click', function(){
+    $(this).parent().parent().prev().html($(this).html() + '<span class="caret"></span>');
+})

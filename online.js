@@ -43,18 +43,15 @@ clientSub.auth(myCredentials.myAuth, function() {
 
 clientSub.subscribe("motionValue");
 clientSub.subscribe("pushValue");
-clientSub.subscribe("toggleValue");
+clientSub.subscribe("webValue");
 clientSub.subscribe("photoValue");
 clientSub.subscribe("potValue");
 clientSub.subscribe("pingValue");
 clientSub.subscribe("webcamValue");
-//
-//add these for home console purposes
 clientSub.subscribe("servoValue");
 clientSub.subscribe("ledValue");
 clientSub.subscribe("rgbValue");
 clientSub.subscribe("textValue");
-// to do: add events
 
 clientSub.on("error", function(err) {
     trace("Error connecting to redis subscribing server: " + err);
@@ -71,12 +68,8 @@ clientSub.on("message", function (channel, message) {
     } else if (channel == 'pushValue') {
         myPush = message;
         app.io.broadcast('displayPushValue',myPush);
-    } else if (channel == 'toggleValue') {
-        myToggle = message;
-        app.io.broadcast('displayToggleValue',myPush);
     } else if (channel == 'photoValue') {
         myPhoto = message;
-        trace("photo is " + myPhoto);
         app.io.broadcast('displayPhotoValue',myPhoto);
     } else if (channel == 'pingValue') {
         myPing = message;
@@ -88,17 +81,21 @@ clientSub.on("message", function (channel, message) {
          myPot = message;
          app.io.broadcast('displayPotValue',myPot);
     } else if (channel == 'servoValue') {
-       //  myServo = message;   //manual override
-       //  app.io.broadcast('displayServoValue',myServo);  //add broadcast
+         myServo = message;
+         trace("servo is " + myServo);
+         app.io.broadcast('displayServoValue',myServo);
     } else if (channel == 'ledValue') {
-       //  myLed = message;   //manual override
-       //  app.io.broadcast('displayLedValue',myLed);      //add broadcast
+         myLed = message;
+         trace("led is " + myLed);
+         app.io.broadcast('displayLedValue',myLed);
     } else if (channel == 'rgbValue') {
-       //  myRgb = message;   //manual override
-       //  app.io.broadcast('displayLedValue',myRgb);      //add broadcast
+         myRgb = message;
+         trace("rgb is " + myRGB);
+         app.io.broadcast('displayRgbValue',myRgb);
     } else if (channel == 'textValue') {
-       //  myText = message;   //manual override
-       //  app.io.broadcast('displayTextValue',myRgb);     //add broadcast
+         myText = message;
+         trace("text is " + myText);
+         app.io.broadcast('displayTextValue',myText);
     }
 });
 
