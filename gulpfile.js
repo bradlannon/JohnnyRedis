@@ -19,24 +19,32 @@ var gulp = require('gulp'),
     concatCss = require('gulp-concat-css'),
     autoprefix = require('gulp-autoprefixer'),
     minifyCss = require('gulp-minify-css'),
-    less = require('gulp-less'),
-    nodeInspector = require('gulp-node-inspector');
+    less = require('gulp-less');
+//    nodeInspector = require('gulp-node-inspector');
 
 // default gulp task
 gulp.task('default', ['jshint','minify-html', 'less'], function() {
     gulp.watch('./src/less/*.less', ['less']);   // watching for file changes
-    gulp.watch('./src/html/index.html', ['minify-html']);   // watching for file changes
+    gulp.watch('./src/html/*.html', ['minify-html']);   // watching for file changes
+    gulp.watch('./src/js/*.js',['jshint']);   // watching for file changes
+});
+
+gulp.task('arduino', ['jshint','minify-html', 'less','home'], function() {
+    gulp.watch('./src/less/*.less', ['less']);   // watching for file changes
+    gulp.watch('./src/html/*.html', ['minify-html']);   // watching for file changes
     gulp.watch('./src/js/*.js',['jshint']);   // watching for file changes
 });
 
 gulp.task('home', function () {
     nodemon({ script: 'home.js',
-            ext: 'html js',
-            ignore: ['node_modules/**'],
-            tasks: ['lintHome']
+            ext: 'html js less',
+            ignore: ['node_modules/**', 'Public'],
+            tasks: ['lintHome','jshint','minify-html','less']
              })
     .on('restart', function () {
-      console.log('restarted Home Server!');
+      setTimeout(function() {
+            require('fs').writeFileSync('.rebooted', 'rebooted');
+          }, 6000);
     })
     .on('start', function () {
       console.log('started Home Server!');

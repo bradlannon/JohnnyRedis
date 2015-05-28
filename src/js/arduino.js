@@ -22,7 +22,7 @@ module.exports = {
         pinLedEyeL : 23,                // works
         pinLedEyeR : 22,                // works
         pinLedWeb : 24,                 // works
-        toggleWeb : true,
+        myWeb : true,
         myPot : 0,
         myPhoto : 0,
         myPotOld : 0,

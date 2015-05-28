@@ -5,7 +5,6 @@
 //
 //
 
-
 var five = require('johnny-five'),
     express = require('express.io'),
     app = express().http().io(),
@@ -50,7 +49,7 @@ clientSub.on("message", function (channel, message) {
       } else if (channel == 'servoValue') {
           trace("Received servoValue:" + message);
           myArduino.myServo = message;
-          app.io.broadcast('displayNewMotor',myArduino.myServo);
+         // app.io.broadcast('displayNewMotor',myArduino.myServo);  dont need anymore as it's a button
       } else if (channel == 'faceValue') {
           trace("Received faceValue:" + message);
           myArduino.myFace = message;
@@ -95,8 +94,9 @@ boardMEGA.on("ready", function() {
     piezo = new five.Piezo({ pin: myArduino.pinPiezo, board:boardMEGA }),
     potentiometer = new five.Sensor({ pin: myArduino.pinPotentiometer,freq: 250, board: boardMEGA });
     photoresistor = new five.Sensor({pin: myArduino.pinPhotoresistor,freq: 250, board: boardMEGA });
-    servo = new five.Servo({pin: myArduino.pinServo1, type: "standard", board: boardMEGA });
-   // var ping = new five.Ping({ pin: pinPing, board: boardMEGA });
+  //  servo = new five.Servo({pin: myArduino.pinServo1, type: "continuous", board: boardMEGA }),
+    motion = new five.Motion({ pin: myArduino.pinMotion, board: boardMEGA });
+   // var ping = new five.Ping({ pin: myArduino.pinPing, board: boardMEGA });
 
  /* boardMEGA.repl.inject({
     pot: myArduino.myPot,
@@ -111,7 +111,19 @@ boardMEGA.on("ready", function() {
     pot: potentiometer
   });*/
 
-ledWebActivated.on();
+  motion.on("motionstart", function() {
+      myArduino.myMotion = 1;
+      clientPub.publish('motionValue', '1' );
+      app.io.broadcast('displayMotionValue',myArduino.myMotion);
+  });
+
+  motion.on("motionend", function() {
+      myArduino.myMotion = 0;
+      clientPub.publish('motionValue', '0' );
+      app.io.broadcast('displayMotionValue',myArduino.myMotion);
+  });
+
+  ledWebActivated.on();
 
   button.on("down", function() {
     myArduino.myPush = 1;
@@ -119,19 +131,19 @@ ledWebActivated.on();
   });
 
   // ping.on("change", function(err, value) {
-  //   trace("Object is " + this.in + "inches away");
+   //  trace("Object is " + this.in + "inches away");
   // });
 
   button.on("hold", function() {
      myArduino.myPush = 2;
-     if (myArduino.toggleWeb == false) {
-        myArduino.toggleWeb = true;
+     if (myArduino.myWeb == false) {
+        myArduino.myWeb = true;
         clientPub.publish('webValue', 'true' );
         trace("WEB ACTIVATED");
         ledWebActivated.on();
       }
       else {
-        myArduino.toggleWeb = false;
+        myArduino.myWeb = false;
         clientPub.publish('webValue', 'false' );
         trace("WEB CONTROLS DISABLED");
         ledWebActivated.off();
@@ -177,20 +189,19 @@ ledWebActivated.on();
         ledEyeL.off();
     }
 
-
-
     // WEB ACTIVATED //
-    if ( myArduino.toggleWeb == true) {
+    if ( myArduino.myWeb == true) {
       if (myArduino.myPiezo == 1) {
         myArduino.myPiezo = 0;
         playSong();
       }
+
       if (myArduino.myServo == 0) {
-           // servo.ccw(1);
+          //  servo.ccw(1);
       } else if (myArduino.myServo == 1) {
-           // servo.cw(0);
+         //   servo.stop();
       } else if (myArduino.myServo == 2) {
-           // servo.cw(1);
+         //   servo.cw(1);
       }
 
       //servo.sweep();
@@ -220,6 +231,7 @@ ledWebActivated.on();
         clientPub.publish('potValue', myArduino.myPot );
         app.io.broadcast('displayPotValue',myArduino.myPot);
       }
+
       myArduino.myPot=myArduino.myPotOld;
 
       if (myArduino.myPhoto!=myArduino.myPhotoOld) {
@@ -437,8 +449,8 @@ app.io.route('getInitialValues', function(req) {
         myRosieRGB: myArduino.myRosieRGB,
         myPingRGB : myArduino.myPingRGB,
         myLedEyes: myArduino.myLedEyes,
-        myLCDEyes: myArduino.myLCDEyes,
-        myLCDEyeBrows: myArduino.myLCDEyeBrows
+      //  myLCDEyes: myArduino.myLCDEyes,
+      //  myLCDEyeBrows: myArduino.myLCDEyeBrows
     });
 });
 
@@ -448,8 +460,13 @@ app.io.route('onlineValueChange', function(req) {
     req.io.broadcast('displayNewOnline',myArduino.myOnline);
 });
 
-app.io.route('servoValueChange', function(req) {
-    myArduino.myServo = req.data.myVal;
+app.io.route('servoValueChange', function() {
+   // myArduino.myServo = req.data.myVal;
+    if (myArduino.myServo == 0) {
+      myArduino.myServo = 1;
+    } else if (myArduino.myServo == 1) {
+      myArduino.myServo = 0;
+    }
     trace("Received myServo: " + myArduino.myServo);
     clientPub.publish("servoValue", myArduino.myServo);
   //  req.io.broadcast('displayNewServo',myArduino.myServo);
@@ -480,11 +497,15 @@ app.io.route('pingRgbValueChange', function(req) {
      req.io.broadcast('displayNewPingRGB',myArduino.myPingRGB);
  });
 
-app.io.route('ledValueChange', function(req) {
-    myArduino.myLed = req.data.myVal;
+app.io.route('ledValueChange', function() {
+    if (myArduino.myLed == 0) {
+      myArduino.myLed = 1;
+    } else if (myArduino.myLed == 1) {
+      myArduino.myLed = 0;
+    }
     trace("Received myLed: " + myArduino.myLed);
     clientPub.publish("ledValue", myArduino.myLed);
-    req.io.broadcast('displayNewLED',myArduino.myLed);
+
 });
 
 app.io.route('ledEyesValueChange', function(req) {

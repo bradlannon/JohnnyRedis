@@ -52,8 +52,7 @@ var myArduino = {
     webcamValue : 'http://www.youtube.com/embed/i6x-5bQx91c',
     changeLed3 : true,
     changeServo : function() {
-        data = {myVal:  myArduino.servoValue};
-        io.emit('servoValueChange', data);
+        io.emit('servoValueChange');
     },
     complete : function() {
         console.log("complete");
@@ -99,8 +98,8 @@ var myArduino = {
         io.emit('textValueChange', data);
     },
     changeLed : function() {
-        data = {myVal:  myArduino.ledValue};
-        io.emit('ledValueChange', data);
+      //  data = {myVal:  myArduino.ledValue};
+        io.emit('ledValueChange');
     },
     changeLedEyes : function() {
         data = {myVal:  myArduino.ledEyesValue};
@@ -244,6 +243,13 @@ function animate_elems() {
       }
     });
   }
+
+
+
+$('dropdownMenu1 li > a').click(function(e){
+    alert(this.innerHTML);
+});
+
 
 var $elems = $('.animateblock');
 var winheight = $(window).height();

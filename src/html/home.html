@@ -25,6 +25,7 @@
 </head>
 
 <body id="page-top" class="index">
+
 <!-- Navigation -->
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -49,8 +50,9 @@
                 <ul>
                     <li><h3>Readable Values</h3></li>
                     <li>Photoresistor: { myArduino.photoValue }</li>
-                    <li>Potentiometer: { myArduino.potValue }</li>
-                    <li>Ping Sensor: { myArduino.pingValue }</li>
+                    <li>Potentiometer: 0</li> 
+                    <li>Distance Sensor: { myArduino.pingValue }</li>
+                    <li>Motion Sensor: { myArduino.motionValue }</li>
                     <li>&nbsp;</li>
                 </ul>
             </form>
@@ -61,37 +63,31 @@
                     <li>
                     <label>Allow online website controls ON / Off <input type="checkbox" rv-checked="myArduino.onlineValue" rv-on-change="myArduino.changeOnline"> </label></li>
 
-                    <li><label>Servo Motor ON / Off <input type="checkbox" rv-checked="myArduino.servoValue" rv-on-change="myArduino.changeServo"> </label></li>
+                    <li><button type="button" class="btn btn-default navbar-btn" rv-on-click="myArduino.changeServo">Toggle Servo</button></li>
 
-                    <li><label>Online LED Color Picker<input type="color" rv-value="myArduino.rgbValue" rv-on-change="myArduino.changeRgb" name="favcolor"> </label></li>
+                    <li><button type="button" class="btn btn-default navbar-btn" rv-on-click="myArduino.changeLed">Toggle Online LED</button></li>
 
-                     <li><label>Rosie Toy LED Color Picker  <input type="color" rv-value="myArduino.rosieRgbValue" rv-on-change="myArduino.changeRosieRgb" name="favcolor"> </label></li>
+                    <li><label>Rosie Toy LED Color Picker  <input type="color" rv-value="myArduino.rosieRgbValue" rv-on-change="myArduino.changeRosieRgb" name="favcolor"> </label></li>
 
-                      <li><label>Ping Sensor's LED Color Picker  <input type="color" rv-value="myArduino.pingRgbValue" rv-on-change="myArduino.changePingRgb" name="favcolor"> </label></li>
+                    <li><label>Ping Sensor's LED Color Picker  <input type="color" rv-value="myArduino.pingRgbValue" rv-on-change="myArduino.changePingRgb" name="favcolor"> </label></li>
 
-                    <li><label>Turn ON / Off Online LED  <input type="checkbox"rv-checked="myArduino.ledValue"  rv-on-change="myArduino.changeLed"> </label></li>
-
-                     <li><label>Turn ON / Off Auto-colored Eyes  <input type="checkbox" rv-checked="myArduino.ledEyesValue"  rv-on-change="myArduino.changeLedEyes"> </label></li>
-
-                    <li><div class="form-group center-block col-sm-12">
-                            <input type="text" id="textValue" maxlength="32" rv-value="myArduino.textValue" class="form-control" rv-on-change="myArduino.changeText" placeholder="I will see this on my 16x2 LCD in my room!!">
-                        </div>
-                    </li>
+                    <li><label>Turn ON / Off Auto-colored Eyes  <input type="checkbox" rv-checked="myArduino.ledEyesValue"  rv-on-change="myArduino.changeLedEyes"> </label></li> 
+ 
                     <li>
                         <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true" rv-on-click="myArduino.changeLCDEyebrows">LCD Eyebrows Value<span class="caret"></span>
+                            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true" rv-on-click="myArduino.changeLCDEyebrows">LCD Eyebrows <span class="caret"></span>
                             </button>
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Happy</a></li>
-                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Ok</a></li>
-                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Mad</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-2" href="#">Ok</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-3" href="#">Mad</a></li> 
                               </ul>
                         </div>
                     </li>
                     <li><div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle"  rv-on-click="myArduino.changeLCDEyes" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">LCD Eye Value<span class="caret"></span>
+                            <button class="btn btn-default dropdown-toggle"  rv-on-click="myArduino.changeLCDEyes" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="true">LCD Eye Value<span class="caret"></span>
                             </button>
-                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Love</a></li>
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Wide Awake</a></li>
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Squint</a></li>
