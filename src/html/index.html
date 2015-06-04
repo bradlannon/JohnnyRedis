@@ -91,7 +91,7 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <p class="animateblock">As an experienced and versatile IT Specialist for the last 6 years working at Darose Control Systems Ltd, I’ve acquired a wealth of technical skills within the IT sector, with extensive technical support, network administration, software development and database management. During this time I have worked with several multi-million dollar corporate clients around the world, including those in the Dairy, Seafood, and Lumber industry.</p>
-                <p class="animateblock"> In my spare time, when I'm not enjoying the outdoors, you can usually find me doing many of my favorite hobbies including playing music, tinkering with electronics, and developing websites. In the past year I've really taken a liking to Node.js and the possibilities is has to offer in web development.  On the front side of things, my weapons of choice are Photoshop/Inkscape for sketching layouts and Sublime Text to produce clean semantic code.  Generally I prefer the actual development side of things, however I do like to experiment with new and exciting layouts.  I find it's a fun and exiting industry to be in as technology is always changing.
+                <p class="animateblock"> In my spare time, when I'm not enjoying the outdoors, you can usually find me doing many of my favorite hobbies including playing music, tinkering with electronics, and developing websites. In the past year I've really taken a liking to Node.js and the possibilities is has to offer in web development.  On the front side of things, my weapons of choice are Photoshop/Inkscape for sketching layouts and Sublime Text to produce clean semantic code.  Generally I prefer the actual development side of things, however I do like to experiment with new and exciting layouts.  I find it's a fun and exiting industry to be in as technology is always changing.  If you are interested in seeing my online portfolio, please visit my <a href="http://www.lanteka.com">Lanteka website</a>.
             </div>
         </div>
     </div>
@@ -212,7 +212,7 @@
             <div id="confirmHuman" class="text-center removeme col-lg-12">
                     <ul>
                         <li><input type="checkbox" id="chk1" rv-checked="dontcheck1" class="hideme"> <input type="checkbox" id="chk2" rv-checked="dontcheck2" class="hideme"> </li>
-                        <li><label><input type="text" id="answerValue" class="form-control" rv-on-change="myArduino.myAnswerValueChange" placeholder="To start, what's 1 + 1?" size="20"></label> </li>
+                        <li><label><input type="text" id="answerValue" class="form-control" rv-on-change="myArduino.myAnswerValueChange" placeholder="To start, what's 1 + 1?" size="19"></label> </li>
                         <li><input type="checkbox" rv-checked="dontcheck3" id="chk3" class="hideme"> <input type="checkbox" id="chk4"  rv-checked="dontcheck4" class="hideme"></label></li>
                     </ul>
             </div>
@@ -239,7 +239,7 @@
                         <li><label>LED Color Picker  <input type="color" rv-value="myArduino.rgbValue" rv-on-change="myArduino.changeRgb" rv-enabled="myArduino.enableArduino" name="favcolor"> </label></li>
                         <li><label>Turn ON / Off LED  <input type="checkbox" name="ledstatus" rv-checked="myArduino.ledValue"  rv-enabled="myArduino.enableArduino" rv-on-change="myArduino.changeLed"> </label></li>
                         <li><div class="form-group center-block col-sm-12">
-                                <input type="text" id="textValue" maxlength="32" rv-value="myArduino.textValue" class="form-control" rv-on-change="myArduino.changeText" rv-enabled="myArduino.enableArduino" placeholder="I will see this on my 16x2 LCD in my room!!">
+                             <br>  <label> Change the LCD screen in my room<input type="text" id="textValue" size="19" maxlength="32" rv-value="myArduino.textValue" class="form-control input-large  search-query" rv-on-change="myArduino.changeText" rv-enabled="myArduino.enableArduino" placeholder="Add text here!"></label>
                             </div>
                         </li>
                     </ul>
@@ -381,12 +381,13 @@
                         <h2>Project & Video</h2>
                         <hr class="star-primary">
                         <img src="img/tools/Video.png" class="img-responsive img-centered" alt="">
-                        <p>The idea for this project started out in 2010 when I bought my first Arduino.  I would do some very simple things with it but had always wanted to build a web interface for it so that others could control as well.  I had experimented with web design for a number of years before this and had enjoyed creating wordpress themes for friends and clients. My first approach to combining my web skills with my arduino skills was to create a php page hosted on the Arduino's SD card and forward traffic on my modem to that Arduino's <a href="shield">ethernet port</a>.  By practise, this is not a wise idea as it leaves your home network open to the world, sort of.</p>
-                        <p>It wasn't until a few years ago that I learned about NodeJs and the Johnny-Five framework that allowed me to take another crack at the idea that I had. This time, instead of using php, I would be using javascript and html5. I would still have a server set up at my home to control the Arduino, but then I would also have the actual website (that you are viewing) hosted on Amazon's cloud services for the webpage. Every time an Arduino sensor changes value (eg. light sensor), it sends that value to a <a href="what is redis">Redis server</a> in the cloud. The same goes for anything on the website (eg. LED control below).  When you change a value, it sends the message to the Redis server in the cloud.  The thing about Redis is that it lets you subscribe to change events and be the middleman between the Arduino server and the Online webpage server, to try to put in in lamens terms... </p>
+                        <p>The idea for this project started out in 2010 when I bought my first Arduino.  I would do some very simple things with it but had always wanted to build a web interface for it so that others could control as well.  I had experimented with web design for a number of years before this and had enjoyed creating wordpress themes for friends and clients. My first approach to combining my web skills with my Arduino skills was to create a php page hosted on the Arduino's SD card and forward incoming traffic on my modem to the Arduino shields <a href="http://www.arduino.cc/en/Main/ArduinoEthernetShield">ethernet port</a>.  For security reasons, this is not a very wise idea as it leaves your home network open to the world...well, sort of.</p>
+                        <p>It wasn't until a few years ago that I learned about NodeJs and the Johnny-Five framework that allowed me to take another crack at my original idea. This time, instead of using php, I would be using javascript and html5. I would still have a server set up at my home to control the Arduino, but then I would also have the actual website (that you are now viewing) hosted on Amazon's cloud services for the webpage. By doing it this way, I would not leave my home network open to potential intruders. </p>
+                        <p> Every time an Arduino sensor changes value (eg. motion sensor), it sends that value to a <a href="http://redistogo.com/">Redis server</a> in the cloud. The same principle applies to the input controls on the website (eg. LED color picker).  When you change a value (color), it sends the message to the Redis server in the cloud and then to my Arduino microprocessor.</p>
                         <p> If you are having trouble grasping this, no worries, it took me months to figure it all out. Please watch the video below for more information.
                         <ul class="list-unstyled item-details">
                             <li>Video:
-                                <strong><a href="https://www.youtube.com/ballloonfight">Tools I've used to create website</a>
+                                <strong><a href="https://www.youtube.com/ballloonfight">Explanation of website (video currently in the works!)</a>
                                 </strong>
                             </li>
                         </ul>
@@ -412,8 +413,8 @@
                         <h2>Node.js</h2>
                         <hr class="star-primary">
                         <img src="img/tools/Node.png" class="img-responsive img-centered" alt="">
-                        <p><a href="https://sellfy.com/p/8Q9P/jV3VZ/">Node.js </a> is at the heart of this website. It is an open source, cross-platform server environment for networked applications. In other words, it is a number of tools that allowg you to build applications in JavaScript. Within node.js, I've used a framework called <a href="http://expressjs.com/">Express</a> that allows you to build applications specifically for the web. Another major JavaScript framework I've used within this project is Johnny-Five. It made it easy to interface with the <a href="http://www.arduino.cc/">Arduino.</a> Lastly, another framework, called Socket.io was used to create real-time event-based communication between the website, to the Arduino.  </p>
-                        Build toos like <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Gulp</a> and Grunt are my new best friend when it comes to web development.  It allows you to do many things whether it be automatically converting your LESS to css, minifying your javascript and html as you save your work or even more advanced features such as Browsersync so that if you scroll your mouse, and you have multiple screens such as a phone, tablet, and monitor all scrolling together.  It's pretty magical and it saves you a lot of time in web development! Below are some links to help you get started. </p>
+                        <p><a href="https://sellfy.com/p/8Q9P/jV3VZ/">Node.js </a> is at the heart of this website. It is an open source, cross-platform server environment for networked applications. In other words, it is a number of tools that allow you to build applications in JavaScript. Within Node.js, I've used a framework called <a href="http://expressjs.com/">Express</a> to build this application, specifically for the web. Another major JavaScript framework I've used within this project is Johnny-Five. This framework made it very easy to control the <a href="http://www.arduino.cc/">Arduino.</a> Lastly, another framework, called Socket.io was used to create real-time event-based communication between the website and the Arduino.  </p>
+                        Build toos like <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Gulp</a> (and Grunt) are any web developers best friend as it allows you to do many things whether it be preprocess your LESS code to css format, minify your javascript/html as you save your work or even more advanced features such as Browsersync so that if you scroll your mouse, and you have multiple screens (i.e: phone, tablet, and monitor) to all scroll at the same time.  It's pretty magical and it saves you a lot of time in development! Below are some links to help you get started if you are interested in learning more: </p>
                         <ul class="list-unstyled item-details">
                             <li>Node.js Tutorial Video:
                                 <strong><a href="https://www.youtube.com/watch?v=Lgk3gAt9tsE">Building Applications with Node.js (4hrs)</a>
@@ -462,7 +463,7 @@
                         <h2>Arduino</h2>
                         <hr class="star-primary">
                         <img src="img/tools/Arduino.png" class="img-responsive img-centered" alt="">
-                        <p><a href="http://www.arduino.cc/">Arduino</a> is an open-source microcontroller board designed for easy prototyping of electronics.  Well, it's also the name of the company who has created the hardware (and software).  I've got into the arduino about 5 years about and it blew my mind!  Coming from somone who has a programming background, to control electronics easily using my programming skills seemed like a dream come true.  Below are some links to help you get started:</p>
+                        <p><a href="http://www.arduino.cc/">Arduino</a> is an open-source microcontroller board designed for easy prototyping of electronics.  Well, it's also the name of the company who has created the hardware (and software).  I've first heard about the Arduino microprocessor about 5 years about and it completely blew my mind!  Coming from somone who has a programming background and no electronic engineering experience, this makes it easy to control motors, LED's, and other sensors programically.  Below are some links to help you get started:</p>
                         <ul class="list-unstyled item-details">
                             <li>Video:
                                 <strong><a href="https://vimeo.com/18539129">Arduino Documentary</a>
@@ -474,6 +475,10 @@
                             </li>
                             <li>Youtube Tutorials:
                                 <strong><a href="https://www.youtube.com/watch?v=fCxzA9_kg6s">Jeremy Blum's Arduino</a>
+                                </strong>
+                            </li>
+                            <li>Maker Magazine:
+                                <strong><a href="http://makezine.com/">Jeremy Blum's Arduino</a>
                                 </strong>
                             </li>
                         </ul>
@@ -500,7 +505,8 @@
                         <h2>Git</h2>
                         <hr class="star-primary">
                         <img src="img/tools/Git.png" class="img-responsive img-centered" alt="">
-                        <p>Git is every developers best friend. You don't even have to be a web developer.  It was created by Linux creator, Linus Torvalds to help with collaboration of software within the open source community.  Imagine if 2 developers are working on the same site. It would be difficult without Git - which would allow them to merge two files together keeping the changes made by both developers.  They also have an online repository called <a href="https://sellfy.com/p/8Q9P/jV3VZ/">GitHub</a>for all kinds of projects.  Please check out the links below for my GitHub repo, and also other repositories that have helped me in create this site.  </p>
+                        <p>Git is every developers best friend. You don't even have to be a web developer.  It was created by Linux creator, Linus Torvalds to help with collaboration of software within the open source community.  Imagine if 2 developers are working on the same site. It would be difficult without Git - which would allow them to merge two files together keeping the changes made by both developers. </p>
+                        <p>Git also has an online repository called <a href="https://sellfy.com/p/8Q9P/jV3VZ/">GitHub</a>for all kinds of projects, even if you need a place to store as a backup.  Please check out the links below for my GitHub repo, and also other repositories that have helped me in create this site.  </p>
                         <ul class="list-unstyled item-details">
                             <li>My Github:
                                 <strong><a href="https://github.com/bradlannon/JohnnyRedis">This page's GitHub</a>
@@ -510,12 +516,8 @@
                                 <strong><a href="https://confluence.atlassian.com/display/STASH/Basic+Git+commands">Git Tutorial</a>
                                 </strong>
                             </li>
-
-
-
-
                             <li>Video tutorial:
-                                <strong><a href="https://www.youtube.com/watch?v=0fKg7e37bQE">Git Basics</a>
+                                <strong><a href="https://www.youtube.com/watch?v=0fKg7e37bQE">Git 101 Basics</a>
                                 </strong>
                             </li>
                             <li>Johnny-Five Github:
@@ -561,10 +563,10 @@
                             </div>
                         </div>
                         </div> -->
-                        <p>Responsive web design allows you to resize your browser for an optimal viewing experience.  If you are on a computer, change the size of the window and notice how the site changes.  You can basically mimik the look of a phone or tablet.  Pretty much all modern sites have this feature.  They also tend to be low in data bandwith. For those interested in web development can look into <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Media_queries">Media Queries</a> It's actually pretty easy to do and all web developers should be famiar with it. A really easy responsive starter theme is Bootstrap. This site was created with <a href="http://startbootstrap.com">Bootstrap</a>. Below are a few sites I've created with good responsive front ends. </p>
+                        <p>Responsive web design allows you to resize your browser for an optimal viewing experience.  If you are on a computer, change the size of the window and notice how the site changes.  You can basically mimic the look of a phone or tablet.  Pretty much all modern sites have this feature and if yours don't, you really should update it for mobility.  They also tend to be low in bandwith consumption. For those interested in web development, please look into <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Media_queries">CSS Media Queries</a>. It's actually quite simple to do and all web developers should be famiar with it. A really easy responsive starter theme is <a href="http://startbootstrap.com">Bootstrap</a>. Below are a few sites I've created with good responsive front ends. </p>
                         <ul class="list-unstyled item-details">
                             <li>Client:
-                                <strong><a href="http://bradlannon.ca/web">My Old Wordpress Site</a>
+                                <strong><a href="http://www.lanteka.ca/web">My Old Wordpress Site</a>
                                 </strong>
                             </li>
                             <li>Date:
@@ -598,7 +600,7 @@
                         <h2>Amazon AWS</h2>
                         <hr class="star-primary">
                         <img src="img/tools/Aws.png" class="img-responsive img-centered" alt="">
-                        <p><a href="http://aws.amazon.com/">Amazon AWS</a> is a collection of remote computing services, also called web services, that make up a cloud computing platform offered by <a href="https://www.amazon.com"> Amazon.com</a>.  Because of this, Amazon is Awesome!   They allow you to run a virtual environment (windows or linux) in the cloud that you can use to do many different things with.  A general example is using EC2 to store your website, VPC to organize your Virtual Private Networking Inferstructure, and S3 to store all of your static files (photos).  They even have a domain system that you can now buy your domains from (ex bradlannon.ca). This is just the tip of the iceberg.  Because of these new advances in Cloud computing, I no longer think 'bookstore' when I think of Amazon.</p>
+                        <p><a href="http://aws.amazon.com/">Amazon AWS</a> is a collection of remote computing services, also called web services, that make up a cloud computing platform offered by <a href="https://www.amazon.com"> Amazon.com</a>.  Because of this, Amazon is Awesome!   They allow you to run a virtual environment (windows or linux) in the cloud that you can use to do many different things with.  A general example is using EC2 to store your website, VPC to organize your Virtual Private Networking Inferstructure, and S3 to store all of your media (photos/videos/pdf's etc).  They even have a domain system that you can now buy your domains from (ex bradlannon.com). This is just the tip of the iceberg.  Because of these new advances in Cloud computing, I no longer think 'bookstore' when I think of Amazon.</p>
                         <ul class="list-unstyled item-details">
                             <li>Video:
                                 <strong><a href="http://startbootstrap.com">Different Amazon Services</a>

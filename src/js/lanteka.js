@@ -95,7 +95,8 @@ var myArduino = {
            myArduino.enableArduino = true;
            $("#confirmHuman").hide("slow");
            $("#isHuman").removeClass('blur');
-           $("#camPicture").html("<iframe width='480' height='320' src='" + myArduino.webcamValue + "' scrolling='no' frameborder='0' style='border: 0px none transparent;' class='center-block'>    </iframe><br><div class='text-center'>Currently there is about 20sec delay. Sorry!</div>");
+           $("#camPicture").html("<iframe width='480' height='320' src='" + myArduino.webcamValue + "' scrolling='no' frameborder='0' style='border: 0px none transparent; position: relative;padding-bottom: 11.25%; padding-top: 25px;' class='center-block'>    </iframe><br><div class='text-center'>Currently there is about 20sec delay. Sorry!</div>");
+     //  $("#camPicture").html(" <iframe width='480' height='320' src='" + myArduino.webcamValue + "' frameborder='0' style='padding-bottom: 56.25%; padding-top: 25px; height: 0;' > </iframe><br><div class='text-center'>Currently there is about 20sec delay. Sorry!</div>");
         }
     },
     showArduinoData : function() {
