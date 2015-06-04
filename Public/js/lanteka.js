@@ -95,7 +95,7 @@ var myArduino = {
            myArduino.enableArduino = true;
            $("#confirmHuman").hide("slow");
            $("#isHuman").removeClass('blur');
-           $("#camPicture").html("<iframe width='480' height='320' src='" + myArduino.webcamValue + "' scrolling='no' frameborder='0' style='border: 0px none transparent; position: relative;padding-bottom: 11.25%; padding-top: 25px;' class='center-block'>    </iframe><br><div class='text-center'>Currently there is about 20sec delay. Sorry!</div>");
+           $("#camPicture").html("<iframe width='480' height='320' src='" + myArduino.webcamValue + "' scrolling='no' frameborder='0' style='border: 0px none transparent; position: relative;padding-bottom: 25px; padding-top: 25px;' class='center-block'>    </iframe><br><div class='text-center'>Currently there is about 20sec delay. Sorry!</div>");
      //  $("#camPicture").html(" <iframe width='480' height='320' src='" + myArduino.webcamValue + "' frameborder='0' style='padding-bottom: 56.25%; padding-top: 25px; height: 0;' > </iframe><br><div class='text-center'>Currently there is about 20sec delay. Sorry!</div>");
         }
     },
@@ -252,16 +252,5 @@ window.view = rivets.bind($('#page-top'),{
         myArduino.txtTools6 = 'asdf';
 window.onload = function() {
 
-    $.getJSON('js/data.json', function(data){
-        myArduino.txtSubtitle = data.siteText.subtitle;
-        myArduino.txtAbout = data.siteText.about;
-        myArduino.txtTools1 = data.siteText.tools1;
-        myArduino.txtTools2 = data.siteText.tools2;
-        myArduino.txtTools3 = data.siteText.tools3;
-        myArduino.txtTools4 = data.siteText.tools4;
-        myArduino.txtTools5 = data.siteText.tools5;
-        myArduino.txtTools6 = data.siteText.tools6;
-        myArduino.txtArduino = data.siteText.arduino;
-    });
 };
 
