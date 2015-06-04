@@ -73,7 +73,7 @@
                 <div class="intro-text">
                     <span class="name">Brad Lannon</span>
                     <hr class="star-light">
-                    <span class="skills" rv-text="myArduino.subtitle"></span>
+                    <span class="skills">Web Developer & Ninja Troubleshooter</span>
                 </div>
             </div>
         </div>
@@ -90,10 +90,8 @@
         </div>
         <div class="row">
             <div class="col-lg-12 text-center">
-                <p class="animateblock">As an experienced and versatile IT Specialist for the last 6 years working at Darose Control Systems Ltd, I’ve acquired a wealth of technical skills within the IT sector, with extensive technical support, network administration, software development and database management. During this time I have worked with several multi-million dollar corporate clients around the world, including those in the Dairy, Seafood, and lumber industry.</p>
-                <p class="animateblock"> In my spare time, when I'm not enjoying the outdoors, you can usually find me doing many of my favorite hobbies including playing music, tinkering with electronics, and developing websites. In the past year I've really taken a liking to Node.js and the possibilities is has to offer in web development.  On the front side of things, my weapons of choice are Photoshop/Inkscape for drawing layouts and Sublime Text to produce clean semantic code.  Generally I prefer the development side of things, however I do like to experiment with new and exciting web layouts. In the past I’ve also used Flash for animations and entire web sites.
-                <p class="animateblock"> Currently,  my CMS of choice is WordPress which is coded in php and although before I learned about Node.js (and Express.js), I did enjoy creating websites using the Django Framework (Python). This really helped me get a grasp on the Model-View-Controller software architectural pattern that's similarly used in many different frameworks like Express.js.</p>
-                <p class="animateblock">This website was created with most of my interests in mind. For starters, the site has a clean layout and will adapt to different screen sizes whether it be a phone, tablet or desktop.  Next is the web server that I have written in Node.js.  It is realtime meaning that if, for example, you click the color picker below, and choose a new color, everyone else who is currently viewing the page (across the world) will see the color immediately change as well.  The reason why I did this was I wanted it to be the interface (controller) for an Arduino microcontroller that I have set up at my home in Halifax, Nova Scotia.  An arduino (pictured below) is an electronic development board that you can plug sensors and motors into and control them through code.  </p>
+                <p class="animateblock">As an experienced and versatile IT Specialist for the last 6 years working at Darose Control Systems Ltd, I’ve acquired a wealth of technical skills within the IT sector, with extensive technical support, network administration, software development and database management. During this time I have worked with several multi-million dollar corporate clients around the world, including those in the Dairy, Seafood, and Lumber industry.</p>
+                <p class="animateblock"> In my spare time, when I'm not enjoying the outdoors, you can usually find me doing many of my favorite hobbies including playing music, tinkering with electronics, and developing websites. In the past year I've really taken a liking to Node.js and the possibilities is has to offer in web development.  On the front side of things, my weapons of choice are Photoshop/Inkscape for sketching layouts and Sublime Text to produce clean semantic code.  Generally I prefer the actual development side of things, however I do like to experiment with new and exciting layouts.  I find it's a fun and exiting industry to be in as technology is always changing.
             </div>
         </div>
     </div>
@@ -204,7 +202,7 @@
         </div>
 
         <div class="row">
-            <div class="col-lg-12 animateblock" id="camPicture">
+            <div class="col-lg-12 animateblock video-wrapper" id="camPicture">
                 <!--  <iframe width="480" height="320" src="http://www.ustream.tv/embed/20579011?v=3&amp;wmode=direct" scrolling="no" frameborder="0" style="border: 0px none transparent;">    </iframe>
                 <br /><a href="http://www.ustream.tv" style="font-size: 12px; line-height: 20px; font-weight: normal; text-align: left;" target="_blank">Broadcast live streaming video on Ustream</a> -->
                 <img src="img/arduino.png" data-1x="img/arduino.png" data-2x="img/arduino.png" class="hisrc img-responsive center-block" id="arduinoImage" />
@@ -214,7 +212,7 @@
             <div id="confirmHuman" class="text-center removeme col-lg-12">
                     <ul>
                         <li><input type="checkbox" id="chk1" rv-checked="dontcheck1" class="hideme"> <input type="checkbox" id="chk2" rv-checked="dontcheck2" class="hideme"> </li>
-                        <li><label><input type="text" id="answerValue" class="form-control" rv-on-change="myArduino.myAnswerValueChange" placeholder="To verify you're human, what is 1 + 1?" size="31"></label> </li>
+                        <li><label><input type="text" id="answerValue" class="form-control" rv-on-change="myArduino.myAnswerValueChange" placeholder="To start, what's 1 + 1?" size="20"></label> </li>
                         <li><input type="checkbox" rv-checked="dontcheck3" id="chk3" class="hideme"> <input type="checkbox" id="chk4"  rv-checked="dontcheck4" class="hideme"></label></li>
                     </ul>
             </div>
@@ -225,7 +223,7 @@
                 <h3>Readable Values</h3>
                 <ul>
                     <li>Photoresistor: { myArduino.photoValue }</li>
-                    <li>Potentiometer: 0</li>
+                    <li>Potentiometer: { myArduino.potValue }</li>
                     <li>Distance Sensor: { myArduino.pingValue }</li>
                     <li>Push Button: { myArduino.pushValue } <br></li>
                     <li>Motion Sensor: { myArduino.motionValue }</li>
@@ -251,8 +249,8 @@
 
         <div class="row">
             <div class="col-lg-12 text-center" tv-text="txtArduino" id="arduinoExplained"><br>
-            <p class="animateblock">To use my Arduino, first click the 'Yes' button above and then answer the question in the 'Writable' (hint: answer is 2).  Once you do this, you will have access to my LCD display, Motors, multiple RGB LEDs, and even my webcam.</p>
-            <p class="animateblock">If you do not wish to gain access to my Arduino, then you can still just view live (read-only) data coming from the Arduino. However, if you are viewing this site on your mobile device and are not connected to a local area network,  it is very possible that you could incure data charges from your service provider as information on this site is constantly being updated and downloaded to your phone (no different than Facebook really).  Thanks and enjoy! </p>
+            <p class="animateblock">To use my Arduino, first click the 'Yes' button above and then answer the question in the textbox that pops up (hint: answer is 2).  Once you do this, you will have access to my LCD display, Servo Motor, multiple RGB LEDs, and even my webcam.</p>
+            <p class="animateblock">If you do not wish to gain access to my Arduino, then you can still just view live/read-only data coming from the said microprocessor. However, if you are viewing this site on your mobile device and are not connected to a wifi hotspot,  it is very possible that you could incure data charges from your service provider as information on this site is constantly being updated and downloaded to your phone (no different than Facebook really).  Thanks and enjoy my site!! </p>
             </div>
         </div>
 </section>
@@ -349,8 +347,11 @@
     <div class="footer-below">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12">
-                    <span id="cdSiteSeal2"><script type="text/javascript" src="//tracedseals.starfieldtech.com/siteseal/get?scriptId=cdSiteSeal2&amp;cdSealType=Seal2&amp;sealId=55e4ye7y7mb7387908999a39b258e395km1y7mb7355e4ye7e7f7812522ab1e2d"></script></span> Copyright &copy; BradLannon 2015
+                <div class="col-lg-12 text-center" style="margin: 0 auto;">
+                    <!-- <span id="cdSiteSeal2"><script type="text/javascript" src="//tracedseals.starfieldtech.com/siteseal/get?scriptId=cdSiteSeal2&amp;cdSealType=Seal2&amp;sealId=55e4ye7y7mb7387908999a39b258e395km1y7mb7355e4ye7e7f7812522ab1e2d"></script></span> -->
+                </div>
+                <div class="col-lg-12 text-center">
+                    <br>Copyright &copy; BradLannon 2015
                 </div>
             </div>
         </div>

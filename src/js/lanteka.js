@@ -39,7 +39,7 @@ var myArduino = {
     pingValue : 0,
     rgbValue : '#FF0000',
     servoValue : 0,
-    motionValue : 0,
+    motionValue : 'stopped',
     textValue : '',
     faceValue :4,
     ledValue :1,
@@ -49,15 +49,6 @@ var myArduino = {
     dontcheck3 : false,
     dontcheck4 : false,
     enableArduino : false,
-    txtSubtitle: null,
-    txtAbout: 'text',
-    txtTools1: 'text',
-    txtTools2:'text',
-    txtTools3:'text',
-    txtTools4: 'text',
-    txtTools5: 'text',
-    txtTools6: 'text',
-    txtArduino: 'text',
     // webcamValue : 'http://www.ustream.tv/embed/20579011?v=3&amp;wmode=direct',
     webcamValue : 'http://www.youtube.com/embed/i6x-5bQx91c',
     changeLed3 : true,
@@ -136,18 +127,6 @@ var myArduino = {
         $('#myWritable').addClass("hideme");
         $('#myReadable').removeClass("col-lg-6");
         $('#myReadable').addClass("col-lg-12");
-    },
-    getInfoAndShow : function() {
-       if ($('#robotValue').is(':checked')) {
-            if(!$('#dontcheck1').is(':checked') & !$('#dontcheck2').is(':checked') & !$('#dontcheck3').is(':checked') & !$('#dontcheck4').is(':checked')) {
-                $.getJSON("http://api.ipify.org?format=json", function(data){
-                    var myIp = data.ip;
-                    myArduino.enableButtons();
-                    data = {myVal:  $("#nameValue").val() + ":" + myIp};
-                    io.emit('nameValueChange', data);
-                });
-            }
-        }
     }
 };
 

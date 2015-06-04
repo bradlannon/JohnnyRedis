@@ -1,13 +1,13 @@
 //  Online webserver
 //
-//   ...hosted at localhost:8081 currently
-//
+//   ...locally hosted at localhost:8080
+//   ...online site: bradlannon.ca
 //
 
 express = require('express.io');
 app = express().http().io();
 var redis = require('redis'),
-    myCredentials = require("./credentials.js"),
+    myCredentials = require("./Public/js/credentials.js"),
     myWeb = "<video src='http://somewebrtcstreamhere'></video>",
     myLed = 0,
     myLedOld = 0,
@@ -21,8 +21,6 @@ var redis = require('redis'),
     myTextOld = "",
     myFace = 10,
     myFaceOld = 10,
-    myName = "brad",
-    myNameOld = "brad",
     myPiezo = 0,
     myPiezoOld = 0,
     myRGBOld = '#FF0000',
@@ -130,11 +128,6 @@ function writeToRedis() {
         trace("written to redis faceValue:" + myFace);
     }
 
-    if (myNameOld != myName) {
-        clientPub.publish("nameValue", myName);
-        trace("written to redis nameValue:" + myName);
-    }
-    myNameOld = myName;
     myFaceOld = myFace;
     myRGBOld = myRGB;
     myLedOld = myLed;
@@ -185,19 +178,10 @@ app.io.route('piezoValueChange', function(req) {
     myPiezo = 1;
 });
 
-app.io.route('getName', function(req) {
-    myName = req.data.myVal;
-    clientPub.publish("nameValue", myName);
-});
-
 app.io.route('faceValueChange', function(req) {
     myFace = req.data.myVal;
     req.io.broadcast('displayNewFace',myFace);
     clientPub.publish("faceValue", myFace);
-});
-
-app.io.route('nameValueChange', function(req) {
-    myName = req.data.myVal;
 });
 
 app.io.route('ledValueChange', function(req) {
@@ -237,8 +221,8 @@ app.get('/', function(req, res) {
 });
 
 app.use(express.static(process.cwd() + '/Public'));
-app.listen(8081);
-trace("Visit to localhost:8081 in your browser");
+app.listen(8080);
+trace("Visit to localhost:8080 in your browser");
 
 function trace(text) {
     var date = new Date();
