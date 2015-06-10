@@ -95,39 +95,30 @@ var myArduino = {
            myArduino.enableArduino = true;
            $("#confirmHuman").hide("slow");
            $("#isHuman").removeClass('blur');
-           $("#camPicture").html("<iframe width='480' height='320' src='" + myArduino.webcamValue + "' scrolling='no' frameborder='0' style='border: 0px none transparent; position: relative;padding-bottom: 25px; padding-top: 25px;' class='center-block'>    </iframe><br><div class='text-center'>Currently there is about 20sec delay. Sorry!</div>");
-     //  $("#camPicture").html(" <iframe width='480' height='320' src='" + myArduino.webcamValue + "' frameborder='0' style='padding-bottom: 56.25%; padding-top: 25px; height: 0;' > </iframe><br><div class='text-center'>Currently there is about 20sec delay. Sorry!</div>");
+           $("#camPicture").html("<iframe id='myVideo' src='" + myArduino.webcamValue + "' scrolling='no' frameborder='0' style='border: 0px none transparent; position: relative; class='center-block'></iframe></div>");
         }
     },
     showArduinoData : function() {
          //when user clicks on 'yes'
-        $('#takeControl').hide("slow");
-        $('#arduinoExplained').hide("slow");
-        $("#myWritable").removeClass('removeme');
-        $("#myWritable").hide("slow");
-        $('#myReadable').removeClass("col-lg-12");
-        $('#myReadable').addClass("col-lg-6");
-        $('#myReadable').removeClass("hideme");
-        $('#myWritable').removeClass("col-lg-12");
-        $('#myWritable').addClass("col-lg-6");
-        $("#myWritable").removeClass('hideme');
+        // $('#takeControl').hide("slow");
+        //$('#arduinoExplained').hide("slow");
+
+        $("#confirmHuman").hide();
         $("#confirmHuman").removeClass('removeme');
-        $("#myWritable").show("slow");
+        $("#confirmHuman").show("slow");
+
     },
     hideArduinoData : function() {
         // when user clicks on 'no'
-        $('#takeControl').hide("slow");
+        /*$('#takeControl').hide("slow");
         $('#arduinoExplained').hide("slow");
-        $('#myWritable').hide("slow");
         $('#arduinoImage').show("slow");
         $('#myCanvas').hide("slow");
+        $('#myWritable').addClass("removeme");*/
+        //myArduino.enableArduino = false;
+        //$('#myWritable').addClass("blur");
         $("#camPicture").html("<img src='img/arduino.png' data-1x='img/arduino.png' data-2x='img/arduino.png' class='hisrc img-responsive center-block' id='arduinoImage' />");
-        $('#myWritable').removeClass("col-lg-6");
-        $('#myWritable').addClass("col-lg-12");
-        $('#myWritable').addClass("removeme");
-        $('#myWritable').addClass("hideme");
-        $('#myReadable').removeClass("col-lg-6");
-        $('#myReadable').addClass("col-lg-12");
+
     }
 };
 
@@ -173,7 +164,6 @@ io.on('displayPushValue', function(data) {
 io.on('newWebcamLink', function(data) {
     myArduino.webcamValue = data;
 });
-
 
 io.on('displayPhotoValue', function(data) {
     myArduino.photoValue = data;
@@ -243,13 +233,7 @@ $(window).scroll(function(){
 window.view = rivets.bind($('#page-top'),{
     myArduino:myArduino
 });
-        myArduino.about = 'asdf';
-        myArduino.txtTools1 = 'asdf';
-        myArduino.txtTools2 ='asdf';
-        myArduino.txtTools3 = 'asdf';
-        myArduino.txtTools4 = 'asdf';
-        myArduino.txtTools5 ='asdf';
-        myArduino.txtTools6 = 'asdf';
+
 window.onload = function() {
 
 };

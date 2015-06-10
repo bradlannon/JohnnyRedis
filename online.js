@@ -68,7 +68,13 @@ clientSub.on("message", function (channel, message) {
         app.io.broadcast('displayPushValue',myPush);
     } else if (channel == 'photoValue') {
         myPhoto = message;
-        app.io.broadcast('displayPhotoValue',myPhoto);
+        if (myPhoto  < 500) {
+            app.io.broadcast('displayPhotoValue',myPhoto + " (bright in room)");
+        } else if (myPhoto  > 800) {
+            app.io.broadcast('displayPhotoValue',myPhoto + " (dark in room)");
+        } else {
+            app.io.broadcast('displayPhotoValue',myPhoto);
+        }
     } else if (channel == 'pingValue') {
         myPing = message;
         app.io.broadcast('displayPingValue',myPing);
@@ -185,8 +191,14 @@ app.io.route('faceValueChange', function(req) {
 });
 
 app.io.route('ledValueChange', function(req) {
-    myLed = req.data.myVal;
-    req.io.broadcast('displayNewLED',myLed);
+    var intVerify = false;
+    intVerify = req.data.myVal;
+    console.log("intVerify:" + intVerify);
+    if (intVerify == 'true'){
+        req.io.broadcast('displayNewLED',1);
+    } else {
+        req.io.broadcast('displayNewLED',0);
+    }
 });
 
 app.io.route('getReadOnlyValues', function(req) {

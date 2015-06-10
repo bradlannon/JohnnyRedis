@@ -121,7 +121,7 @@ gulp.task('minify-html', function() {
       conditionals: true,
       spare:true
     };
-    return gulp.src('./src/html/*.html')
+    return gulp.src('./src/html/index.html')
       .pipe(minifyHTML(opts))
       .pipe(gulp.dest('./views/'));
 });

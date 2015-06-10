@@ -199,16 +199,7 @@
                   <span class="glyphicon glyphicon-star" aria-hidden="true"></span>No
                 </button>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col-lg-12 animateblock video-wrapper" id="camPicture">
-                <!--  <iframe width="480" height="320" src="http://www.ustream.tv/embed/20579011?v=3&amp;wmode=direct" scrolling="no" frameborder="0" style="border: 0px none transparent;">    </iframe>
-                <br /><a href="http://www.ustream.tv" style="font-size: 12px; line-height: 20px; font-weight: normal; text-align: left;" target="_blank">Broadcast live streaming video on Ustream</a> -->
-                <img src="img/arduino.png" data-1x="img/arduino.png" data-2x="img/arduino.png" class="hisrc img-responsive center-block" id="arduinoImage" />
-            </div>
-        </div>
-        <div class="row">
             <div id="confirmHuman" class="text-center removeme col-lg-12">
                     <ul>
                         <li><input type="checkbox" id="chk1" rv-checked="dontcheck1" class="hideme"> <input type="checkbox" id="chk2" rv-checked="dontcheck2" class="hideme"> </li>
@@ -219,7 +210,14 @@
         </div>
 
         <div class="row">
-            <form class="col-lg-12 text-center animateblock" id="myReadable">
+            <div class="col-md-12 column animateblock video-wrapper" id="camPicture">
+                <!--  <iframe width="480" height="320" src="http://www.ustream.tv/embed/20579011?v=3&amp;wmode=direct" scrolling="no" frameborder="0" style="border: 0px none transparent;">    </iframe>
+                <br /><a href="http://www.ustream.tv" style="font-size: 12px; line-height: 20px; font-weight: normal; text-align: left;" target="_blank">Broadcast live streaming video on Ustream</a> -->
+                <img src="img/arduino.png" data-1x="img/arduino.png" data-2x="img/arduino.png" class="hisrc img-responsive center-block" id="arduinoImage" />
+            </div>
+        </div>
+        <div class="row">
+            <form class="col-md-6 column animateblock text-center" id="myReadable">
                 <h3>Readable Values</h3>
                 <ul>
                     <li>Photoresistor: { myArduino.photoValue }</li>
@@ -230,9 +228,10 @@
                 </ul>
             </form>
 
-            <form class="col-lg-12 text-center hideme removeme" id="myWritable">
-                <h3>Writable Values</h3>
+            <form class="col-md-6 column animateblock text-center" id="myWritable">
+
                 <div id="isHuman" class="blur">
+                 <h3>Writable Values</h3>
                     <ul>
                         <li>
                         <label>Servo Motor ON / Off <input type="checkbox" name="ledstatus" rv-checked="myArduino.servoValue" rv-on-change="myArduino.changeServo" rv-enabled="myArduino.enableArduino"> </label></li>
